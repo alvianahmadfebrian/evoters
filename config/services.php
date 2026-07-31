@@ -37,8 +37,8 @@ return [
 
     'doku' => [
         'client_id' => env('DOKU_CLIENT_ID'),
-        'shared_key' => env('DOKU_SHARED_KEY'),
-        'is_production' => env('DOKU_IS_PRODUCTION', false),
+        'secret_key' => env('DOKU_SECRET_KEY'),
+        'base_url' => env('DOKU_BASE_URL', 'https://api-sandbox.doku.com'),
     ],
 
 ];

@@ -405,8 +405,7 @@ class VotingController extends Controller
     private function createDokuCheckoutUrl($vote, $candidate, $event, $name, $quantity)
     {
         $clientId = config('services.doku.client_id');
-        $isProduction = config('services.doku.is_production');
-        $baseUrl = $isProduction ? 'https://api.doku.com' : 'https://api-sandbox.doku.com';
+        $baseUrl = config('services.doku.base_url');
         $requestTarget = '/checkout/v1/payment';
 
         $requestId = uniqid('REQ-', true);
@@ -460,7 +459,7 @@ class VotingController extends Controller
     private function generateDokuSignature($requestTarget, $requestId, $requestTimestamp, $body)
     {
         $clientId = config('services.doku.client_id');
-        $sharedKey = config('services.doku.shared_key');
+        $secretKey = config('services.doku.secret_key');
 
         $bodyJson = json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $digest = base64_encode(hash('sha256', $bodyJson, true));
@@ -471,7 +470,7 @@ class VotingController extends Controller
             "Request-Target:" . $requestTarget . "\n" .
             "Digest:" . $digest;
 
-        $signature = base64_encode(hash_hmac('sha256', $stringToSign, $sharedKey, true));
+        $signature = base64_encode(hash_hmac('sha256', $stringToSign, $secretKey, true));
 
         return [
             'signature' => 'HMACSHA256=' . $signature,
@@ -486,7 +485,7 @@ class VotingController extends Controller
     private function verifyDokuSignature(Request $request)
     {
         $clientId = config('services.doku.client_id');
-        $sharedKey = config('services.doku.shared_key');
+        $secretKey = config('services.doku.secret_key');
 
         $headerClientId = $request->header('Client-Id');
         $headerRequestId = $request->header('Request-Id');
@@ -510,7 +509,7 @@ class VotingController extends Controller
             "Request-Target:" . $requestTarget . "\n" .
             "Digest:" . $digest;
 
-        $calculatedSignature = base64_encode(hash_hmac('sha256', $stringToSign, $sharedKey, true));
+        $calculatedSignature = base64_encode(hash_hmac('sha256', $stringToSign, $secretKey, true));
 
         return hash_equals($cleanSignature, $calculatedSignature);
     }
