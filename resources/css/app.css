@@ -1,0 +1,235 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-indigo-50: var(--color-emerald-50);
+    --color-indigo-100: var(--color-emerald-100);
+    --color-indigo-200: var(--color-emerald-200);
+    --color-indigo-300: var(--color-emerald-300);
+    --color-indigo-400: var(--color-emerald-400);
+    --color-indigo-500: var(--color-emerald-500);
+    --color-indigo-600: var(--color-emerald-600);
+    --color-indigo-700: var(--color-emerald-700);
+    --color-indigo-800: var(--color-emerald-800);
+    --color-indigo-900: var(--color-emerald-900);
+    --color-indigo-950: var(--color-emerald-950);
+
+    --color-violet-50: var(--color-cyan-50);
+    --color-violet-100: var(--color-cyan-100);
+    --color-violet-200: var(--color-cyan-200);
+    --color-violet-300: var(--color-cyan-300);
+    --color-violet-400: var(--color-cyan-400);
+    --color-violet-500: var(--color-cyan-500);
+    --color-violet-600: var(--color-cyan-600);
+    --color-violet-700: var(--color-cyan-700);
+    --color-violet-800: var(--color-cyan-800);
+    --color-violet-900: var(--color-cyan-900);
+    --color-violet-950: var(--color-cyan-950);
+
+    --color-purple-50: var(--color-cyan-50);
+    --color-purple-100: var(--color-cyan-100);
+    --color-purple-200: var(--color-cyan-200);
+    --color-purple-300: var(--color-cyan-300);
+    --color-purple-400: var(--color-cyan-400);
+    --color-purple-500: var(--color-cyan-500);
+    --color-purple-600: var(--color-cyan-600);
+    --color-purple-700: var(--color-cyan-700);
+    --color-purple-800: var(--color-cyan-800);
+    --color-purple-900: var(--color-cyan-900);
+    --color-purple-950: var(--color-cyan-950);
+}
+
+/* Light Mode Overrides for White Background */
+body {
+    background-color: #f8fafc !important;
+    background-image: 
+        radial-gradient(at 0% 0%, hsla(142,60%,94%,0.8) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(142,65%,88%,0.5) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(187,65%,88%,0.4) 0, transparent 50%) !important;
+    color: #1e293b !important;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04) !important;
+}
+
+.glass-sidebar {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(16px) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Text elements */
+.text-white {
+    color: #0f172a !important; /* slate-900 */
+}
+.text-gray-100 {
+    color: #1e293b !important; /* slate-800 */
+}
+.text-gray-200 {
+    color: #334155 !important; /* slate-700 */
+}
+.text-gray-300 {
+    color: #334155 !important; /* slate-700 */
+}
+.text-gray-400 {
+    color: #475569 !important; /* slate-600 */
+}
+.text-gray-500 {
+    color: #64748b !important; /* slate-500 */
+}
+
+/* Link & Navigation Hover styling */
+.hover\:text-white:hover {
+    color: #0f172a !important;
+}
+.hover\:bg-white\/5:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Emerald Green & Cyan Accents */
+.text-indigo-300, .text-indigo-400, .text-violet-400, .text-purple-400, .text-cyan-400 {
+    color: #059669 !important; /* emerald-600 */
+}
+.text-indigo-500, .text-violet-500, .text-purple-500, .text-cyan-500 {
+    color: #047857 !important; /* emerald-700 */
+}
+.text-indigo-200, .text-violet-200, .text-purple-200, .text-cyan-200 {
+    color: #10b981 !important; /* emerald-500 */
+}
+
+/* Badges */
+.bg-indigo-500\/10, .bg-violet-600\/10, .bg-purple-500\/10, .bg-emerald-500\/10 {
+    background-color: rgba(16, 185, 129, 0.08) !important;
+    color: #059669 !important;
+    border-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Logo gradients */
+.bg-gradient-to-tr.from-violet-600.to-indigo-500,
+.bg-gradient-to-tr.from-violet-600.to-indigo-600,
+.bg-gradient-to-tr.from-indigo-500.to-purple-500 {
+    background-image: linear-gradient(to right top, #0891b2, #059669) !important; /* cyan-600 to emerald-600 */
+    color: #ffffff !important;
+}
+
+/* Title gradients */
+.bg-gradient-to-r.from-violet-400.via-indigo-400.to-indigo-300,
+.bg-gradient-to-r.from-white.via-gray-200.to-gray-400 {
+    background-image: linear-gradient(to right, #0f766e, #0d9488) !important; /* dark teal */
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+/* Buttons background fixes */
+.bg-indigo-600, .bg-emerald-600 {
+    background-color: #059669 !important; /* emerald-600 */
+    color: #ffffff !important;
+}
+.bg-indigo-600:hover, .bg-emerald-600:hover {
+    background-color: #047857 !important; /* emerald-700 */
+}
+.bg-gradient-to-r.from-violet-600.to-indigo-600 {
+    background-image: linear-gradient(to right, #0891b2, #059669) !important; /* cyan-600 to emerald-600 */
+    color: #ffffff !important;
+}
+.bg-gradient-to-r.from-violet-600.to-indigo-600:hover {
+    background-image: linear-gradient(to right, #0e7490, #047857) !important; /* cyan-700 to emerald-700 */
+}
+
+/* Inputs and Forms */
+.glass-input, input, textarea, select {
+    color: #0f172a !important;
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+.glass-input:focus, input:focus, textarea:focus, select:focus {
+    border-color: #10b981 !important; /* emerald-500 */
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15) !important;
+}
+input::placeholder, textarea::placeholder {
+    color: #94a3b8 !important; /* slate-400 */
+}
+
+/* Light modal input overrides */
+#voting-modal input,
+#voting-modal textarea,
+#voting-modal select {
+    color: #0f172a !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+#voting-modal input:focus,
+#voting-modal textarea:focus {
+    border-color: #10b981 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12) !important;
+}
+#voting-modal input::placeholder,
+#voting-modal textarea::placeholder {
+    color: #94a3b8 !important;
+}
+#voting-modal input[type="number"] {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+#voting-modal input[type="hidden"] {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+/* Utility fixes */
+.bg-gray-900, .bg-slate-900 {
+    background-color: #f1f5f9 !important; /* slate-100 */
+}
+.border-white\/5, .border-white\/10, .border-white\/20, .border-white\/8, .border-white\/6 {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+.bg-slate-950, .bg-gray-950, .bg-slate-900\/50, .bg-gray-900\/50 {
+    background-color: #f8fafc !important; /* slate-50 */
+}
+
+/* Tables and Admin CMS lists */
+.divide-white\/5 > * + * {
+    border-color: rgba(0, 0, 0, 0.06) !important;
+}
+th {
+    color: #475569 !important; /* slate-600 */
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+td {
+    color: #1e293b !important;
+}
+
+/* Toast settings */
+.border-green-500\/30 {
+    border-color: rgba(16, 185, 129, 0.2) !important;
+}
+.bg-green-950\/20 {
+    background-color: rgba(209, 250, 229, 0.6) !important; /* emerald-100 */
+}
+.text-green-300 {
+    color: #065f46 !important; /* emerald-800 */
+}
+
+/* Chart text fix if applicable */
+canvas {
+    filter: invert(0) !important;
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
