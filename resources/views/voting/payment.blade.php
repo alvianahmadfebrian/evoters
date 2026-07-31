@@ -167,13 +167,6 @@
 </div>
 
 @section('scripts')
-<!-- Load Midtrans Snap JS (Production vs Sandbox) -->
-@if(config('services.midtrans.is_production'))
-    <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
-@else
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
-@endif
-
 <script>
     // 15 minutes simple countdown timer
     let duration = 15 * 60;
@@ -196,34 +189,20 @@
         duration--;
     }, 1000);
 
-    // Auto-trigger Snap modal when page is loaded
-    const snapToken = '{{ $vote->snap_token }}';
-    if (snapToken) {
+    // Auto-redirect to DOKU when page is loaded
+    const paymentUrl = '{{ $vote->payment_url }}';
+    if (paymentUrl) {
         setTimeout(() => {
             triggerPayment();
         }, 800); // Small delay to let the page render smoothly
     }
 
     function triggerPayment() {
-        if (!snapToken) {
-            alert('Gagal mendapatkan token pembayaran dari Midtrans.');
+        if (!paymentUrl) {
+            alert('Gagal mendapatkan URL pembayaran dari DOKU.');
             return;
         }
-        window.snap.pay(snapToken, {
-            onSuccess: function(result) {
-                window.location.href = "{{ route('event.results', $event->slug) }}";
-            },
-            onPending: function(result) {
-                console.log('payment pending', result);
-            },
-            onError: function(result) {
-                console.error('payment error', result);
-                alert('Terjadi kesalahan pada sistem pembayaran.');
-            },
-            onClose: function() {
-                console.log('customer closed the popup without finishing the payment');
-            }
-        });
+        window.location.href = paymentUrl;
     }
 </script>
 @endsection

@@ -8,23 +8,11 @@ use App\Models\Token;
 use App\Models\Vote;
 use App\Models\Otp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Midtrans\Config;
-use Midtrans\Snap;
-use Midtrans\Notification;
 
 class VotingController extends Controller
 {
-    /**
-     * Initialize Midtrans Configuration
-     */
-    public function __construct()
-    {
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$isProduction = config('services.midtrans.is_production');
-        Config::$isSanitized = config('services.midtrans.is_sanitized');
-        Config::$is3ds = config('services.midtrans.is_3ds');
-    }
     /**
      * Show the landing page.
      */
@@ -149,38 +137,6 @@ class VotingController extends Controller
             $amount = $event->price * $quantity;
             $paymentRef = 'EV-VOTE-' . strtoupper(uniqid());
 
-            // Initialize Midtrans Snap transaction parameters
-            $transaction_details = [
-                'order_id' => $paymentRef,
-                'gross_amount' => (int) $amount,
-            ];
-
-            $item_details = [
-                [
-                    'id' => 'VOTE-' . $candidate->id,
-                    'price' => (int) $event->price,
-                    'quantity' => $quantity,
-                    'name' => 'Vote: ' . substr($candidate->name, 0, 40),
-                ]
-            ];
-
-            $customer_details = [
-                'first_name' => $name,
-            ];
-
-            $transaction_data = [
-                'transaction_details' => $transaction_details,
-                'item_details' => $item_details,
-                'customer_details' => $customer_details,
-            ];
-
-            $snapToken = null;
-            try {
-                $snapToken = Snap::getSnapToken($transaction_data);
-            } catch (\Exception $e) {
-                Log::error('Midtrans Snap Token Generation Failed: ' . $e->getMessage());
-            }
-
             // Create Vote transaction
             $vote = Vote::create([
                 'event_id' => $event->id,
@@ -189,10 +145,20 @@ class VotingController extends Controller
                 'payment_status' => 'pending',
                 'amount' => $amount,
                 'payment_ref' => $paymentRef,
-                'snap_token' => $snapToken,
+                'payment_url' => null,
                 'quantity' => $quantity,
                 'voted_at' => now(),
             ]);
+
+            $paymentUrl = null;
+            try {
+                $paymentUrl = $this->createDokuCheckoutUrl($vote, $candidate, $event, $name, $quantity);
+                if ($paymentUrl) {
+                    $vote->update(['payment_url' => $paymentUrl]);
+                }
+            } catch (\Exception $e) {
+                Log::error('DOKU Checkout URL Generation Failed: ' . $e->getMessage());
+            }
 
             return redirect()->route('vote.pay', $vote->id);
         }
@@ -345,30 +311,15 @@ class VotingController extends Controller
         $event = $vote->event;
         $candidate = $vote->candidate;
 
-        // If snap token is missing for some reason, try to generate it now
-        if (!$vote->snap_token) {
+        // If payment URL is missing for some reason, try to generate it now
+        if (!$vote->payment_url) {
             try {
-                $transaction_data = [
-                    'transaction_details' => [
-                        'order_id' => $vote->payment_ref,
-                        'gross_amount' => (int) $vote->amount,
-                    ],
-                    'item_details' => [
-                        [
-                            'id' => 'VOTE-' . $candidate->id,
-                            'price' => (int) $event->price,
-                            'quantity' => $vote->quantity,
-                            'name' => 'Vote: ' . substr($candidate->name, 0, 40),
-                        ]
-                    ],
-                    'customer_details' => [
-                        'first_name' => 'Voter',
-                    ],
-                ];
-                $snapToken = Snap::getSnapToken($transaction_data);
-                $vote->update(['snap_token' => $snapToken]);
+                $paymentUrl = $this->createDokuCheckoutUrl($vote, $candidate, $event, 'Voter', $vote->quantity);
+                if ($paymentUrl) {
+                    $vote->update(['payment_url' => $paymentUrl]);
+                }
             } catch (\Exception $e) {
-                Log::error('Midtrans Snap Token Regeneration Failed: ' . $e->getMessage());
+                Log::error('DOKU Checkout URL Regeneration Failed: ' . $e->getMessage());
             }
         }
 
@@ -399,22 +350,29 @@ class VotingController extends Controller
     }
 
     /**
-     * Handle Midtrans Payment Webhook / Notification.
+     * Handle DOKU Payment Webhook / Notification.
      */
     public function handleNotification(Request $request)
     {
         try {
-            $notification = new Notification();
-            
-            $transaction = $notification->transaction_status;
-            $type = $notification->payment_type;
-            $orderId = $notification->order_id;
-            $fraud = $notification->fraud_status;
+            // Verify signature
+            if (!$this->verifyDokuSignature($request)) {
+                Log::warning('DOKU Webhook signature verification failed.');
+                return response()->json(['message' => 'Invalid signature.'], 401);
+            }
 
-            Log::info("Midtrans Webhook Received - Order: {$orderId}, Status: {$transaction}, Type: {$type}");
+            $payload = $request->all();
+            $invoiceNumber = $payload['order']['invoice_number'] ?? null;
+            $transactionStatus = $payload['transaction']['status'] ?? null;
+
+            Log::info("DOKU Webhook Received - Invoice: {$invoiceNumber}, Status: {$transactionStatus}");
+
+            if (!$invoiceNumber) {
+                return response()->json(['message' => 'Invoice number not found in payload.'], 400);
+            }
 
             // Find the corresponding Vote
-            $vote = Vote::where('payment_ref', $orderId)->first();
+            $vote = Vote::where('payment_ref', $invoiceNumber)->first();
 
             if (!$vote) {
                 return response()->json(['message' => 'Transaction reference not found.'], 404);
@@ -424,37 +382,136 @@ class VotingController extends Controller
                 return response()->json(['message' => 'Transaction already processed as completed.'], 200);
             }
 
-            // Verify transaction status
-            if ($transaction == 'capture') {
-                if ($type == 'credit_card') {
-                    if ($fraud == 'challenge') {
-                        $vote->update(['payment_status' => 'challenge']);
-                    } else {
-                        $vote->update([
-                            'payment_status' => 'completed',
-                            'voted_at' => now(),
-                        ]);
-                    }
-                }
-            } else if ($transaction == 'settlement') {
+            // Update status based on transaction status
+            if ($transactionStatus === 'SUCCESS') {
                 $vote->update([
                     'payment_status' => 'completed',
                     'voted_at' => now(),
                 ]);
-            } else if ($transaction == 'pending') {
-                $vote->update(['payment_status' => 'pending']);
-            } else if ($transaction == 'deny') {
+            } else if ($transactionStatus === 'FAILED') {
                 $vote->update(['payment_status' => 'failed']);
-            } else if ($transaction == 'expire') {
-                $vote->update(['payment_status' => 'expired']);
-            } else if ($transaction == 'cancel') {
-                $vote->update(['payment_status' => 'cancelled']);
             }
 
             return response()->json(['message' => 'Notification processed successfully.']);
         } catch (\Exception $e) {
-            Log::error('Midtrans Webhook Error: ' . $e->getMessage());
+            Log::error('DOKU Webhook Error: ' . $e->getMessage());
             return response()->json(['message' => 'An error occurred while processing the notification.'], 500);
         }
+    }
+
+    /**
+     * Create DOKU Checkout URL
+     */
+    private function createDokuCheckoutUrl($vote, $candidate, $event, $name, $quantity)
+    {
+        $clientId = config('services.doku.client_id');
+        $isProduction = config('services.doku.is_production');
+        $baseUrl = $isProduction ? 'https://api.doku.com' : 'https://api-sandbox.doku.com';
+        $requestTarget = '/checkout/v1/payment';
+
+        $requestId = uniqid('REQ-', true);
+        $requestTimestamp = now()->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
+
+        $body = [
+            'order' => [
+                'amount' => (int) $vote->amount,
+                'invoice_number' => $vote->payment_ref,
+                'currency' => 'IDR',
+                'callback_url' => route('event.results', $event->slug),
+                'line_items' => [
+                    [
+                        'name' => 'Vote: ' . substr($candidate->name, 0, 40),
+                        'price' => (int) $event->price,
+                        'quantity' => (int) $quantity,
+                    ]
+                ]
+            ],
+            'payment' => [
+                'payment_due_date' => 60
+            ],
+            'customer' => [
+                'name' => $name,
+                'email' => 'voter@example.com',
+            ]
+        ];
+
+        $sigData = $this->generateDokuSignature($requestTarget, $requestId, $requestTimestamp, $body);
+
+        $response = Http::withHeaders([
+            'Client-Id' => $clientId,
+            'Request-Id' => $requestId,
+            'Request-Timestamp' => $requestTimestamp,
+            'Signature' => $sigData['signature'],
+        ])->withBody($sigData['json'], 'application/json')
+          ->post($baseUrl . $requestTarget);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['response']['payment']['url'] ?? null;
+        }
+
+        Log::error('DOKU API Error response: ' . $response->body());
+        throw new \Exception('DOKU API Error: ' . $response->status());
+    }
+
+    /**
+     * Generate DOKU signature
+     */
+    private function generateDokuSignature($requestTarget, $requestId, $requestTimestamp, $body)
+    {
+        $clientId = config('services.doku.client_id');
+        $sharedKey = config('services.doku.shared_key');
+
+        $bodyJson = json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $digest = base64_encode(hash('sha256', $bodyJson, true));
+
+        $stringToSign = "Client-Id:" . $clientId . "\n" .
+            "Request-Id:" . $requestId . "\n" .
+            "Request-Timestamp:" . $requestTimestamp . "\n" .
+            "Request-Target:" . $requestTarget . "\n" .
+            "Digest:" . $digest;
+
+        $signature = base64_encode(hash_hmac('sha256', $stringToSign, $sharedKey, true));
+
+        return [
+            'signature' => 'HMACSHA256=' . $signature,
+            'digest' => $digest,
+            'json' => $bodyJson
+        ];
+    }
+
+    /**
+     * Verify DOKU signature from Webhook/Notification
+     */
+    private function verifyDokuSignature(Request $request)
+    {
+        $clientId = config('services.doku.client_id');
+        $sharedKey = config('services.doku.shared_key');
+
+        $headerClientId = $request->header('Client-Id');
+        $headerRequestId = $request->header('Request-Id');
+        $headerRequestTimestamp = $request->header('Request-Timestamp');
+        $headerSignature = $request->header('Signature');
+
+        if (!$headerSignature) {
+            return false;
+        }
+
+        $cleanSignature = str_replace('HMACSHA256=', '', $headerSignature);
+
+        $body = $request->getContent();
+        $digest = base64_encode(hash('sha256', $body, true));
+
+        $requestTarget = '/' . ltrim($request->getPathInfo(), '/');
+
+        $stringToSign = "Client-Id:" . $clientId . "\n" .
+            "Request-Id:" . $headerRequestId . "\n" .
+            "Request-Timestamp:" . $headerRequestTimestamp . "\n" .
+            "Request-Target:" . $requestTarget . "\n" .
+            "Digest:" . $digest;
+
+        $calculatedSignature = base64_encode(hash_hmac('sha256', $stringToSign, $sharedKey, true));
+
+        return hash_equals($cleanSignature, $calculatedSignature);
     }
 }

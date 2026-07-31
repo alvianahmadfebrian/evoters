@@ -14,7 +14,7 @@ class Vote extends Model
         'payment_status',
         'amount',
         'payment_ref',
-        'snap_token',
+        'payment_url',
         'quantity',
         'voted_at',
     ];
