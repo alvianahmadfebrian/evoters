@@ -76,14 +76,29 @@
 
 
     <!-- Events Grid Section -->
+    <style>
+        @media (max-width: 640px) {
+            .welcome-events-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 10px !important;
+            }
+        }
+    </style>
     <section class="space-y-6 pt-6">
-        <div class="flex items-center justify-between">
+        <div class="welcome-events-header flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
                 <h2 class="text-2xl font-bold text-white">Event Voting Aktif</h2>
                 <p class="text-xs text-gray-400">Pilih salah satu event aktif di bawah ini untuk memberikan suara Anda.</p>
             </div>
-            <div class="text-xs text-gray-400 font-medium">
-                Menampilkan <span class="text-indigo-400 font-bold">{{ $activeEvents->count() }}</span> Event
+            <div class="flex items-center space-x-3 text-xs text-gray-400 font-medium">
+                <span>
+                    Menampilkan <span class="text-emerald-400 font-bold">{{ $activeEvents->count() }}</span> Event
+                </span>
+                <span class="text-gray-600">|</span>
+                <a href="{{ route('events.list') }}" class="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center">
+                    Lihat Semua Event <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
             </div>
         </div>
 

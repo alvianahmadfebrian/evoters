@@ -15,6 +15,10 @@
     
     <!-- Custom styling helper for extra premium touches -->
     <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
         body {
             font-family: 'Instrument Sans', sans-serif;
             background-color: #040d12;
@@ -29,6 +33,55 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        nav {
+            position: relative !important;
+            overflow: visible !important;
+        }
+        #desktop-menu {
+            display: flex;
+            align-items: center;
+        }
+        #mobile-menu-btn-container {
+            display: none;
+        }
+        #mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: rgba(240, 253, 244, 0.98);
+            border-top: 1px solid rgba(16, 185, 129, 0.15);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+            padding: 16px 24px;
+            z-index: 9999;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        #mobile-menu a {
+            display: block;
+            color: #065f46 !important;
+            background-color: transparent;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.15rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        #mobile-menu a:hover, #mobile-menu a.active-link {
+            color: #047857 !important;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Screen sizes below 768px (Mobile) */
+        @media (max-width: 767.98px) {
+            #desktop-menu {
+                display: none !important;
+            }
+            #mobile-menu-btn-container {
+                display: flex !important;
+            }
         }
     </style>
 </head>
@@ -45,27 +98,55 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('home') }}" class="text-sm font-medium {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
-                        <i class="fa-solid fa-house mr-1"></i> Beranda
+                <!-- Desktop Navigation Links (hidden on mobile) -->
+                <div id="desktop-menu" class="items-center space-x-4">
+                    <a href="{{ route('home') }}" class="text-base font-semibold {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-4 rounded-lg">
+                        Beranda
                     </a>
                     
-                    <a href="{{ route('events.list') }}" class="text-sm font-medium {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
-                        <i class="fa-solid fa-calendar-days mr-1"></i> Event
+                    <a href="{{ route('events.list') }}" class="text-base font-semibold {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-4 rounded-lg">
+                        Event
                     </a>
 
-                    <a href="{{ route('about') }}" class="text-sm font-medium {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
-                        <i class="fa-solid fa-circle-info mr-1"></i> Tentang
+                    <a href="{{ route('about') }}" class="text-base font-semibold {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-4 rounded-lg">
+                        Tentang
                     </a>
                     
                     @auth
-                        <a href="{{ route('cms.dashboard') }}" class="text-sm font-medium text-indigo-300 hover:text-indigo-200 transition-colors py-2 px-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
-                            <i class="fa-solid fa-gauge mr-1"></i> Dashboard CMS
+                        <a href="{{ route('cms.dashboard') }}" class="text-base font-semibold text-indigo-300 hover:text-indigo-200 transition-colors py-2 px-4 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+                            Dashboard CMS
                         </a>
                     @endauth
                 </div>
+
+                <!-- Mobile Menu Button (hidden on desktop) -->
+                <div id="mobile-menu-btn-container" class="items-center">
+                    <button id="mobile-menu-btn" type="button" class="text-gray-400 hover:text-white focus:outline-none p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown (hidden by default) -->
+        <div id="mobile-menu">
+            <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active-link' : '' }}">
+                Beranda
+            </a>
+            
+            <a href="{{ route('events.list') }}" class="{{ Route::is('events.list') ? 'active-link' : '' }}">
+                Event
+            </a>
+
+            <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active-link' : '' }}">
+                Tentang
+            </a>
+            
+            @auth
+                <a href="{{ route('cms.dashboard') }}" class="{{ Route::is('cms.dashboard') ? 'active-link' : '' }}" style="color: #a5b4fc !important;">
+                    Dashboard CMS
+                </a>
+            @endauth
         </div>
     </nav>
 
@@ -124,5 +205,39 @@
     </footer>
 
     @yield('scripts')
+
+    <!-- Mobile menu toggle script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            if (btn && menu) {
+                // Initialize default state
+                menu.style.display = 'none';
+                
+                btn.addEventListener('click', function() {
+                    const isHidden = menu.style.display === 'none';
+                    if (isHidden) {
+                        menu.style.setProperty('display', 'block', 'important');
+                        const icon = btn.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fa-solid fa-xmark text-xl';
+                        }
+                    } else {
+                        menu.style.setProperty('display', 'none', 'important');
+                        const icon = btn.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fa-solid fa-bars text-xl';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+    @include('partials.vera-chat')
 </body>
 </html>

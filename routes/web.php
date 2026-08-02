@@ -7,6 +7,7 @@ use App\Http\Controllers\Cms\DashboardController;
 use App\Http\Controllers\Cms\CmsEventController;
 use App\Http\Controllers\Cms\CandidateController;
 use App\Http\Controllers\Cms\TokenController;
+use App\Http\Controllers\AiChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->n
 Route::get('/vote/{vote}/pay', [VotingController::class, 'showPayment'])->name('vote.pay');
 Route::post('/vote/{vote}/pay/confirm', [VotingController::class, 'confirmPayment'])->name('vote.pay.confirm');
 Route::post('/payment/notification', [VotingController::class, 'handleNotification'])->name('payment.notification');
+Route::post('/ai/chat', [AiChatController::class, 'chat'])->name('ai.chat');
 
 // Admin Auth Routes
 Route::get('/cms-admin/login', [AuthController::class, 'showLogin'])->name('login');
