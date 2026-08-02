@@ -16,6 +16,7 @@ use App\Http\Controllers\Cms\TokenController;
 
 // Public Voter Routes
 Route::get('/', [VotingController::class, 'index'])->name('home');
+Route::get('/events', [VotingController::class, 'listEvents'])->name('events.list');
 Route::get('/event/{slug}', [VotingController::class, 'showEvent'])->name('event.show');
 Route::post('/event/{slug}/otp', [VotingController::class, 'requestOtp'])->name('event.otp');
 Route::post('/event/{slug}/vote', [VotingController::class, 'submitVote'])->name('event.vote');

@@ -47,8 +47,12 @@
 
                 <!-- Navigation Links -->
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('home') }}" class="text-sm font-medium text-gray-300 hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-white/5">
+                    <a href="{{ route('home') }}" class="text-sm font-medium {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
                         <i class="fa-solid fa-house mr-1"></i> Beranda
+                    </a>
+                    
+                    <a href="{{ route('events.list') }}" class="text-sm font-medium {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
+                        <i class="fa-solid fa-calendar-days mr-1"></i> Event
                     </a>
                     
                     @auth
@@ -106,7 +110,7 @@
             <div class="flex items-center">
                 <img src="{{ asset('images/logo.png') }}" alt="eVoters Logo" class="h-12 w-auto">
             </div>
-            <p class="text-xs text-gray-500">&copy; {{ date('Y') }} eVoters. Platform Voting Online Terbuka & Transparan. Terinspirasi dari Votera.id.</p>
+            <p class="text-xs text-gray-500">&copy; {{ date('Y') }} eVoters. Platform Voting Online Terbuka & Transparan.</p>
             <div class="flex space-x-4 text-gray-400 text-xs">
                 <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
                 <span>&bull;</span>

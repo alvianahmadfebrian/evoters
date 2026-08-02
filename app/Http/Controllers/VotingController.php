@@ -38,6 +38,26 @@ class VotingController extends Controller
     }
 
     /**
+     * Show the dedicated public events listing page.
+     */
+    public function listEvents(Request $request)
+    {
+        $query = Event::where('status', 'active');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        $events = $query->orderBy('created_at', 'desc')->paginate(9);
+
+        return view('voting.events', compact('events'));
+    }
+
+    /**
      * Show the event voting ballot.
      */
     public function showEvent($slug)
