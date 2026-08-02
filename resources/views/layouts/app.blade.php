@@ -7,6 +7,9 @@
 
     <title>@yield('title', 'eVoters - Platform Voting Online Terpercaya')</title>
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
+
     <!-- Google Fonts & Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
