@@ -58,6 +58,14 @@ class VotingController extends Controller
     }
 
     /**
+     * Show the about page.
+     */
+    public function about()
+    {
+        return view('voting.about');
+    }
+
+    /**
      * Show the event voting ballot.
      */
     public function showEvent($slug)

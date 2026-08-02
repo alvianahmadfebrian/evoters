@@ -54,6 +54,10 @@
                     <a href="{{ route('events.list') }}" class="text-sm font-medium {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
                         <i class="fa-solid fa-calendar-days mr-1"></i> Event
                     </a>
+
+                    <a href="{{ route('about') }}" class="text-sm font-medium {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
+                        <i class="fa-solid fa-circle-info mr-1"></i> Tentang
+                    </a>
                     
                     @auth
                         <a href="{{ route('cms.dashboard') }}" class="text-sm font-medium text-indigo-300 hover:text-indigo-200 transition-colors py-2 px-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
