@@ -8,7 +8,7 @@
     <title>@yield('title', 'Admin CMS - eVoters')</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('images/logo1.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/logo1.png" type="image/x-icon">
 
     <!-- Google Fonts & Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
