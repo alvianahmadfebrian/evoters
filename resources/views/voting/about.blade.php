@@ -123,7 +123,7 @@
                 <!-- Left: Photo -->
                 <div class="w-full md:w-2/5 flex justify-center">
                     <div class="relative w-60 h-80 md:w-72 md:h-96 rounded-3xl overflow-hidden shadow-lg border-4 border-white bg-slate-100 flex-shrink-0">
-                        <img src="{{ asset('images/owner_profile.png') }}" alt="Aries Mulyono" class="w-full h-full object-cover rounded-[20px]">
+                        <img src="{{ asset('images/owner_profile.jpg') }}" alt="Aries Mulyono" class="w-full h-full object-cover rounded-[20px]">
                     </div>
                 </div>
                 
