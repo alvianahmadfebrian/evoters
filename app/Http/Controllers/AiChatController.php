@@ -18,8 +18,8 @@ class AiChatController extends Controller
         $userMessage = $request->input('message');
         $chatHistory = $request->input('history', []);
 
-        $apiKey = env('GROQ_API_KEY');
-        $model = env('GROQ_MODEL', 'llama-3.1-8b-instant');
+        $apiKey = config('services.groq.api_key');
+        $model = config('services.groq.model', 'llama-3.1-8b-instant');
 
         if (!$apiKey) {
             return response()->json([
