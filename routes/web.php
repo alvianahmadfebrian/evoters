@@ -43,13 +43,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/events', [CmsEventController::class, 'store'])->name('cms.events.store');
     Route::get('/events/{event}', [CmsEventController::class, 'show'])->name('cms.events.show');
     Route::get('/events/{event}/edit', [CmsEventController::class, 'edit'])->name('cms.events.edit');
-    Route::put('/events/{event}', [CmsEventController::class, 'update'])->name('cms.events.update');
+    Route::match(['put', 'post'], '/events/{event}', [CmsEventController::class, 'update'])->name('cms.events.update');
     Route::delete('/events/{event}', [CmsEventController::class, 'destroy'])->name('cms.events.destroy');
 
     // Candidate CRUD
     Route::post('/events/{event}/candidates', [CandidateController::class, 'store'])->name('cms.candidates.store');
     Route::get('/candidates/{candidate}/edit', [CandidateController::class, 'edit'])->name('cms.candidates.edit');
-    Route::put('/candidates/{candidate}', [CandidateController::class, 'update'])->name('cms.candidates.update');
+    Route::match(['put', 'post'], '/candidates/{candidate}', [CandidateController::class, 'update'])->name('cms.candidates.update');
     Route::delete('/candidates/{candidate}', [CandidateController::class, 'destroy'])->name('cms.candidates.destroy');
 
     // Token Management

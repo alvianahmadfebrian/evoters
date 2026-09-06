@@ -18,7 +18,6 @@
     <div class="glass-card rounded-2xl border border-white/5 p-6 md:p-8 shadow-2xl relative overflow-hidden">
         <form action="{{ route('cms.candidates.update', $candidate->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            @method('PUT')
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <!-- Name -->
