@@ -102,17 +102,25 @@
                 </div>
 
                 <!-- Desktop Navigation Links (hidden on mobile) -->
-                <div id="desktop-menu" class="items-center space-x-3">
-                    <a href="{{ route('home') }}" class="text-sm font-semibold {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3.5 rounded-lg">
+                <div id="desktop-menu" class="items-center space-x-2">
+                    <a href="{{ route('home') }}" class="text-sm font-semibold {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
                         Beranda
                     </a>
                     
-                    <a href="{{ route('events.list') }}" class="text-sm font-semibold {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3.5 rounded-lg">
+                    <a href="{{ route('events.list') }}" class="text-sm font-semibold {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
                         Event
                     </a>
 
-                    <a href="{{ route('about') }}" class="text-sm font-semibold {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3.5 rounded-lg">
+                    <a href="{{ route('about') }}" class="text-sm font-semibold {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
                         Tentang
+                    </a>
+
+                    <a href="{{ route('faq') }}" class="text-sm font-semibold {{ Route::is('faq') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
+                        FAQ
+                    </a>
+
+                    <a href="{{ route('contact') }}" class="text-sm font-semibold {{ Route::is('contact') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
+                        Kontak
                     </a>
                     
                     @auth
@@ -168,6 +176,14 @@
 
             <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active-link' : '' }}">
                 Tentang
+            </a>
+
+            <a href="{{ route('faq') }}" class="{{ Route::is('faq') ? 'active-link' : '' }}">
+                FAQ
+            </a>
+
+            <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active-link' : '' }}">
+                Kontak
             </a>
             
             @auth
@@ -250,16 +266,115 @@
     </main>
 
     <!-- Footer -->
-    <footer class="mt-auto border-t border-white/5 py-8 glass-card">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center">
-                <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-12 w-auto">
+    <footer class="mt-auto border-t border-white/10 pt-12 pb-8 glass-card">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-white/10">
+                
+                <!-- Col 1: Brand & Identity -->
+                <div class="space-y-4">
+                    <a href="{{ route('home') }}" class="inline-block">
+                        <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-12 w-auto">
+                    </a>
+                    <p class="text-xs text-gray-400 leading-relaxed max-w-sm">
+                        Platform pemungutan suara online terpercaya dan berintegritas tinggi. Menghadirkan proses demokrasi digital yang praktis, aman, terenkripsi, dan transparan untuk berbagai instansi dan organisasi.
+                    </p>
+                    <div class="pt-1 text-[11px] text-gray-500 space-y-0.5">
+                        <p class="font-medium text-gray-400">Badan Usaha / Pengelola:</p>
+                        <p class="font-semibold text-emerald-400">{{ config('company.name') }}</p>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigasi Cepat -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Navigasi</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li>
+                            <a href="{{ route('home') }}" class="hover:text-emerald-400 transition-colors">Beranda</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('events.list') }}" class="hover:text-emerald-400 transition-colors">Event Voting</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('about') }}" class="hover:text-emerald-400 transition-colors">Tentang Kami</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('faq') }}" class="hover:text-emerald-400 transition-colors">Pusat Bantuan (FAQ)</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contact') }}" class="hover:text-emerald-400 transition-colors">Hubungi Kami</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Kebijakan & Legalitas -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Legal & Kebijakan</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li>
+                            <a href="{{ route('terms') }}" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-contract text-[10px] text-emerald-500"></i>
+                                <span>Syarat & Ketentuan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('refund') }}" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-receipt text-[10px] text-emerald-500"></i>
+                                <span>Kebijakan Pengembalian Dana</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('terms') }}#privasi" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-halved text-[10px] text-emerald-500"></i>
+                                <span>Kebijakan Privasi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contact') }}" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-address-book text-[10px] text-emerald-500"></i>
+                                <span>Halaman Kontak</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Alamat & Kontak Usaha Sesuai iPaymu -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Kontak & Alamat Usaha</h4>
+                    <div class="space-y-2.5 text-xs text-gray-400">
+                        <div class="flex items-start gap-2">
+                            <i class="fa-solid fa-location-dot text-emerald-400 mt-0.5 flex-shrink-0"></i>
+                            <span class="leading-relaxed">{{ config('company.address') }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-phone text-emerald-400 flex-shrink-0"></i>
+                            <a href="https://wa.me/{{ config('company.whatsapp') }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                                {{ config('company.phone') }}
+                            </a>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-emerald-400 flex-shrink-0"></i>
+                            <a href="mailto:{{ config('company.email') }}" class="hover:text-white transition-colors">
+                                {{ config('company.email') }}
+                            </a>
+                        </div>
+                        <div class="flex items-center gap-2 text-[11px] text-gray-500 pt-1">
+                            <i class="fa-solid fa-clock text-emerald-500/70 flex-shrink-0"></i>
+                            <span>{{ config('company.hours') }}</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <p class="text-xs text-gray-500">&copy; {{ date('Y') }} eVoters. Platform Voting Online Terbuka & Transparan.</p>
-            <div class="flex space-x-4 text-gray-400 text-xs">
-                <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
-                <span>&bull;</span>
-                <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+
+            <!-- Bottom Copyright Bar -->
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <p>&copy; {{ date('Y') }} eVoters.id - {{ config('company.name') }}. All rights reserved.</p>
+                <div class="flex items-center gap-4 text-gray-400">
+                    <span class="inline-flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-medium">
+                        <i class="fa-solid fa-shield-check text-xs"></i>
+                        <span>Transaksi Terverifikasi & Aman</span>
+                    </span>
+                </div>
             </div>
         </div>
     </footer>

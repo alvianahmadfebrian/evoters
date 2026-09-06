@@ -138,7 +138,7 @@
                     </div>
                     <div class="space-y-4 text-base md:text-lg leading-relaxed" style="color: #475569;">
                         <p class="text-justify">
-                            Aries Mulyono adalah pemilik sekaligus pendiri E-Voters.id. Selain aktif mengembangkan platform digital ini, beliau juga berkecimpung luas di bidang event organizer, konsultan musik, dan dikenal sebagai aktivis marching band serta pegiat dunia musik tanah air. Beliau juga merupakan pendiri PRO ATS Music Center.
+                            Aries Mulyono adalah pemilik sekaligus pendiri E-Voters.id. Selain aktif mengembangkan platform digital ini, beliau juga berkecimpung luas di bidang event organizer, konsultan musik, dan dikenal sebagai aktivis marching band serta pegiat dunia musik tanah air.
                         </p>
                         <p class="text-justify">
                             Berbekal pengalaman tersebut, Aries menginisiasi pengembangan E-Voters.id dengan komitmen untuk menghadirkan sistem pemungutan suara digital yang aman, praktis, transparan, dan ramah lingkungan bagi berbagai organisasi, sekolah, maupun instansi di Indonesia.

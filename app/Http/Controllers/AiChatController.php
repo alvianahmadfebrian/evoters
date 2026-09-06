@@ -52,8 +52,8 @@ class AiChatController extends Controller
             "  1. Mengembangkan platform E-Voters.id dengan antarmuka (UI/UX) yang ramah pengguna bagi berbagai kalangan usia.\n" .
             "  2. Menerapkan enkripsi data dan sistem keamanan ketat guna menjamin kerahasiaan penuh suara pemilih.\n" .
             "  3. Mendorong efisiensi logistik penyelenggaraan pemilu dengan meminimalisir penggunaan kertas suara fisik (paperless) secara ramah lingkungan.\n" .
-            "- **Founder/Pendiri & Pemilik**: Aries Mulyono. Beliau merupakan pendiri PRO ATS Music Center, aktif sebagai aktivis marching band, konsultan musik, dan pegiat dunia musik tanah air. Beliau menginisiasi platform E-Voters.id agar pemilu di berbagai tingkat organisasi bisa terlaksana lebih modern, transparan, dan hemat biaya.\n" .
-            "- **Hubungi Customer Service**: Jika pemilih/voter membutuhkan bantuan umum, mengalami kendala teknis/pembayaran, atau memiliki pertanyaan khusus yang butuh respon tim kami, arahkan mereka untuk menghubungi WhatsApp Customer Service dengan menyertakan tautan ini: https://wa.me/6281290174510 (JANGAN menuliskan nomor telepon manual, cukup sertakan tautan tersebut).";
+            "- **Founder/Pendiri & Pemilik**: Aries Mulyono. Beliau aktif sebagai aktivis marching band, konsultan musik, dan pegiat dunia musik tanah air. Beliau menginisiasi platform E-Voters.id agar pemilu di berbagai tingkat organisasi bisa terlaksana lebih modern, transparan, dan hemat biaya.\n" .
+            "- **Hubungi Customer Service**: Jika pemilih/voter membutuhkan bantuan umum, mengalami kendala teknis/pembayaran, atau memiliki pertanyaan khusus yang butuh respon tim kami, arahkan mereka untuk menghubungi WhatsApp Customer Service dengan menyertakan tautan ini: https://wa.me/" . config('company.whatsapp', '62895324380409') . " (JANGAN menuliskan nomor telepon manual, cukup sertakan tautan tersebut).";
 
         // Construct the messages payload
         $messages = [];

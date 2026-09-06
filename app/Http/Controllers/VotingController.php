@@ -66,6 +66,38 @@ class VotingController extends Controller
     }
 
     /**
+     * Show the FAQ page.
+     */
+    public function faq()
+    {
+        return view('voting.faq');
+    }
+
+    /**
+     * Show the Terms & Conditions page.
+     */
+    public function terms()
+    {
+        return view('voting.terms');
+    }
+
+    /**
+     * Show the Refund Policy page.
+     */
+    public function refundPolicy()
+    {
+        return view('voting.refund-policy');
+    }
+
+    /**
+     * Show the Contact page.
+     */
+    public function contact()
+    {
+        return view('voting.contact');
+    }
+
+    /**
      * Show the event voting ballot.
      */
     public function showEvent($slug)
