@@ -22,6 +22,21 @@
             max-width: 100%;
             overflow-x: hidden;
         }
+        img {
+            max-width: 100%;
+        }
+        nav img {
+            height: 56px !important;
+            max-height: 56px !important;
+            width: auto !important;
+            object-fit: contain !important;
+        }
+        footer img {
+            height: 48px !important;
+            max-height: 48px !important;
+            width: auto !important;
+            object-fit: contain !important;
+        }
         body {
             font-family: 'Instrument Sans', sans-serif;
             background-color: #040d12;
@@ -97,7 +112,7 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-14 w-auto">
+                        <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-14 w-auto" style="height: 56px; max-height: 56px; width: auto; object-fit: contain;">
                     </a>
                 </div>
 
@@ -273,7 +288,7 @@
                 <!-- Col 1: Brand & Identity -->
                 <div class="space-y-4">
                     <a href="{{ route('home') }}" class="inline-block">
-                        <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-12 w-auto">
+                        <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-12 w-auto" style="height: 48px; max-height: 48px; width: auto; object-fit: contain;">
                     </a>
                     <p class="text-xs text-gray-400 leading-relaxed max-w-sm">
                         Platform pemungutan suara online terpercaya dan berintegritas tinggi. Menghadirkan proses demokrasi digital yang praktis, aman, terenkripsi, dan transparan untuk berbagai instansi dan organisasi.
