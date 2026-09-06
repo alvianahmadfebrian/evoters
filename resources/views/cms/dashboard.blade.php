@@ -2,7 +2,6 @@
 
 @section('title', 'CMS Dashboard - eVoters')
 @section('page_title', 'CMS Overview & Analytics')
-@section('db_size', $dbSize)
 
 @section('content')
 <div class="space-y-8 animate-fade-in">
@@ -81,7 +80,7 @@
     <!-- Quick Actions -->
     <div class="glass-card rounded-2xl p-6 border border-white/5">
         <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-bolt mr-2 text-indigo-400"></i>Aksi Cepat CMS</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <a href="{{ route('cms.events.create') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
                 <i class="fa-solid fa-circle-plus text-indigo-400 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
                 <span class="text-xs font-semibold text-gray-200">Buat Event</span>
@@ -93,10 +92,6 @@
             <a href="{{ route('home') }}" target="_blank" class="flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
                 <i class="fa-solid fa-eye text-indigo-400 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
                 <span class="text-xs font-semibold text-gray-200">Preview Web</span>
-            </a>
-            <a href="#system" class="flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
-                <i class="fa-solid fa-server text-indigo-400 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs font-semibold text-gray-200">Info Server</span>
             </a>
         </div>
     </div>
@@ -187,25 +182,5 @@
         </div>
 
     </div>
-
-    <!-- Server & Technology Panel -->
-    <div id="system" class="glass-card rounded-2xl p-6 border border-white/5">
-        <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-microchip mr-2 text-indigo-400"></i>Informasi Sistem</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-xs text-gray-400">
-            <div class="space-y-1">
-                <p class="font-bold text-gray-500 uppercase tracking-wide">Kernel Framework</p>
-                <p class="text-sm text-gray-200">Laravel v{{ app()->version() }}</p>
-            </div>
-            <div class="space-y-1">
-                <p class="font-bold text-gray-500 uppercase tracking-wide">Environment Server</p>
-                <p class="text-sm text-gray-200">PHP v{{ PHP_VERSION }}</p>
-            </div>
-            <div class="space-y-1">
-                <p class="font-bold text-gray-500 uppercase tracking-wide">Tipe Database</p>
-                <p class="text-sm text-gray-200">SQLite (Ukuran: <span class="font-bold text-white">{{ $dbSize }}</span>)</p>
-            </div>
-        </div>
-    </div>
-
 </div>
 @endsection

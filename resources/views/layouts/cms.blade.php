@@ -118,13 +118,6 @@
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <!-- DB size badge -->
-                    <div class="hidden sm:flex items-center space-x-1.5 text-xs text-gray-400 bg-white/5 py-1.5 px-3 rounded-lg border border-white/5">
-                        <i class="fa-solid fa-database text-indigo-400"></i>
-                        <span>SQLite DB:</span>
-                        <span class="font-bold text-gray-300">@yield('db_size', 'Connected')</span>
-                    </div>
-
                     <a href="{{ route('home') }}" class="text-xs font-semibold text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg border border-white/5">
                         <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Kunjungi Situs
                     </a>
