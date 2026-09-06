@@ -62,8 +62,14 @@
                             </span>
                         </div>
                     </div>
-                    <a href="{{ route('event.results', $event->slug) }}" class="text-indigo-400 hover:text-indigo-300 font-semibold flex items-center">
-                        <i class="fa-solid fa-chart-simple mr-1.5"></i> Lihat Hasil Real-Time &rarr;
+                    <a href="{{ route('event.results', $event->slug) }}" class="text-indigo-400 hover:text-indigo-300 font-semibold flex items-center text-xs sm:text-sm">
+                        <i class="fa-solid fa-chart-simple mr-1.5"></i> Lihat Hasil Real-Time 
+                        @guest
+                            <span class="ml-1.5 px-1.5 py-0.5 text-[10px] rounded bg-amber-500/10 border border-amber-500/20 text-amber-600 font-normal inline-flex items-center">
+                                <i class="fa-solid fa-lock text-[8px] mr-1"></i>Perlu Login
+                            </span>
+                        @endguest
+                        <span class="ml-1">&rarr;</span>
                     </a>
                 </div>
             </div>

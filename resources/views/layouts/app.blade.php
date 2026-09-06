@@ -102,23 +102,48 @@
                 </div>
 
                 <!-- Desktop Navigation Links (hidden on mobile) -->
-                <div id="desktop-menu" class="items-center space-x-4">
-                    <a href="{{ route('home') }}" class="text-base font-semibold {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-4 rounded-lg">
+                <div id="desktop-menu" class="items-center space-x-3">
+                    <a href="{{ route('home') }}" class="text-sm font-semibold {{ Route::is('home') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3.5 rounded-lg">
                         Beranda
                     </a>
                     
-                    <a href="{{ route('events.list') }}" class="text-base font-semibold {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-4 rounded-lg">
+                    <a href="{{ route('events.list') }}" class="text-sm font-semibold {{ Route::is('events.list') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3.5 rounded-lg">
                         Event
                     </a>
 
-                    <a href="{{ route('about') }}" class="text-base font-semibold {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-4 rounded-lg">
+                    <a href="{{ route('about') }}" class="text-sm font-semibold {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3.5 rounded-lg">
                         Tentang
                     </a>
                     
                     @auth
-                        <a href="{{ route('cms.dashboard') }}" class="text-base font-semibold text-indigo-300 hover:text-indigo-200 transition-colors py-2 px-4 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
-                            Dashboard CMS
-                        </a>
+                        @if(Auth::user()->isAdmin())
+                            <a href="{{ route('cms.dashboard') }}" class="text-xs font-semibold text-indigo-300 hover:text-indigo-200 transition-colors py-1.5 px-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+                                <i class="fa-solid fa-gauge mr-1"></i> Panel CMS
+                            </a>
+                        @endif
+                        <div class="inline-flex items-center space-x-2 pl-2 border-l border-slate-300">
+                            <span class="text-xs font-bold text-slate-700 flex items-center space-x-1.5 bg-slate-100/80 py-1 px-2.5 rounded-xl border border-slate-200">
+                                <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-extrabold uppercase">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </span>
+                                <span class="max-w-[120px] truncate">{{ Auth::user()->name }}</span>
+                            </span>
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 p-1.5 rounded-lg transition-colors cursor-pointer" title="Keluar">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="inline-flex items-center space-x-2 pl-2 border-l border-slate-300">
+                            <a href="{{ route('login') }}" class="text-xs font-bold text-slate-700 hover:text-indigo-600 transition-colors py-2 px-3 rounded-xl hover:bg-slate-100">
+                                Masuk
+                            </a>
+                            <a href="{{ route('register') }}" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 transition-all py-2 px-3.5 rounded-xl shadow-sm">
+                                Daftar
+                            </a>
+                        </div>
                     @endauth
                 </div>
 
@@ -146,9 +171,29 @@
             </a>
             
             @auth
-                <a href="{{ route('cms.dashboard') }}" class="{{ Route::is('cms.dashboard') ? 'active-link' : '' }}" style="color: #a5b4fc !important;">
-                    Dashboard CMS
-                </a>
+                @if(Auth::user()->isAdmin())
+                    <a href="{{ route('cms.dashboard') }}" class="{{ Route::is('cms.dashboard') ? 'active-link' : '' }}" style="color: #a5b4fc !important;">
+                        <i class="fa-solid fa-gauge mr-1"></i> Dashboard CMS
+                    </a>
+                @endif
+                <div class="px-4 py-2 text-xs text-slate-500 font-semibold border-t border-slate-200 mt-2 flex items-center justify-between">
+                    <span>Halo, <strong>{{ Auth::user()->name }}</strong></span>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Keluar
+                        </button>
+                    </form>
+                </div>
+            @else
+                <div class="pt-3 border-t border-slate-200 grid grid-cols-2 gap-2 px-3 mt-2">
+                    <a href="{{ route('login') }}" class="text-center py-2 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-50">
+                        Masuk
+                    </a>
+                    <a href="{{ route('register') }}" class="text-center py-2 text-xs font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-500 shadow-sm">
+                        Daftar
+                    </a>
+                </div>
             @endauth
         </div>
     </nav>
@@ -163,6 +208,18 @@
                     <p class="text-sm font-medium">{{ session('success') }}</p>
                 </div>
                 <button onclick="document.getElementById('alert-success').remove()" class="text-green-400 hover:text-green-300 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div id="alert-info" class="glass-card mb-6 p-4 rounded-xl border-amber-500/30 bg-amber-500/10 text-amber-800 flex items-center justify-between shadow-xl animate-fade-in">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-circle-info text-amber-600 text-lg"></i>
+                    <p class="text-sm font-medium">{{ session('info') }}</p>
+                </div>
+                <button onclick="document.getElementById('alert-info').remove()" class="text-amber-600 hover:text-amber-700 transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>

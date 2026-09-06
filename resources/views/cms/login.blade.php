@@ -59,7 +59,7 @@
             <!-- Glow background decorator -->
             <div class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl"></div>
 
-            <form action="{{ route('login') }}" method="POST" class="space-y-6 relative z-10">
+            <form action="{{ url('/cms-admin/login') }}" method="POST" class="space-y-6 relative z-10">
                 @csrf
 
                 @if($errors->any())

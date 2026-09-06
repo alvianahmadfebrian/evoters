@@ -22,19 +22,25 @@ Route::get('/about', [VotingController::class, 'about'])->name('about');
 Route::get('/event/{slug}', [VotingController::class, 'showEvent'])->name('event.show');
 Route::post('/event/{slug}/otp', [VotingController::class, 'requestOtp'])->name('event.otp');
 Route::post('/event/{slug}/vote', [VotingController::class, 'submitVote'])->name('event.vote');
-Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->name('event.results');
+Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->name('event.results')->middleware('auth');
 Route::get('/vote/{vote}/pay', [VotingController::class, 'showPayment'])->name('vote.pay');
 Route::post('/vote/{vote}/pay/confirm', [VotingController::class, 'confirmPayment'])->name('vote.pay.confirm');
 Route::post('/payment/notification', [VotingController::class, 'handleNotification'])->name('payment.notification');
 Route::post('/ai/chat', [AiChatController::class, 'chat'])->name('ai.chat');
 
-// Admin Auth Routes
-Route::get('/cms-admin/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/cms-admin/login', [AuthController::class, 'login']);
-Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout');
+// Voter User Auth Routes
+Route::get('/login', [AuthController::class, 'showUserLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Admin CMS Routes (Protected)
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+// Admin Auth Routes (Direct entry to CMS)
+Route::get('/cms-admin/login', [AuthController::class, 'showLogin'])->name('cms.login');
+Route::post('/cms-admin/login', [AuthController::class, 'login']);
+
+// Admin CMS Routes (Protected with auth and admin role check)
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('cms.dashboard');
     
     // Events CRUD
