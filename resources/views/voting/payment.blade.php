@@ -189,7 +189,7 @@
         duration--;
     }, 1000);
 
-    // Auto-redirect to DOKU when page is loaded
+    // Auto-redirect to iPaymu when page is loaded
     const paymentUrl = '{{ $vote->payment_url }}';
     if (paymentUrl) {
         setTimeout(() => {
@@ -199,7 +199,7 @@
 
     function triggerPayment() {
         if (!paymentUrl) {
-            alert('Gagal mendapatkan URL pembayaran dari DOKU.');
+            alert('Gagal mendapatkan URL pembayaran dari iPaymu.');
             return;
         }
         window.location.href = paymentUrl;

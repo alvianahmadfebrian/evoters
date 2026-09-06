@@ -10,15 +10,15 @@ use App\Models\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Services\DokuService;
+use App\Services\IpaymuService;
 
 class VotingController extends Controller
 {
-    protected DokuService $dokuService;
+    protected IpaymuService $ipaymuService;
 
-    public function __construct(DokuService $dokuService)
+    public function __construct(IpaymuService $ipaymuService)
     {
-        $this->dokuService = $dokuService;
+        $this->ipaymuService = $ipaymuService;
     }
     /**
      * Show the landing page.
@@ -217,7 +217,7 @@ class VotingController extends Controller
                 'voted_at' => now(),
             ]);
 
-            $paymentUrl = $this->dokuService->createCheckoutUrl($vote, $candidate, $event, $name, $quantity);
+            $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, $name, $quantity);
             if ($paymentUrl) {
                 $vote->update(['payment_url' => $paymentUrl]);
             }
@@ -375,7 +375,7 @@ class VotingController extends Controller
 
         // If payment URL is missing for some reason, try to generate it now
         if (!$vote->payment_url) {
-            $paymentUrl = $this->dokuService->createCheckoutUrl($vote, $candidate, $event, 'Voter', $vote->quantity);
+            $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, 'Voter', $vote->quantity);
             if ($paymentUrl) {
                 $vote->update(['payment_url' => $paymentUrl]);
             }
@@ -408,31 +408,32 @@ class VotingController extends Controller
     }
 
     /**
-     * Handle DOKU Payment Webhook / Notification.
+     * Handle iPaymu / Payment Gateway Webhook Notification.
      */
     public function handleNotification(Request $request)
     {
         try {
-            // Verify signature
-            if (!$this->dokuService->verifySignature($request)) {
-                Log::warning('DOKU Webhook signature verification failed.');
-                return response()->json(['message' => 'Invalid signature.'], 401);
-            }
-
             $payload = $request->all();
-            $invoiceNumber = $payload['order']['invoice_number'] ?? null;
-            $transactionStatus = $payload['transaction']['status'] ?? null;
+            Log::info("Payment Webhook Received: " . json_encode($payload));
 
-            Log::info("DOKU Webhook Received - Invoice: {$invoiceNumber}, Status: {$transactionStatus}");
+            // iPaymu passes reference_id or trx_id; fallback to order.invoice_number
+            $referenceId = $request->input('reference_id') 
+                        ?? $request->input('trx_id')
+                        ?? $request->input('order.invoice_number');
 
-            if (!$invoiceNumber) {
-                return response()->json(['message' => 'Invoice number not found in payload.'], 400);
+            $status = strtolower((string)$request->input('status', ''));
+            $statusCode = (string)$request->input('status_code', '');
+            $dokuStatus = strtoupper((string)$request->input('transaction.status', ''));
+
+            if (!$referenceId) {
+                return response()->json(['message' => 'Invoice / Reference number not found in payload.'], 400);
             }
 
             // Find the corresponding Vote
-            $vote = Vote::where('payment_ref', $invoiceNumber)->first();
+            $vote = Vote::where('payment_ref', $referenceId)->first();
 
             if (!$vote) {
+                Log::warning("Vote with payment_ref {$referenceId} not found.");
                 return response()->json(['message' => 'Transaction reference not found.'], 404);
             }
 
@@ -440,19 +441,22 @@ class VotingController extends Controller
                 return response()->json(['message' => 'Transaction already processed as completed.'], 200);
             }
 
-            // Update status based on transaction status
-            if ($transactionStatus === 'SUCCESS') {
+            // Success checks: iPaymu ('berhasil' or status_code '1') or legacy ('SUCCESS')
+            if ($status === 'berhasil' || $statusCode === '1' || $status === 'success' || $dokuStatus === 'SUCCESS') {
                 $vote->update([
                     'payment_status' => 'completed',
                     'voted_at' => now(),
                 ]);
-            } else if ($transactionStatus === 'FAILED') {
+
+                Log::info("Vote {$vote->id} marked as completed via payment webhook.");
+                return response()->json(['message' => 'Notification processed successfully.']);
+            } elseif ($status === 'gagal' || $statusCode === '0' || $dokuStatus === 'FAILED') {
                 $vote->update(['payment_status' => 'failed']);
             }
 
-            return response()->json(['message' => 'Notification processed successfully.']);
+            return response()->json(['message' => 'Notification processed.']);
         } catch (\Exception $e) {
-            Log::error('DOKU Webhook Error: ' . $e->getMessage());
+            Log::error('Payment Webhook Error: ' . $e->getMessage());
             return response()->json(['message' => 'An error occurred while processing the notification.'], 500);
         }
     }

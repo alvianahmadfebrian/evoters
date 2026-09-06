@@ -41,6 +41,12 @@ return [
         'base_url' => env('DOKU_BASE_URL', 'https://api-sandbox.doku.com'),
     ],
 
+    'ipaymu' => [
+        'va' => env('IPAYMU_VA', '1179005324380409'),
+        'api_key' => env('IPAYMU_API_KEY', '6DB0203A-3490-4FFC-BEF5-5CD509729EDA'),
+        'base_url' => env('IPAYMU_BASE_URL', 'https://my.ipaymu.com'),
+    ],
+
     'groq' => [
         'api_key' => env('GROQ_API_KEY'),
         'model' => env('GROQ_MODEL', 'llama-3.1-8b-instant'),
