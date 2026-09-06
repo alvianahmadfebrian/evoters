@@ -17,9 +17,9 @@ class IpaymuService
 
     public function __construct()
     {
-        $this->va = config('services.ipaymu.va', env('IPAYMU_VA', '1179005324380409'));
-        $this->apiKey = config('services.ipaymu.api_key', env('IPAYMU_API_KEY', '6DB0203A-3490-4FFC-BEF5-5CD509729EDA'));
-        $this->baseUrl = rtrim(config('services.ipaymu.base_url', env('IPAYMU_BASE_URL', 'https://my.ipaymu.com')), '/');
+        $this->va = config('services.ipaymu.va', env('IPAYMU_VA', '0000005324380409'));
+        $this->apiKey = config('services.ipaymu.api_key', env('IPAYMU_API_KEY', 'SANDBOX6C212F99-D30B-48F3-A912-DAF6415C2054'));
+        $this->baseUrl = rtrim(config('services.ipaymu.base_url', env('IPAYMU_BASE_URL', 'https://sandbox.ipaymu.com')), '/');
     }
 
     /**
