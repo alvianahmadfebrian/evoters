@@ -208,6 +208,7 @@ class VotingController extends Controller
             $vote = Vote::create([
                 'event_id' => $event->id,
                 'candidate_id' => $candidate->id,
+                'voter_name' => $name,
                 'voter_identifier' => $voterIdentifier,
                 'payment_status' => 'pending',
                 'amount' => $amount,
@@ -289,10 +290,13 @@ class VotingController extends Controller
             return back()->withErrors(['email' => 'Anda sudah memberikan suara untuk event ini.'])->withInput();
         }
 
+        $voterName = auth()->check() ? auth()->user()->name : ($email ? explode('@', $email)[0] : 'Voter Token #' . substr($voterIdentifier, 0, 6));
+
         // Create Vote
         $vote = Vote::create([
             'event_id' => $event->id,
             'candidate_id' => $candidate->id,
+            'voter_name' => $voterName,
             'voter_identifier' => $voterIdentifier,
             'payment_status' => 'completed',
             'amount' => 0,
@@ -348,15 +352,41 @@ class VotingController extends Controller
             return view('voting.results', [
                 'event' => $event,
                 'error' => $message,
-                'candidates' => collect()
+                'candidates' => collect(),
+                'totalVotes' => 0,
+                'totalVoters' => 0,
+                'recentVotes' => collect(),
+                'topVoters' => collect(),
             ]);
         }
 
-        // Fetch candidates with vote quantities summed (only paid votes are counted via filtered relation)
-        $candidates = $event->candidates()->withSum('votes', 'quantity')->get();
-        $totalVotes = (int)$event->votes()->sum('quantity');
+        // Fetch candidates with vote quantities summed, sorted by votes descending
+        $candidates = $event->candidates()
+            ->withSum('votes', 'quantity')
+            ->get()
+            ->sortByDesc(fn($c) => $c->votes_sum_quantity ?? 0)
+            ->values();
 
-        return view('voting.results', compact('event', 'candidates', 'totalVotes'));
+        $totalVotes = (int)$event->votes()->sum('quantity');
+        $totalVoters = (int)$event->votes()->count();
+
+        // Recent votes / live activity feed
+        $recentVotes = $event->votes()
+            ->with('candidate')
+            ->latest('voted_at')
+            ->take(15)
+            ->get();
+
+        // Top supporters
+        $topVoters = $event->votes()
+            ->selectRaw('COALESCE(NULLIF(voter_name, ""), "Pendukung Anonim") as voter_display_name, candidate_id, SUM(quantity) as total_qty, MAX(voted_at) as last_voted')
+            ->groupBy('voter_display_name', 'candidate_id')
+            ->orderByDesc('total_qty')
+            ->with('candidate')
+            ->take(6)
+            ->get();
+
+        return view('voting.results', compact('event', 'candidates', 'totalVotes', 'totalVoters', 'recentVotes', 'topVoters'));
     }
 
     /**
