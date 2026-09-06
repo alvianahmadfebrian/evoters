@@ -115,10 +115,37 @@
                     </div>
                 </div>
             @else
-                <div class="py-2.5 px-3 rounded-xl bg-white/5 border border-white/5 flex items-center space-x-2 text-xs text-gray-400">
-                    <i class="fa-solid fa-circle-check text-green-400 text-sm"></i>
-                    <span>Sistem voting saat ini aktif menerima respon.</span>
-                </div>
+                @if($event->isOpen())
+                    <div class="py-2.5 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center space-x-2 text-xs text-emerald-300">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+                        <span>Sistem voting saat ini aktif menerima respon.</span>
+                    </div>
+                @elseif($event->status === 'paused')
+                    <div class="py-2.5 px-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center space-x-2 text-xs text-yellow-300">
+                        <i class="fa-solid fa-circle-pause text-yellow-400 text-sm"></i>
+                        <span>Voting sedang dihentikan sementara (Paused).</span>
+                    </div>
+                @elseif($event->status === 'closed')
+                    <div class="py-2.5 px-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center space-x-2 text-xs text-red-300">
+                        <i class="fa-solid fa-circle-xmark text-red-400 text-sm"></i>
+                        <span>Voting telah ditutup.</span>
+                    </div>
+                @elseif($event->start_time && now()->lt($event->start_time))
+                    <div class="py-2.5 px-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center space-x-2 text-xs text-amber-300">
+                        <i class="fa-solid fa-clock text-amber-400 text-sm"></i>
+                        <span>Voting belum dibuka (menunggu waktu mulai).</span>
+                    </div>
+                @elseif($event->end_time && now()->gt($event->end_time))
+                    <div class="py-2.5 px-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center space-x-2 text-xs text-red-300">
+                        <i class="fa-solid fa-clock text-red-400 text-sm"></i>
+                        <span>Waktu voting telah berakhir.</span>
+                    </div>
+                @else
+                    <div class="py-2.5 px-3 rounded-xl bg-white/5 border border-white/5 flex items-center space-x-2 text-xs text-gray-400">
+                        <i class="fa-solid fa-circle-xmark text-gray-400 text-sm"></i>
+                        <span>Sistem voting sedang tidak aktif.</span>
+                    </div>
+                @endif
             @endif
         </div>
     </div>

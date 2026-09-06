@@ -6,7 +6,7 @@
     <title>Admin Login - eVoters</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/images/logo1.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/logo2.png" type="image/x-icon">
 
     <!-- Google Fonts & Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -48,7 +48,7 @@
         <!-- Logo Header -->
         <div class="text-center space-y-3">
             <a href="{{ route('home') }}" class="inline-flex items-center space-x-2">
-                <img src="{{ asset('images/logo.png') }}" alt="eVoters Logo" class="h-16 w-auto">
+                <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-16 w-auto">
                 <span class="text-xs font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded uppercase tracking-wider">CMS</span>
             </a>
             <p class="text-xs text-gray-400">Silakan login menggunakan akun administrator untuk mengakses panel kontrol.</p>

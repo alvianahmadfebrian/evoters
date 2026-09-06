@@ -8,7 +8,7 @@
     <title>@yield('title', 'eVoters - Platform Voting Online Terpercaya')</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/images/logo1.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/logo2.png" type="image/x-icon">
 
     <!-- Google Fonts & Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -97,7 +97,7 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('images/logo.png') }}" alt="eVoters Logo" class="h-14 w-auto">
+                        <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-14 w-auto">
                     </a>
                 </div>
 
@@ -196,7 +196,7 @@
     <footer class="mt-auto border-t border-white/5 py-8 glass-card">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center">
-                <img src="{{ asset('images/logo.png') }}" alt="eVoters Logo" class="h-12 w-auto">
+                <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-12 w-auto">
             </div>
             <p class="text-xs text-gray-500">&copy; {{ date('Y') }} eVoters. Platform Voting Online Terbuka & Transparan.</p>
             <div class="flex space-x-4 text-gray-400 text-xs">

@@ -8,7 +8,7 @@
     <title>@yield('title', 'Admin CMS - eVoters')</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/images/logo1.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/logo2.png" type="image/x-icon">
 
     <!-- Google Fonts & Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -55,7 +55,7 @@
             <!-- Sidebar Header -->
             <div class="flex items-center justify-between px-6 py-3 border-b border-white/5">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="eVoters Logo" class="h-11 w-auto">
+                    <img src="{{ asset('images/logo2.png') }}" alt="eVoters Logo" class="h-11 w-auto">
                     <span class="text-xs font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded uppercase tracking-wider">CMS</span>
                 </a>
             </div>

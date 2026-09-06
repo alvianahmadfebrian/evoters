@@ -21,7 +21,7 @@
                 @else
                     <div class="w-full h-full bg-gradient-to-tr from-cyan-950 via-slate-900 to-emerald-950 flex items-center justify-center">
                         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:20px_20px]"></div>
-                        <img src="{{ asset('images/logo.png') }}" alt="Placeholder Logo" class="h-8 w-auto opacity-20 filter grayscale">
+                        <img src="{{ asset('images/logo2.png') }}" alt="Placeholder Logo" class="h-8 w-auto opacity-20 filter grayscale">
                     </div>
                 @endif
                 
