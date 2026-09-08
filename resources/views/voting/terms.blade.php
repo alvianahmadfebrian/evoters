@@ -29,17 +29,17 @@
 @section('content')
 <div class="space-y-12 relative overflow-hidden pb-16">
     <!-- Glow Background Decorators -->
-    <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-emerald-400/[0.04] rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-[600px] right-1/4 w-[450px] h-[450px] bg-cyan-400/[0.04] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-[#ba7c21]/[0.04] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-[600px] right-1/4 w-[450px] h-[450px] bg-[#9b5f1a]/[0.04] rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- Hero Header -->
     <section class="text-center max-w-3xl mx-auto space-y-4 pt-6 reveal">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide" style="background: #e6f4ea; border: 1px solid #a3cfbb; color: #146c43;">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide" style="background: #fcf5e2; border: 1px solid #f7e6bb; color: #9b5f1a;">
             <i class="fa-solid fa-scale-balanced"></i>
             <span>Dokumen Hukum & Legal</span>
         </div>
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight" style="color: #0f172a;">
-            Syarat & <span style="color: #059669;">Ketentuan Penggunaan</span>
+            Syarat & <span style="color: #ba7c21;">Ketentuan Penggunaan</span>
         </h1>
         <p class="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style="color: #475569;">
             Harap membaca syarat dan ketentuan berikut dengan teliti sebelum menggunakan layanan platform pemungutan suara online <strong>eVoters.id</strong>.
@@ -56,7 +56,7 @@
             <!-- Section 1 -->
             <div class="terms-section">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
                     Definisi & Ketentuan Umum
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -80,7 +80,7 @@
             <!-- Section 2 -->
             <div class="terms-section">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
                     Mekanisme Pemungutan Suara (Voting)
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -101,7 +101,7 @@
             <!-- Section 3 -->
             <div class="terms-section">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
                     Pembayaran & Transaksi Digital
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -122,7 +122,7 @@
             <!-- Section 4 -->
             <div class="terms-section">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
                     Larangan & Perlindungan Sistem
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -145,7 +145,7 @@
             <!-- Section Privasi -->
             <div class="terms-section scroll-mt-24" id="privasi">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">5</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">5</span>
                     Kebijakan Privasi & Perlindungan Data Pribadi
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -166,7 +166,7 @@
             <!-- Section 6 -->
             <div class="terms-section">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">6</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">6</span>
                     Hukum yang Berlaku & Hubungi Kami
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -179,8 +179,8 @@
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-1">
                         <p><strong>Entitas Pengelola:</strong> {{ config('company.name') }}</p>
                         <p><strong>Alamat Usaha:</strong> {{ config('company.address') }}</p>
-                        <p><strong>Email Resmi:</strong> <a href="mailto:{{ config('company.email') }}" class="text-emerald-600 underline">{{ config('company.email') }}</a></p>
-                        <p><strong>Telepon / WhatsApp:</strong> <a href="https://wa.me/{{ config('company.whatsapp') }}" class="text-emerald-600 underline">{{ config('company.phone') }}</a></p>
+                        <p><strong>Email Resmi:</strong> <a href="mailto:{{ config('company.email') }}" class="text-amber-600 underline">{{ config('company.email') }}</a></p>
+                        <p><strong>Telepon / WhatsApp:</strong> <a href="https://wa.me/{{ config('company.whatsapp') }}" class="text-amber-600 underline">{{ config('company.phone') }}</a></p>
                     </div>
                 </div>
             </div>

@@ -12,11 +12,11 @@
     .faq-item details summary::-webkit-details-marker { display: none; }
     .faq-item details[open] summary .faq-icon {
         transform: rotate(180deg);
-        color: #059669;
+        color: #ba7c21;
     }
     .faq-item details[open] {
-        border-color: rgba(16, 185, 129, 0.4) !important;
-        box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.08);
+        border-color: rgba(186, 124, 33, 0.4) !important;
+        box-shadow: 0 4px 20px -2px rgba(186, 124, 33, 0.1);
     }
 </style>
 @endpush
@@ -24,17 +24,17 @@
 @section('content')
 <div class="space-y-12 relative overflow-hidden pb-16">
     <!-- Glow Background Decorators -->
-    <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-emerald-400/[0.04] rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-[450px] right-1/4 w-[450px] h-[450px] bg-cyan-400/[0.04] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-[#ba7c21]/[0.04] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-[450px] right-1/4 w-[450px] h-[450px] bg-[#9b5f1a]/[0.04] rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- Hero Header -->
     <section class="text-center max-w-3xl mx-auto space-y-4 pt-6 reveal">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide" style="background: #e6f4ea; border: 1px solid #a3cfbb; color: #146c43;">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide" style="background: #fcf5e2; border: 1px solid #f7e6bb; color: #9b5f1a;">
             <i class="fa-solid fa-circle-question"></i>
             <span>Pusat Bantuan & Pertanyaan Umum</span>
         </div>
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight" style="color: #0f172a;">
-            Frequently Asked <span style="color: #059669;">Questions (FAQ)</span>
+            Frequently Asked <span style="color: #ba7c21;">Questions (FAQ)</span>
         </h1>
         <p class="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style="color: #475569;">
             Temukan jawaban lengkap dan cepat seputar penggunaan platform pemungutan suara online eVoters.id, alur voting, sistem token, serta proses pembayaran.
@@ -48,7 +48,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             01
                         </span>
                         <span>Apa itu platform eVoters.id?</span>
@@ -73,7 +73,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             02
                         </span>
                         <span>Apakah saya harus mendaftar akun untuk melakukan voting?</span>
@@ -95,7 +95,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             03
                         </span>
                         <span>Bagaimana alur dan langkah-langkah memberikan suara?</span>
@@ -123,7 +123,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             04
                         </span>
                         <span>Apa saja metode pembayaran yang diterima pada event berbayar?</span>
@@ -150,7 +150,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             05
                         </span>
                         <span>Bagaimana jika pembayaran sudah berhasil namun suara belum terhitung?</span>
@@ -176,7 +176,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             06
                         </span>
                         <span>Apakah suara yang sudah dikirimkan dapat diubah atau dibatalkan?</span>
@@ -198,7 +198,7 @@
             <details class="group glass-card rounded-2xl border border-slate-200/80 bg-white p-6 transition-all duration-300">
                 <summary class="flex justify-between items-center cursor-pointer list-none select-none font-bold text-lg text-slate-800">
                     <span class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
+                        <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-extrabold flex-shrink-0">
                             07
                         </span>
                         <span>Bagaimana eVoters.id menjamin keamanan dan keabsahan data pemilih?</span>
@@ -223,8 +223,8 @@
 
     <!-- Support CTA Card -->
     <section class="max-w-4xl mx-auto reveal">
-        <div class="glass-card rounded-3xl border border-emerald-200/60 bg-gradient-to-r from-emerald-50/80 via-white to-teal-50/80 p-8 md:p-10 text-center space-y-4 shadow-sm">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mx-auto text-xl shadow-md shadow-emerald-500/20">
+        <div class="glass-card rounded-3xl border border-slate-200/80 bg-gradient-to-r from-amber-50/40 via-white to-amber-50/40 p-8 md:p-10 text-center space-y-4 shadow-sm">
+            <div class="w-12 h-12 rounded-2xl text-white flex items-center justify-center mx-auto text-xl shadow-md shadow-[#ba7c21]/20" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
                 <i class="fa-solid fa-headset"></i>
             </div>
             <h3 class="text-2xl font-extrabold text-slate-900">Belum Menemukan Jawaban yang Anda Cari?</h3>
@@ -232,7 +232,7 @@
                 Tim layanan bantuan kami selalu siap menjawab kendala teknis, pertanyaan kemitraan, atau panduan transaksi Anda.
             </p>
             <div class="pt-2 flex flex-wrap justify-center gap-3">
-                <a href="{{ route('contact') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm py-3 px-6 rounded-xl transition-all shadow-md">
+                <a href="{{ route('contact') }}" class="text-white font-semibold text-sm py-3 px-6 rounded-xl transition-all shadow-md" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
                     <i class="fa-solid fa-envelope mr-1.5"></i> Hubungi Kami
                 </a>
                 <a href="https://wa.me/{{ config('company.whatsapp') }}" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-semibold text-sm py-3 px-6 rounded-xl transition-all">

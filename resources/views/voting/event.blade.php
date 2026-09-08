@@ -3,36 +3,38 @@
 @section('title', $event->title . ' - eVoters')
 
 @section('content')
-<div class="space-y-8 animate-fade-in">
+<div class="space-y-8 animate-fade-in pb-12">
     <!-- Breadcrumb -->
-    <div class="flex items-center space-x-2 text-xs text-gray-500">
-        <a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a>
+    <div class="flex items-center space-x-2 text-xs text-slate-500">
+        <a href="{{ route('home') }}" class="hover:text-[#ba7c21] transition-colors">Beranda</a>
         <span>&rarr;</span>
-        <span class="text-gray-300">{{ $event->title }}</span>
+        <a href="{{ route('events.list') }}" class="hover:text-[#ba7c21] transition-colors">Event</a>
+        <span>&rarr;</span>
+        <span class="text-slate-900 font-bold line-clamp-1 max-w-sm">{{ $event->title }}</span>
     </div>
 
     <!-- Event Header Card -->
-    <div class="glass-card rounded-3xl overflow-hidden border border-white/5 shadow-2xl relative">
+    <div class="rounded-3xl overflow-hidden border border-slate-200/80 bg-white shadow-sm relative">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Banner / Accent -->
-            <div class="h-48 md:h-full w-full relative bg-slate-900 overflow-hidden">
+            <div class="h-48 md:h-full w-full relative bg-slate-100 overflow-hidden">
                 @if($event->banner_image)
                     <img src="{{ asset($event->banner_image) }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
                 @else
-                    <div class="w-full h-full bg-gradient-to-tr from-cyan-950 via-slate-900 to-emerald-950 flex items-center justify-center">
-                        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:20px_20px]"></div>
-                        <img src="{{ asset('images/logo2.png') }}" alt="Placeholder Logo" class="h-8 w-auto opacity-20 filter grayscale">
+                    <div class="w-full h-full bg-gradient-to-tr from-amber-50 to-slate-100 flex items-center justify-center">
+                        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ba7c21_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                        <img src="{{ asset('images/logo2.png') }}" alt="Placeholder Logo" class="h-10 w-auto opacity-30">
                     </div>
                 @endif
                 
                 <!-- Status Badge -->
                 <div class="absolute top-4 left-4">
                     @if($event->isOpen())
-                        <span class="inline-flex items-center px-2.5 py-1 rounded bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold tracking-wider uppercase animate-pulse">
-                            <i class="fa-solid fa-circle text-[6px] mr-1 text-green-400"></i> Voting Dibuka
+                        <span class="inline-flex items-center px-3 py-1 rounded-full shadow-sm text-[10px] font-extrabold tracking-wider uppercase" style="background: #fcf5e2; border: 1px solid #f7e6bb; color: #9b5f1a;">
+                            <span class="w-1.5 h-1.5 rounded-full animate-pulse mr-1.5" style="background: #ba7c21;"></span> Voting Dibuka
                         </span>
                     @else
-                        <span class="inline-flex items-center px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold tracking-wider uppercase">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-extrabold tracking-wider uppercase">
                             Voting Ditutup
                         </span>
                     @endif
@@ -41,20 +43,20 @@
 
             <!-- Content Details (col-span 2) -->
             <div class="p-6 md:p-8 md:col-span-2 flex flex-col justify-between space-y-4">
-                <div class="space-y-3">
-                    <h1 class="text-2xl md:text-3xl font-extrabold text-white leading-snug">{{ $event->title }}</h1>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium">
-                        {{ $event->description ?: 'Tidak ada deskripsi detail.' }}
+                <div class="space-y-2">
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">{{ $event->title }}</h1>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                        {{ $event->description ?: 'Pilih kandidat terbaik Anda dalam pelaksanaan event pemungutan suara ini.' }}
                     </p>
                 </div>
 
                 <!-- Date Info & Action -->
-                <div class="pt-4 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-gray-400">
+                <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-500">
                     <div class="space-y-1">
-                        <div class="flex items-center text-gray-400">
-                            <i class="fa-solid fa-calendar mr-2 text-indigo-400"></i>
+                        <div class="flex items-center text-slate-600">
+                            <i class="fa-solid fa-calendar mr-2 text-[#ba7c21]"></i>
                             <span>Pelaksanaan: 
-                                <span class="text-white font-semibold">
+                                <span class="text-slate-900 font-bold">
                                     {{ $event->start_time ? $event->start_time->format('d M Y') : 'Mulai Sekarang' }}
                                     -
                                     {{ $event->end_time ? $event->end_time->format('d M Y H:i') : 'Selesai' }}
@@ -62,13 +64,8 @@
                             </span>
                         </div>
                     </div>
-                    <a href="{{ route('event.results', $event->slug) }}" class="text-indigo-400 hover:text-indigo-300 font-semibold flex items-center text-xs sm:text-sm">
+                    <a href="{{ route('event.results', $event->slug) }}" class="font-bold flex items-center text-xs sm:text-sm transition-colors hover:opacity-80" style="color: #ba7c21;">
                         <i class="fa-solid fa-chart-simple mr-1.5"></i> Lihat Hasil Real-Time 
-                        @guest
-                            <span class="ml-1.5 px-1.5 py-0.5 text-[10px] rounded bg-amber-500/10 border border-amber-500/20 text-amber-600 font-normal inline-flex items-center">
-                                <i class="fa-solid fa-lock text-[8px] mr-1"></i>Perlu Login
-                            </span>
-                        @endguest
                         <span class="ml-1">&rarr;</span>
                     </a>
                 </div>
@@ -79,32 +76,32 @@
     <!-- Ballot Box Candidates Grid -->
     <div class="space-y-6">
         <div class="text-center space-y-1.5 max-w-xl mx-auto">
-            <h2 class="text-xl md:text-2xl font-bold text-white">Kertas Suara Pemilihan</h2>
-            <p class="text-xs text-gray-400">Silakan pelajari profil kandidat, lalu klik tombol "Pilih" di bawah kandidat pilihan Anda.</p>
+            <h2 class="text-xl md:text-2xl font-extrabold text-slate-900">Kertas Suara Pemilihan</h2>
+            <p class="text-xs text-slate-500">Silakan pelajari profil kandidat, lalu klik tombol "Pilih" di bawah kandidat pilihan Anda.</p>
         </div>
 
         @if($event->candidates->isEmpty())
-            <div class="glass-card rounded-2xl p-12 text-center border border-white/5 text-gray-500">
-                <i class="fa-solid fa-users-slash text-4xl block mb-2 text-gray-600"></i>
-                <p class="text-sm">Belum ada kandidat terdaftar untuk event ini.</p>
+            <div class="rounded-3xl p-12 text-center border border-slate-200 bg-white text-slate-400 space-y-2 shadow-sm">
+                <i class="fa-solid fa-users-slash text-4xl block mb-2 text-slate-300"></i>
+                <p class="text-sm font-bold text-slate-700">Belum ada kandidat terdaftar untuk event ini.</p>
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($event->candidates as $candidate)
-                    <div class="glass-card rounded-3xl overflow-hidden border border-white/5 flex flex-col justify-between group hover:border-indigo-500/30 transition-all duration-300 shadow-xl">
+                    <div class="rounded-3xl overflow-hidden border border-slate-200/80 bg-white flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-sm">
                         <!-- Photo Header -->
-                        <div class="h-60 w-full relative bg-slate-950 flex-shrink-0">
+                        <div class="h-60 w-full relative bg-slate-100 flex-shrink-0">
                             @if($candidate->photo)
-                                <img src="{{ asset($candidate->photo) }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500">
+                                <img src="{{ asset($candidate->photo) }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
-                                <div class="w-full h-full bg-slate-900 flex items-center justify-center">
-                                    <i class="fa-solid fa-user text-6xl text-gray-800"></i>
+                                <div class="w-full h-full bg-gradient-to-tr from-amber-50 to-slate-100 flex items-center justify-center text-slate-300">
+                                    <i class="fa-solid fa-user text-6xl text-[#ba7c21] opacity-40"></i>
                                 </div>
                             @endif
                             
                             <!-- Ballot Number -->
-                            <div class="absolute top-4 left-4">
-                                <div class="w-10 h-10 rounded-2xl bg-indigo-600 border border-indigo-400 font-extrabold text-white text-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                            <div class="absolute top-3.5 left-3.5">
+                                <div class="w-10 h-10 rounded-2xl font-black text-white text-base flex items-center justify-center shadow-lg" style="background: #0f172a;">
                                     {{ sprintf("%02d", $candidate->candidate_number) }}
                                 </div>
                             </div>
@@ -112,9 +109,12 @@
 
                         <!-- Candidate info -->
                         <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <h3 class="text-lg font-extrabold text-white truncate">{{ $candidate->name }}</h3>
-                                <p class="text-xs text-gray-400 line-clamp-4 leading-relaxed whitespace-pre-line font-medium">
+                            <div class="space-y-1.5">
+                                <span class="text-[11px] font-extrabold tracking-wider uppercase" style="color: #ba7c21;">
+                                    Kandidat No. {{ sprintf("%02d", $candidate->candidate_number) }}
+                                </span>
+                                <h3 class="text-lg font-extrabold text-slate-900 truncate">{{ $candidate->name }}</h3>
+                                <p class="text-xs text-slate-600 line-clamp-4 leading-relaxed whitespace-pre-line">
                                     {{ $candidate->description ?: 'Kandidat ini belum mengisi deskripsi visi & misi.' }}
                                 </p>
                             </div>
@@ -122,14 +122,16 @@
                             @if($event->isOpen())
                                 <button 
                                     onclick="openVotingModal({{ $candidate->id }}, '{{ $candidate->name }}', '{{ sprintf('%02d', $candidate->candidate_number) }}')"
-                                    class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs py-3 rounded-xl transition-all cursor-pointer shadow-lg shadow-indigo-600/10"
+                                    class="w-full text-white font-bold text-xs py-3.5 rounded-xl transition-all cursor-pointer shadow-md hover:opacity-90 flex items-center justify-center gap-1.5"
+                                    style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
                                 >
-                                    Pilih Kandidat {{ sprintf("%02d", $candidate->candidate_number) }}
+                                    <i class="fa-solid fa-check-to-slot"></i>
+                                    <span>Pilih Kandidat {{ sprintf("%02d", $candidate->candidate_number) }}</span>
                                 </button>
                             @else
                                 <button 
                                     disabled
-                                    class="w-full bg-white/5 border border-white/5 text-gray-500 font-semibold text-xs py-3 rounded-xl cursor-not-allowed"
+                                    class="w-full bg-slate-100 border border-slate-200 text-slate-400 font-bold text-xs py-3.5 rounded-xl cursor-not-allowed"
                                 >
                                     Voting Ditutup
                                 </button>
@@ -154,16 +156,16 @@
         <!-- Header -->
         <div class="text-center" style="margin-bottom: 2rem;">
             <!-- Candidate Number Badge -->
-            <div class="rounded-2xl flex items-center justify-center mx-auto mb-3 font-bold" style="background:linear-gradient(135deg,#059669,#0d9488);color:#fff;width:46px;height:46px;font-size:15px;box-shadow:0 4px 12px rgba(5,150,105,0.25);">
+            <div class="rounded-2xl flex items-center justify-center mx-auto mb-3 font-bold" style="background:linear-gradient(135deg,#ba7c21,#9b5f1a);color:#fff;width:46px;height:46px;font-size:15px;box-shadow:0 4px 12px rgba(186,124,33,0.25);">
                 <span id="modal-candidate-num">01</span>
             </div>
             
             <h3 class="font-black text-slate-900" style="font-size:18px;letter-spacing:-0.02em;">Konfirmasi Pilihan Anda</h3>
             
             <!-- Highlighted Selected Candidate Card (Spacious and No Overlaps) -->
-            <div class="mt-3 p-3 rounded-2xl border border-emerald-500/10" style="background:rgba(16,185,129,0.04);">
+            <div class="mt-3 p-3 rounded-2xl border border-[#ba7c21]/20" style="background:#fcf5e2;">
                 <p class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Kandidat Pilihan Anda</p>
-                <p class="font-extrabold text-emerald-600 text-xs sm:text-sm mt-0.5" id="modal-candidate-name">Nama Kandidat</p>
+                <p class="font-extrabold text-[#ba7c21] text-xs sm:text-sm mt-0.5" id="modal-candidate-name">Nama Kandidat</p>
             </div>
         </div>
 
@@ -196,9 +198,9 @@
 
                 <!-- Price + Quantity -->
                 <div class="flex items-center gap-3">
-                    <div class="py-2.5 px-3 rounded-2xl text-center flex-shrink-0 border border-emerald-500/20 bg-emerald-50/50" style="min-width:85px;">
+                    <div class="py-2.5 px-3 rounded-2xl text-center flex-shrink-0 border border-[#ba7c21]/20 bg-[#fcf5e2]" style="min-width:85px;">
                         <div class="font-bold uppercase leading-none text-[8px] text-slate-400 tracking-wider">Per Vote</div>
-                        <div class="font-black mt-1 text-emerald-600" style="font-size:13px;">Rp {{ number_format($event->price, 0, ',', '.') }}</div>
+                        <div class="font-black mt-1 text-[#ba7c21]" style="font-size:13px;">Rp {{ number_format($event->price, 0, ',', '.') }}</div>
                     </div>
                     <div class="flex-grow flex items-center rounded-2xl p-1 bg-slate-50 border border-slate-200/80">
                         <button type="button" onclick="decrementVotes()" class="rounded-xl flex items-center justify-center cursor-pointer select-none flex-shrink-0 transition-all hover:bg-slate-200 bg-slate-100 text-slate-600" style="width:36px;height:36px;border:none;">
@@ -243,12 +245,12 @@
                 </div>
 
                 <!-- Total Payment -->
-                <div class="p-4 rounded-2xl text-center relative overflow-hidden border border-emerald-500/20" style="background:linear-gradient(135deg,#ecfdf5,#f0fdfa);">
-                    <div style="position:absolute;top:-20px;left:-20px;width:60px;height:60px;background:rgba(16,185,129,0.06);border-radius:50%;filter:blur(20px);"></div>
-                    <div style="position:absolute;bottom:-20px;right:-20px;width:60px;height:60px;background:rgba(13,148,136,0.06);border-radius:50%;filter:blur(20px);"></div>
+                <div class="p-4 rounded-2xl text-center relative overflow-hidden border border-[#ba7c21]/20" style="background:linear-gradient(135deg,#fefcf6,#fcf5e2);">
+                    <div style="position:absolute;top:-20px;left:-20px;width:60px;height:60px;background:rgba(186,124,33,0.06);border-radius:50%;filter:blur(20px);"></div>
+                    <div style="position:absolute;bottom:-20px;right:-20px;width:60px;height:60px;background:rgba(155,95,26,0.06);border-radius:50%;filter:blur(20px);"></div>
                     <div class="flex items-center justify-between relative" style="z-index:1;">
                         <span class="font-bold uppercase text-[10px] text-slate-500 tracking-wider">Total Pembayaran</span>
-                        <span id="total-payment-display" class="font-black tracking-tight text-emerald-600 text-xl">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                        <span id="total-payment-display" class="font-black tracking-tight text-[#ba7c21] text-xl">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
                     </div>
                 </div>
             @elseif($event->voting_type === 'public_email')
@@ -275,7 +277,8 @@
                             type="button" 
                             id="otp-btn"
                             onclick="requestOTP()" 
-                            class="text-xs font-bold px-4 rounded-2xl transition-all cursor-pointer flex-shrink-0 hover:bg-emerald-700 bg-emerald-600 text-white shadow-md shadow-emerald-600/10"
+                            class="text-xs font-bold px-4 rounded-2xl transition-all cursor-pointer flex-shrink-0 hover:opacity-90 text-white shadow-md shadow-[#ba7c21]/10"
+                            style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
                         >
                             Kirim OTP
                         </button>
@@ -304,9 +307,9 @@
 
                 <!-- Local Developer Mode OTP Notice Alert -->
                 @if(config('app.env') === 'local')
-                    <div id="debug-otp-toast" class="p-3 rounded-2xl text-[10px] hidden font-semibold" style="background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;">
+                    <div id="debug-otp-toast" class="p-3 rounded-2xl text-[10px] hidden font-semibold" style="background:#fcf5e2;border:1px solid #f7e6bb;color:#9b5f1a;">
                         <i class="fa-solid fa-bug mr-1"></i> Developer Mode OTP: 
-                        <span id="debug-otp-code" class="font-bold select-all underline" style="color:#059669;">######</span>
+                        <span id="debug-otp-code" class="font-bold select-all underline" style="color:#ba7c21;">######</span>
                     </div>
                 @endif
 
@@ -337,7 +340,8 @@
             <!-- Submit Button -->
             <button 
                 type="submit" 
-                class="w-full font-bold py-3.5 px-4 rounded-2xl transition-all cursor-pointer text-sm text-center flex items-center justify-center space-x-2 hover:opacity-95 text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-600/20 border-none"
+                class="w-full font-bold py-3.5 px-4 rounded-2xl transition-all cursor-pointer text-sm text-center flex items-center justify-center space-x-2 hover:opacity-95 text-white shadow-lg shadow-[#ba7c21]/20 border-none"
+                style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
             >
                 @if($event->price > 0)
                     <span>Bayar Sekarang & Lanjut ke QRIS</span>
@@ -423,9 +427,9 @@
         pills.forEach(pill => {
             const pillQty = parseInt(pill.getAttribute('data-qty'));
             if (pillQty === qty) {
-                pill.style.background = '#ecfdf5';
-                pill.style.borderColor = '#34d399';
-                pill.style.color = '#059669';
+                pill.style.background = '#fcf5e2';
+                pill.style.borderColor = '#f7e6bb';
+                pill.style.color = '#9b5f1a';
             } else {
                 pill.style.background = '#f8fafc';
                 pill.style.borderColor = '#e2e8f0';

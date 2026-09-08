@@ -13,15 +13,15 @@
     #vera-btn {
         width: 56px;
         height: 56px;
-        background-color: #059669;
+        background: linear-gradient(135deg, #d49830 0%, #ba7c21 50%, #9b5f1a 100%);
         border-radius: 9999px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #ffffff;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 10px 25px -5px rgba(186, 124, 33, 0.5), 0 0 15px rgba(212, 152, 48, 0.4);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: none;
+        border: 1px solid rgba(247, 230, 187, 0.4);
         cursor: pointer;
         position: relative;
         z-index: 20;
@@ -29,8 +29,9 @@
     }
     
     #vera-btn:hover {
-        background-color: #047857;
-        transform: scale(1.05);
+        background: linear-gradient(135deg, #e2b35a 0%, #ba7c21 50%, #7e4b17 100%);
+        box-shadow: 0 15px 30px -5px rgba(186, 124, 33, 0.6), 0 0 20px rgba(212, 152, 48, 0.5);
+        transform: scale(1.06);
     }
     
     #vera-btn:active {
@@ -41,6 +42,7 @@
         font-size: 1.25rem;
         position: relative;
         z-index: 10;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s ease;
     }
     
@@ -50,9 +52,9 @@
 
     .pulse-span {
         position: absolute;
-        inset: 0;
+        inset: -2px;
         border-radius: 9999px;
-        background-color: rgba(5, 150, 105, 0.25);
+        background: radial-gradient(circle, rgba(212, 152, 48, 0.45) 0%, rgba(186, 124, 33, 0.2) 70%, transparent 100%);
         z-index: 0;
         pointer-events: none;
     }
@@ -84,12 +86,12 @@
         pointer-events: auto;
     }
 
-    @keyframes pulse-emerald {
+    @keyframes pulse-gold {
         0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.4); opacity: 0.35; }
+        50% { transform: scale(1.35); opacity: 0.3; }
     }
     .pulse-dot {
-        animation: pulse-emerald 2s infinite;
+        animation: pulse-gold 2s infinite;
     }
 
     @keyframes typing-bounce {
@@ -141,11 +143,11 @@
                 <div class="w-full h-full rounded-full overflow-hidden border border-[#2b3a8c]/30">
                     <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera" class="w-full h-full object-cover">
                 </div>
-                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-slate-950"></span>
+                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-slate-950"></span>
             </div>
             <div class="text-left">
                 <h4 class="text-sm font-bold text-white leading-none">Vera</h4>
-                <span class="text-[10px] text-emerald-400 font-bold tracking-wide flex items-center mt-1">Online</span>
+                <span class="text-[10px] text-amber-400 font-bold tracking-wide flex items-center mt-1">Online</span>
             </div>
         </div>
         <button id="close-vera-chat" type="button" aria-label="Tutup chat"

@@ -120,7 +120,8 @@
             <!-- Submit Button -->
             <button 
                 type="submit" 
-                class="w-full py-3 px-4 rounded-xl text-white font-bold text-xs bg-indigo-600 hover:bg-indigo-500 shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer mt-2"
+                class="w-full py-3 px-4 rounded-xl text-white font-bold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer mt-2 hover:opacity-90"
+                style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
             >
                 <span>Daftar Akun Sekarang</span>
                 <i class="fa-solid fa-check text-xs"></i>

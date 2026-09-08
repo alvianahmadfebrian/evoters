@@ -29,17 +29,17 @@
 @section('content')
 <div class="space-y-12 relative overflow-hidden pb-16">
     <!-- Glow Background Decorators -->
-    <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-emerald-400/[0.04] rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-[500px] right-1/4 w-[450px] h-[450px] bg-cyan-400/[0.04] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-[#ba7c21]/[0.04] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-[500px] right-1/4 w-[450px] h-[450px] bg-[#9b5f1a]/[0.04] rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- Hero Header -->
     <section class="text-center max-w-3xl mx-auto space-y-4 pt-6 reveal">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide" style="background: #e6f4ea; border: 1px solid #a3cfbb; color: #146c43;">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide" style="background: #fcf5e2; border: 1px solid #f7e6bb; color: #9b5f1a;">
             <i class="fa-solid fa-receipt"></i>
             <span>Kebijakan Transaksi & Pembayaran</span>
         </div>
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight" style="color: #0f172a;">
-            Kebijakan <span style="color: #059669;">Pengembalian Dana</span> (Refund)
+            Kebijakan <span style="color: #ba7c21;">Pengembalian Dana</span> (Refund)
         </h1>
         <p class="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style="color: #475569;">
             Panduan transparansi mengenai status transaksi, syarat, ketentuan, serta prosedur pengajuan klaim pengembalian dana (refund) pada layanan <strong>eVoters.id</strong>.
@@ -56,7 +56,7 @@
             <!-- Prinsip Utama -->
             <div class="refund-card">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
                     Prinsip Dasar Produk Digital & Pemungutan Suara
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -74,7 +74,7 @@
             <!-- Kondisi Memenuhi Syarat Refund -->
             <div class="refund-card">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
                     Kondisi yang Memenuhi Syarat Pengembalian Dana (Refund)
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -123,7 +123,7 @@
             <!-- Tata Cara Pengajuan -->
             <div class="refund-card">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
                     Tata Cara & Prosedur Pengajuan Refund
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -137,7 +137,7 @@
                         <li>Nomor rekening atau akun e-wallet tujuan pengembalian dana yang valid dan sesuai dengan nama pemilih.</li>
                     </ol>
                     <p class="pt-2">
-                        Kirimkan berkas permohonan di atas ke email resmi: <a href="mailto:{{ config('company.email') }}" class="text-emerald-600 font-semibold underline">{{ config('company.email') }}</a> atau melalui WhatsApp Customer Service di <a href="https://wa.me/{{ config('company.whatsapp') }}" class="text-emerald-600 font-semibold underline">{{ config('company.phone') }}</a>.
+                        Kirimkan berkas permohonan di atas ke email resmi: <a href="mailto:{{ config('company.email') }}" class="text-amber-600 font-semibold underline">{{ config('company.email') }}</a> atau melalui WhatsApp Customer Service di <a href="https://wa.me/{{ config('company.whatsapp') }}" class="text-amber-600 font-semibold underline">{{ config('company.phone') }}</a>.
                     </p>
                 </div>
             </div>
@@ -147,7 +147,7 @@
             <!-- Waktu Proses Pengembalian -->
             <div class="refund-card">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">5</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">5</span>
                     Waktu Pemrosesan Pengembalian (SLA Refund)
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -165,7 +165,7 @@
             <!-- Kontak Layanan Bantuan -->
             <div class="refund-card">
                 <h2>
-                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold flex-shrink-0">6</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold flex-shrink-0">6</span>
                     Kontak Layanan Pengembalian Dana
                 </h2>
                 <div class="space-y-3 pl-10">
@@ -175,8 +175,8 @@
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-1">
                         <p><strong>Badan Usaha / Pengelola:</strong> {{ config('company.name') }}</p>
                         <p><strong>Alamat Operasional:</strong> {{ config('company.address') }}</p>
-                        <p><strong>Email Layanan:</strong> <a href="mailto:{{ config('company.email') }}" class="text-emerald-600 underline">{{ config('company.email') }}</a></p>
-                        <p><strong>WhatsApp Support:</strong> <a href="https://wa.me/{{ config('company.whatsapp') }}" class="text-emerald-600 underline">{{ config('company.phone') }}</a></p>
+                        <p><strong>Email Layanan:</strong> <a href="mailto:{{ config('company.email') }}" class="text-amber-600 underline">{{ config('company.email') }}</a></p>
+                        <p><strong>WhatsApp Support:</strong> <a href="https://wa.me/{{ config('company.whatsapp') }}" class="text-amber-600 underline">{{ config('company.phone') }}</a></p>
                         <p><strong>Jam Kerja:</strong> {{ config('company.hours') }}</p>
                     </div>
                 </div>

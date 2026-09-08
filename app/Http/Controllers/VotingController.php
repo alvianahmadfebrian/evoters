@@ -25,7 +25,7 @@ class VotingController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Event::where('status', 'active');
+        $query = Event::where('status', 'active')->withCount(['candidates', 'votes'])->with('candidates');
 
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -42,7 +42,11 @@ class VotingController extends Controller
      */
     public function listEvents(Request $request)
     {
-        $query = Event::where('status', 'active');
+        $query = Event::withCount(['candidates', 'votes'])->with('candidates');
+
+        if ($request->filled('status') && in_array($request->input('status'), ['active', 'completed', 'inactive'])) {
+            $query->where('status', $request->input('status'));
+        }
 
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -52,7 +56,9 @@ class VotingController extends Controller
             });
         }
 
-        $events = $query->orderBy('created_at', 'desc')->paginate(9);
+        $events = $query->orderByRaw("CASE WHEN status = 'active' THEN 1 ELSE 2 END")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(9);
 
         return view('voting.events', compact('events'));
     }
