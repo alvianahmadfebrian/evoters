@@ -112,7 +112,7 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('images/logo2.png') }}?v={{ file_exists(public_path('images/logo2.png')) ? filemtime(public_path('images/logo2.png')) : 1 }}" alt="eVoters Logo" class="h-14 sm:h-16 w-auto transition-transform hover:scale-105" style="height: 58px; max-height: 60px; width: auto; object-fit: contain;">
+                        <img src="{{ asset('images/logo2.png') }}?v=20260908" alt="eVoters Logo" class="h-14 sm:h-16 w-auto transition-transform hover:scale-105" style="height: 58px; max-height: 60px; width: auto; object-fit: contain;">
                     </a>
                 </div>
 
@@ -288,7 +288,7 @@
                 <!-- Col 1: Brand & Identity -->
                 <div class="space-y-4">
                     <a href="{{ route('home') }}" class="inline-block">
-                        <img src="{{ asset('images/logo2.png') }}?v={{ file_exists(public_path('images/logo2.png')) ? filemtime(public_path('images/logo2.png')) : 1 }}" alt="eVoters Logo" class="h-14 w-auto" style="height: 56px; max-height: 58px; width: auto; object-fit: contain;">
+                        <img src="{{ asset('images/logo2.png') }}?v=20260908" alt="eVoters Logo" class="h-14 w-auto" style="height: 56px; max-height: 58px; width: auto; object-fit: contain;">
                     </a>
                     <p class="text-xs text-slate-600 leading-relaxed max-w-sm">
                         Platform pemungutan suara online terpercaya dan berintegritas tinggi. Menghadirkan proses demokrasi digital yang praktis, aman, terenkripsi, dan transparan untuk berbagai instansi dan organisasi.
