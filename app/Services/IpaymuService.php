@@ -33,10 +33,18 @@ class IpaymuService
         $productName = 'Vote: ' . substr($candidate->name, 0, 45);
         $unitPrice = (int)$event->price;
 
+        $photoUrl = null;
+        if ($candidate->photo) {
+            $photoUrl = filter_var($candidate->photo, FILTER_VALIDATE_URL)
+                ? $candidate->photo
+                : asset($candidate->photo);
+        }
+
         $body = [
             'product' => [$productName],
             'qty' => [(int)$quantity],
             'price' => [$unitPrice],
+            'description' => ['Dukungan suara untuk ' . substr($candidate->name, 0, 45)],
             'returnUrl' => route('event.results', $event->slug),
             'cancelUrl' => route('vote.pay', $vote->id),
             'notifyUrl' => route('payment.notification'),
@@ -45,6 +53,10 @@ class IpaymuService
             'buyerEmail' => 'voter@e-voters.id',
             'buyerPhone' => '0895324380409',
         ];
+
+        if ($photoUrl) {
+            $body['imageUrl'] = [$photoUrl];
+        }
 
         try {
             $jsonBody = json_encode($body, JSON_UNESCAPED_SLASHES);
