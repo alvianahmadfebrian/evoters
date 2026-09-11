@@ -121,7 +121,7 @@
 
                             @if($event->isOpen())
                                 <button 
-                                    onclick="openVotingModal({{ $candidate->id }}, '{{ $candidate->name }}', '{{ sprintf('%02d', $candidate->candidate_number) }}')"
+                                    onclick="openVotingModal({{ $candidate->id }}, '{{ addslashes($candidate->name) }}', '{{ sprintf('%02d', $candidate->candidate_number) }}', '{{ $candidate->photo ? asset($candidate->photo) : '' }}')"
                                     class="w-full text-white font-bold text-xs py-3.5 rounded-xl transition-all cursor-pointer shadow-md hover:opacity-90 flex items-center justify-center gap-1.5"
                                     style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
                                 >
@@ -145,31 +145,45 @@
 </div>
 
 <!-- Modal Dialog Box (Voting Form validation) -->
-<div id="voting-modal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center p-4" style="background:rgba(15,23,42,0.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
-    <div class="w-full rounded-[2.5rem] p-8 relative animate-scale-up border border-slate-200/80 shadow-2xl" style="max-width:440px;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+<div id="voting-modal" class="fixed inset-0 z-50 overflow-y-auto hidden items-center justify-center p-4" style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+    <div class="w-full relative bg-white text-slate-800 my-auto" style="max-width: 430px; border-radius: 28px; padding: 24px 26px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.8);">
         
-        <!-- Close button -->
-        <button onclick="closeVotingModal()" class="absolute top-6 right-6 cursor-pointer text-slate-400 hover:text-slate-600 transition-colors p-1.5 rounded-full hover:bg-slate-100/80">
-            <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-
-        <!-- Header -->
-        <div class="text-center" style="margin-bottom: 2rem;">
-            <!-- Candidate Number Badge -->
-            <div class="rounded-2xl flex items-center justify-center mx-auto mb-3 font-bold" style="background:linear-gradient(135deg,#ba7c21,#9b5f1a);color:#fff;width:46px;height:46px;font-size:15px;box-shadow:0 4px 12px rgba(186,124,33,0.25);">
-                <span id="modal-candidate-num">01</span>
+        <!-- Header Modal with Close Button in flex row -->
+        <div class="flex items-start justify-between gap-3 mb-4">
+            <div>
+                <h3 style="font-size: 19px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.25; letter-spacing: -0.02em;">Konfirmasi Pilihan Anda</h3>
+                <p style="font-size: 12px; color: #64748b; margin-top: 3px; margin-bottom: 0;">Pastikan kandidat dan jumlah suara sudah sesuai.</p>
             </div>
-            
-            <h3 class="font-black text-slate-900" style="font-size:18px;letter-spacing:-0.02em;">Konfirmasi Pilihan Anda</h3>
-            
-            <!-- Highlighted Selected Candidate Card (Spacious and No Overlaps) -->
-            <div class="mt-3 p-3 rounded-2xl border border-[#ba7c21]/20" style="background:#fcf5e2;">
-                <p class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Kandidat Pilihan Anda</p>
-                <p class="font-extrabold text-[#ba7c21] text-xs sm:text-sm mt-0.5" id="modal-candidate-name">Nama Kandidat</p>
+            <!-- Close button -->
+            <button type="button" onclick="closeVotingModal()" class="cursor-pointer transition-all flex items-center justify-center flex-shrink-0" style="width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b;" onmouseover="this.style.background='#e2e8f0';this.style.color='#0f172a'" onmouseout="this.style.background='#f1f5f9';this.style.color='#64748b'">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+
+        <!-- Selected Candidate Card with Photo -->
+        <div class="flex items-center gap-3.5 mb-4" style="background: linear-gradient(135deg, #fffdf8 0%, #fbf5e6 100%); border: 1px solid #f1ddb0; border-radius: 20px; padding: 12px 14px;">
+            <!-- Candidate Photo / Avatar Container -->
+            <div class="flex-shrink-0 flex items-center justify-center overflow-hidden" style="width: 56px; height: 56px; border-radius: 14px; border: 1.5px solid #d4a359; background: #ffffff; box-shadow: 0 3px 8px rgba(186,124,33,0.15);">
+                <img id="modal-candidate-img" src="" alt="Foto Kandidat" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <div id="modal-candidate-placeholder" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #fef3c7; color: #b45309;">
+                    <i class="fa-solid fa-user text-xl"></i>
+                </div>
+            </div>
+
+            <!-- Candidate Details -->
+            <div class="min-w-0 flex-grow">
+                <div class="flex items-center gap-1.5 mb-0.5">
+                    <span style="background: linear-gradient(135deg, #ba7c21, #9b5f1a); color: #ffffff; font-size: 10px; font-weight: 900; padding: 2px 7px; border-radius: 6px; letter-spacing: 0.5px; line-height: normal;">
+                        NO. <span id="modal-candidate-num">01</span>
+                    </span>
+                    <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #9b5f1a; letter-spacing: 0.5px;">Kandidat Pilihan</span>
+                </div>
+                <h4 id="modal-candidate-name" style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 3px 0 2px 0; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nama Kandidat</h4>
+                <p style="font-size: 11px; color: #64748b; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $event->title }}</p>
             </div>
         </div>
 
-        <form action="{{ route('event.vote', $event->slug) }}" method="POST" id="main-vote-form" class="space-y-4">
+        <form action="{{ route('event.vote', $event->slug) }}" method="POST" id="main-vote-form" class="space-y-3.5">
             @csrf
             
             <!-- Hidden inputs -->
@@ -178,33 +192,33 @@
 
             @if($event->price > 0)
                 <!-- Name Input -->
-                <div class="text-left space-y-1.5">
-                    <label for="voter-name" class="font-bold uppercase block text-[10px] tracking-wider text-slate-500">Nama Lengkap</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fa-solid fa-user text-slate-400 text-[13px]"></i>
-                        </div>
+                <div class="text-left">
+                    <label for="voter-name" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block; margin-bottom: 5px;">Nama Lengkap</label>
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-user" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
                         <input 
                             type="text" 
                             name="name" 
                             id="voter-name" 
                             required
+                            value="{{ auth()->check() ? auth()->user()->name : old('name') }}"
                             placeholder="Masukkan nama lengkap Anda" 
-                            class="w-full pr-4 py-3 rounded-2xl text-sm focus:outline-none transition-all"
-                            style="padding-left: 2.75rem !important; background:#f8fafc; border:1px solid #e2e8f0; color:#0f172a;"
+                            style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; font-size: 13px; font-weight: 600; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none; transition: all 0.2s;"
+                            onfocus="this.style.borderColor='#ba7c21';this.style.background='#ffffff';this.style.boxShadow='0 0 0 3px rgba(186,124,33,0.12)'"
+                            onblur="this.style.borderColor='#cbd5e1';this.style.background='#f8fafc';this.style.boxShadow='none'"
                         >
                     </div>
                 </div>
 
                 <!-- Price + Quantity -->
-                <div class="flex items-center gap-3">
-                    <div class="py-2.5 px-3 rounded-2xl text-center flex-shrink-0 border border-[#ba7c21]/20 bg-[#fcf5e2]" style="min-width:85px;">
-                        <div class="font-bold uppercase leading-none text-[8px] text-slate-400 tracking-wider">Per Vote</div>
-                        <div class="font-black mt-1 text-[#ba7c21]" style="font-size:13px;">Rp {{ number_format($event->price, 0, ',', '.') }}</div>
+                <div class="flex items-center gap-2.5">
+                    <div style="min-width: 90px; padding: 7px 10px; border-radius: 14px; text-align: center; border: 1px solid #f1ddb0; background: #fbf5e6; box-sizing: border-box; flex-shrink: 0;">
+                        <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; color: #8c601d; letter-spacing: 0.5px;">Per Vote</div>
+                        <div style="font-size: 13px; font-weight: 900; color: #ba7c21; margin-top: 1px;">Rp {{ number_format($event->price, 0, ',', '.') }}</div>
                     </div>
-                    <div class="flex-grow flex items-center rounded-2xl p-1 bg-slate-50 border border-slate-200/80">
-                        <button type="button" onclick="decrementVotes()" class="rounded-xl flex items-center justify-center cursor-pointer select-none flex-shrink-0 transition-all hover:bg-slate-200 bg-slate-100 text-slate-600" style="width:36px;height:36px;border:none;">
-                            <i class="fa-solid fa-minus text-xs"></i>
+                    <div style="flex-grow: 1; display: flex; align-items: center; justify-content: space-between; padding: 3px 5px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; box-sizing: border-box;">
+                        <button type="button" onclick="decrementVotes()" style="width: 34px; height: 34px; border-radius: 10px; border: none; background: #ffffff; color: #334155; font-size: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#ffffff'">
+                            <i class="fa-solid fa-minus"></i>
                         </button>
                         <input 
                             type="number" 
@@ -213,72 +227,67 @@
                             required 
                             min="1"
                             value="1" 
-                            class="flex-grow text-center font-extrabold focus:outline-none p-0 text-slate-900"
-                            style="background:transparent !important;border:none !important;font-size:16px;width:50px;box-shadow:none !important;"
+                            style="width: 50px; text-align: center; font-size: 16px; font-weight: 900; color: #0f172a; border: none; background: transparent; outline: none;"
                         >
-                        <button type="button" onclick="incrementVotes()" class="rounded-xl flex items-center justify-center cursor-pointer select-none flex-shrink-0 transition-all hover:bg-slate-200 bg-slate-100 text-slate-600" style="width:36px;height:36px;border:none;">
-                            <i class="fa-solid fa-plus text-xs"></i>
+                        <button type="button" onclick="incrementVotes()" style="width: 34px; height: 34px; border-radius: 10px; border: none; background: #ffffff; color: #334155; font-size: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#ffffff'">
+                            <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Quick Selection (2-col scrollable grid) -->
+                <!-- Quick Selection (3-col clean grid, no scrolling) -->
                 @php
                     $multipliers = [1, 2, 5, 10, 20, 50];
                 @endphp
-                <div class="text-left space-y-1.5">
-                    <label class="font-bold uppercase block text-[10px] tracking-wider text-slate-500">Pilih Cepat Nominal</label>
-                    <div class="grid grid-cols-2 gap-2 pr-1" style="max-height:108px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;">
+                <div class="text-left">
+                    <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block; margin-bottom: 5px;">Pilih Cepat Nominal</label>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
                         @foreach($multipliers as $mult)
                             <button 
                                 type="button" 
                                 onclick="setVotes({{ $mult }})" 
                                 data-qty="{{ $mult }}"
-                                class="quick-vote-btn py-2.5 px-3 rounded-2xl text-xs font-bold transition-all cursor-pointer focus:outline-none text-center"
-                                style="background:#f8fafc;border:1px solid #e2e8f0;color:#334155;"
+                                class="quick-vote-btn"
+                                style="padding: 7px 4px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; color: #1e293b; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; transition: all 0.15s ease;"
                             >
-                                <span style="font-size:12px;">Rp {{ number_format($event->price * $mult / 1000, 0, ',', '.') }}k</span>
-                                <span style="color:#94a3b8;font-size:9px;font-weight:400;" class="ml-1">({{ $mult }}x)</span>
+                                <span style="font-size: 12px; font-weight: 800; line-height: 1.1;">Rp {{ number_format($event->price * $mult / 1000, 0, ',', '.') }}k</span>
+                                <span class="quick-qty-tag" style="font-size: 9px; font-weight: 700; color: #94a3b8;">({{ $mult }}x)</span>
                             </button>
                         @endforeach
                     </div>
                 </div>
 
                 <!-- Total Payment -->
-                <div class="p-4 rounded-2xl text-center relative overflow-hidden border border-[#ba7c21]/20" style="background:linear-gradient(135deg,#fefcf6,#fcf5e2);">
-                    <div style="position:absolute;top:-20px;left:-20px;width:60px;height:60px;background:rgba(186,124,33,0.06);border-radius:50%;filter:blur(20px);"></div>
-                    <div style="position:absolute;bottom:-20px;right:-20px;width:60px;height:60px;background:rgba(155,95,26,0.06);border-radius:50%;filter:blur(20px);"></div>
-                    <div class="flex items-center justify-between relative" style="z-index:1;">
-                        <span class="font-bold uppercase text-[10px] text-slate-500 tracking-wider">Total Pembayaran</span>
-                        <span id="total-payment-display" class="font-black tracking-tight text-[#ba7c21] text-xl">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                <div style="background: linear-gradient(135deg, #fffdf8 0%, #fbf5e6 100%); border: 1px solid #f1ddb0; border-radius: 16px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <span style="font-size: 9px; font-weight: 800; text-transform: uppercase; color: #8c601d; letter-spacing: 0.5px; display: block;">Total Pembayaran</span>
+                        <span id="summary-qty-text" style="font-size: 11px; font-weight: 700; color: #64748b; display: block; margin-top: 1px;">1 Suara Terpilih</span>
                     </div>
+                    <span id="total-payment-display" style="font-size: 19px; font-weight: 900; color: #ba7c21; letter-spacing: -0.5px;">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
                 </div>
             @elseif($event->voting_type === 'public_email')
                 
                 <!-- Email Input -->
                 <div class="space-y-1.5 text-left">
-                    <label for="voter-email" class="text-xs font-bold uppercase tracking-wider text-slate-500">Alamat Email</label>
+                    <label for="voter-email" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block;">Alamat Email</label>
                     <div class="flex gap-2">
-                        <div class="relative flex-grow">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-solid fa-envelope text-slate-400 text-[13px]"></i>
-                            </div>
+                        <div style="position: relative; flex-grow: 1;">
+                            <i class="fa-solid fa-envelope" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
                             <input 
                                 type="email" 
                                 name="email" 
                                 id="voter-email" 
                                 required
+                                value="{{ auth()->check() ? auth()->user()->email : old('email') }}"
                                 placeholder="nama@email.com" 
-                                class="w-full pr-4 py-3 rounded-2xl text-sm focus:outline-none"
-                                style="padding-left: 2.75rem !important; background:#f8fafc; border:1px solid #e2e8f0; color:#0f172a;"
+                                style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; font-size: 13px; font-weight: 600; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none;"
                             >
                         </div>
                         <button 
                             type="button" 
                             id="otp-btn"
                             onclick="requestOTP()" 
-                            class="text-xs font-bold px-4 rounded-2xl transition-all cursor-pointer flex-shrink-0 hover:opacity-90 text-white shadow-md shadow-[#ba7c21]/10"
-                            style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
+                            style="font-size: 12px; font-weight: 800; padding: 0 14px; border-radius: 14px; border: none; background: linear-gradient(135deg, #ba7c21, #9b5f1a); color: #ffffff; cursor: pointer; flex-shrink: 0;"
                         >
                             Kirim OTP
                         </button>
@@ -287,11 +296,9 @@
 
                 <!-- OTP Input -->
                 <div class="space-y-1.5 text-left">
-                    <label for="voter-otp" class="text-xs font-bold uppercase tracking-wider text-slate-500">Kode Verifikasi OTP</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fa-solid fa-key text-slate-400 text-[13px]"></i>
-                        </div>
+                    <label for="voter-otp" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block;">Kode Verifikasi OTP</label>
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-key" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
                         <input 
                             type="text" 
                             name="otp" 
@@ -299,15 +306,14 @@
                             required 
                             maxlength="6"
                             placeholder="Masukkan 6 digit kode OTP" 
-                            class="w-full pr-4 py-3 rounded-2xl text-center font-bold tracking-widest text-sm focus:outline-none"
-                            style="padding-left: 2.75rem !important; background:#f8fafc; border:1px solid #e2e8f0; color:#0f172a;"
+                            style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; text-align: center; font-weight: 800; letter-spacing: 4px; font-size: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none;"
                         >
                     </div>
                 </div>
 
                 <!-- Local Developer Mode OTP Notice Alert -->
                 @if(config('app.env') === 'local')
-                    <div id="debug-otp-toast" class="p-3 rounded-2xl text-[10px] hidden font-semibold" style="background:#fcf5e2;border:1px solid #f7e6bb;color:#9b5f1a;">
+                    <div id="debug-otp-toast" style="display: none; padding: 8px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; background: #fbf5e6; border: 1px solid #f1ddb0; color: #9b5f1a;">
                         <i class="fa-solid fa-bug mr-1"></i> Developer Mode OTP: 
                         <span id="debug-otp-code" class="font-bold select-all underline" style="color:#ba7c21;">######</span>
                     </div>
@@ -317,57 +323,68 @@
                 
                 <!-- Token Input -->
                 <div class="space-y-1.5 text-left">
-                    <label for="voter-token" class="text-xs font-bold uppercase tracking-wider text-slate-500">Masukkan Kode Token Anda</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fa-solid fa-ticket text-slate-400 text-[13px]"></i>
-                        </div>
+                    <label for="voter-token" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block;">Masukkan Kode Token Anda</label>
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-ticket" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
                         <input 
                             type="text" 
                             name="token" 
                             id="voter-token" 
                             required
                             placeholder="Contoh: VT-XXXXXX" 
-                            class="w-full pr-4 py-3 rounded-2xl text-center font-mono font-bold uppercase tracking-widest text-sm focus:outline-none"
-                            style="padding-left: 2.75rem !important; background:#f8fafc; border:1px solid #e2e8f0; color:#0f172a;"
+                            style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; text-align: center; font-family: monospace; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none;"
                         >
                     </div>
-                    <p class="text-[10px] text-slate-400 mt-1">Minta kode token unik kepada panitia penyelenggara event voting ini.</p>
+                    <p style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Minta kode token unik kepada panitia penyelenggara event voting ini.</p>
                 </div>
 
             @endif
 
-            <!-- Submit Button -->
+            <!-- Submit Button (Checkout) -->
             <button 
                 type="submit" 
-                class="w-full font-bold py-3.5 px-4 rounded-2xl transition-all cursor-pointer text-sm text-center flex items-center justify-center space-x-2 hover:opacity-95 text-white shadow-lg shadow-[#ba7c21]/20 border-none"
-                style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
+                style="width: 100%; box-sizing: border-box; padding: 13px 20px; border-radius: 14px; border: none; background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%); color: #ffffff; font-size: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; box-shadow: 0 8px 20px -4px rgba(186,124,33,0.4); transition: opacity 0.15s;"
+                onmouseover="this.style.opacity='0.95'"
+                onmouseout="this.style.opacity='1'"
             >
                 @if($event->price > 0)
-                    <span>Bayar Sekarang & Lanjut ke QRIS</span>
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                    <i class="fa-solid fa-cart-shopping text-xs"></i>
+                    <span>Checkout</span>
+                    <i class="fa-solid fa-arrow-right text-xs" style="margin-left: 2px;"></i>
                 @else
+                    <i class="fa-solid fa-check-to-slot text-xs"></i>
                     <span>Kirim Suara Saya</span>
-                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                    <i class="fa-solid fa-arrow-right text-xs" style="margin-left: 2px;"></i>
                 @endif
             </button>
         </form>
 
-        <div id="modal-error" class="text-xs mt-3 hidden text-center font-medium" style="color:#dc2626;"></div>
+        <div id="modal-error" style="display: none; font-size: 12px; margin-top: 10px; text-align: center; font-weight: 600; color: #dc2626;"></div>
     </div>
 </div>
 @endsection
 
 @section('scripts')
 <script>
-    function openVotingModal(candidateId, candidateName, candidateNum) {
+    function openVotingModal(candidateId, candidateName, candidateNum, candidatePhoto) {
         document.getElementById('hidden-candidate-id').value = candidateId;
         document.getElementById('modal-candidate-name').innerText = candidateName;
         document.getElementById('modal-candidate-num').innerText = candidateNum;
         
+        const imgEl = document.getElementById('modal-candidate-img');
+        const placeholderEl = document.getElementById('modal-candidate-placeholder');
+        if (candidatePhoto && candidatePhoto.trim() !== '') {
+            imgEl.src = candidatePhoto;
+            imgEl.style.display = 'block';
+            if (placeholderEl) placeholderEl.style.display = 'none';
+        } else {
+            imgEl.src = '';
+            imgEl.style.display = 'none';
+            if (placeholderEl) placeholderEl.style.display = 'flex';
+        }
+        
         const modal = document.getElementById('voting-modal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+        modal.style.display = 'flex';
         
         // Initialize payment display and pills
         updateTotalPayment();
@@ -375,17 +392,14 @@
 
     function closeVotingModal() {
         const modal = document.getElementById('voting-modal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        modal.style.display = 'none';
         
         // Reset form inputs & errors
-        document.getElementById('modal-error').classList.add('hidden');
+        const errorDiv = document.getElementById('modal-error');
+        if (errorDiv) errorDiv.style.display = 'none';
         
         const emailInput = document.getElementById('voter-email');
         if (emailInput) emailInput.value = '';
-        
-        const nameInput = document.getElementById('voter-name');
-        if (nameInput) nameInput.value = '';
         
         const otpInput = document.getElementById('voter-otp');
         if (otpInput) otpInput.value = '';
@@ -400,7 +414,7 @@
         }
 
         const debugToast = document.getElementById('debug-otp-toast');
-        if (debugToast) debugToast.classList.add('hidden');
+        if (debugToast) debugToast.style.display = 'none';
     }
 
     function incrementVotes() {
@@ -426,14 +440,19 @@
         const pills = document.querySelectorAll('.quick-vote-btn');
         pills.forEach(pill => {
             const pillQty = parseInt(pill.getAttribute('data-qty'));
+            const tag = pill.querySelector('.quick-qty-tag');
             if (pillQty === qty) {
-                pill.style.background = '#fcf5e2';
-                pill.style.borderColor = '#f7e6bb';
-                pill.style.color = '#9b5f1a';
+                pill.style.background = '#fef3c7';
+                pill.style.borderColor = '#ba7c21';
+                pill.style.color = '#92400e';
+                pill.style.boxShadow = '0 2px 6px rgba(186,124,33,0.15)';
+                if (tag) tag.style.color = '#b45309';
             } else {
                 pill.style.background = '#f8fafc';
                 pill.style.borderColor = '#e2e8f0';
-                pill.style.color = '#334155';
+                pill.style.color = '#1e293b';
+                pill.style.boxShadow = 'none';
+                if (tag) tag.style.color = '#94a3b8';
             }
         });
     }
@@ -463,6 +482,11 @@
         
         document.getElementById('total-payment-display').textContent = formatted;
         
+        const summaryQty = document.getElementById('summary-qty-text');
+        if (summaryQty) {
+            summaryQty.textContent = val + ' Suara Terpilih';
+        }
+        
         // Highlight corresponding pill
         updateQuickVotePills(val);
     }
@@ -474,11 +498,11 @@
         
         if (!email) {
             errorDiv.innerText = "Masukkan alamat email terlebih dahulu.";
-            errorDiv.classList.remove('hidden');
+            errorDiv.style.display = 'block';
             return;
         }
         
-        errorDiv.classList.add('hidden');
+        errorDiv.style.display = 'none';
         otpBtn.disabled = true;
         otpBtn.innerText = "Mengirim...";
 
@@ -504,12 +528,12 @@
                     const debugCode = document.getElementById('debug-otp-code');
                     if (debugToast && debugCode) {
                         debugCode.innerText = data.mock;
-                        debugToast.classList.remove('hidden');
+                        debugToast.style.display = 'block';
                     }
                 }
             } else {
                 errorDiv.innerText = data.message;
-                errorDiv.classList.remove('hidden');
+                errorDiv.style.display = 'block';
             }
         })
         .catch(err => {
@@ -517,7 +541,7 @@
             otpBtn.disabled = false;
             otpBtn.innerText = "Kirim OTP";
             errorDiv.innerText = "Gagal menghubungi server untuk mengirim OTP.";
-            errorDiv.classList.remove('hidden');
+            errorDiv.style.display = 'block';
         });
     }
 </script>

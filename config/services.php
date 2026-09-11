@@ -42,9 +42,9 @@ return [
     ],
 
     'ipaymu' => [
-        'va' => env('IPAYMU_VA', '0000005324380409'),
-        'api_key' => env('IPAYMU_API_KEY', 'SANDBOX6C212F99-D30B-48F3-A912-DAF6415C2054'),
-        'base_url' => env('IPAYMU_BASE_URL', 'https://sandbox.ipaymu.com'),
+        'va' => env('IPAYMU_VA', ''),
+        'api_key' => env('IPAYMU_API_KEY', ''),
+        'base_url' => env('IPAYMU_BASE_URL', 'https://my.ipaymu.com'),
     ],
 
     'groq' => [
