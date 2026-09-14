@@ -507,19 +507,41 @@ class VotingController extends Controller
     {
         $vote = Vote::findOrFail($id);
         $qrUrl = $vote->qr_image ?? (filter_var($vote->payment_url, FILTER_VALIDATE_URL) ? $vote->payment_url : null);
+        $binaryData = null;
 
         if ($qrUrl) {
-            try {
-                $response = Http::timeout(10)->get($qrUrl);
-                if ($response->successful()) {
-                    $contentType = $response->header('Content-Type') ?: 'image/png';
-                    return response($response->body())
-                        ->header('Content-Type', $contentType)
-                        ->header('Content-Disposition', 'attachment; filename="QRIS-eVoters-' . $vote->payment_ref . '.png"');
+            if (str_starts_with($qrUrl, 'data:image/')) {
+                if (preg_match('/data:image\/[a-zA-Z]+;base64,([A-Za-z0-9+\/=\s]+)/', $qrUrl, $matches)) {
+                    $binaryData = base64_decode(trim($matches[1]));
                 }
-            } catch (\Exception $e) {
-                Log::error('Download QRIS error: ' . $e->getMessage());
+            } else {
+                try {
+                    $response = Http::withoutVerifying()
+                        ->timeout(12)
+                        ->withHeaders([
+                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                        ])
+                        ->get($qrUrl);
+
+                    if ($response->successful()) {
+                        $body = $response->body();
+                        if (preg_match('/data:image\/[a-zA-Z]+;base64,([A-Za-z0-9+\/=\s]+)/', $body, $matches)) {
+                            $binaryData = base64_decode(trim($matches[1]));
+                        } elseif (str_starts_with($body, "\x89PNG") || str_starts_with($body, "\xFF\xD8\xFF")) {
+                            $binaryData = $body;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Download QRIS error: ' . $e->getMessage());
+                }
             }
+        }
+
+        if ($binaryData) {
+            return response($binaryData)
+                ->header('Content-Type', 'image/png')
+                ->header('Content-Length', strlen($binaryData))
+                ->header('Content-Disposition', 'attachment; filename="QRIS-eVoters-' . $vote->payment_ref . '.png"');
         }
 
         return redirect()->route('vote.pay', $vote->id);
