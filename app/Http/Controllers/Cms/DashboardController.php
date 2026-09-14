@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Candidate;
 use App\Models\Vote;
+use App\Models\Token;
 use App\Services\IpaymuService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
