@@ -470,8 +470,8 @@ class VotingController extends Controller
         $event = $vote->event;
         $candidate = $vote->candidate;
 
-        // If QR image / payment URL is missing for some reason, try to generate direct QRIS now
-        if (!$vote->qr_image && !$vote->payment_url) {
+        // If QR image is missing for some reason, try to generate direct QRIS now
+        if (!$vote->qr_image) {
             $qrisData = $this->ipaymuService->createDirectQris($vote, $candidate, $event, $vote->voter_name ?? 'Voter', $vote->quantity);
             if ($qrisData) {
                 $vote->update([
@@ -480,11 +480,6 @@ class VotingController extends Controller
                     'payment_url' => $qrisData['qr_image'] ?? null,
                     'payment_expired_at' => !empty($qrisData['expired']) ? date('Y-m-d H:i:s', strtotime($qrisData['expired'])) : now()->addHours(24),
                 ]);
-            } else {
-                $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, $vote->voter_name ?? 'Voter', $vote->quantity);
-                if ($paymentUrl) {
-                    $vote->update(['payment_url' => $paymentUrl]);
-                }
             }
         }
 

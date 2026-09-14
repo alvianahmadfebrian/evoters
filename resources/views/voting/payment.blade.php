@@ -115,11 +115,12 @@
             <div class="my-3 inline-block mx-auto p-3 bg-white rounded-2xl border-2 border-slate-100 shadow-inner relative">
                 <div id="qris-wrapper" class="w-52 h-52 md:w-60 md:h-60 flex items-center justify-center relative overflow-hidden bg-white">
                     @php
-                        $qrImageUrl = $vote->qr_image ?? (filter_var($vote->payment_url, FILTER_VALIDATE_URL) && (str_contains($vote->payment_url, 'qr') || str_contains($vote->payment_url, 'image')) ? $vote->payment_url : null);
+                        $qrImageUrl = $vote->qr_image;
                     @endphp
 
-                    @if($qrImageUrl)
-                        <img id="qris-image" src="{{ $qrImageUrl }}" alt="QRIS Code Pembayaran" class="w-full h-full object-contain rounded-lg">
+                    @if($qrImageUrl && filter_var($qrImageUrl, FILTER_VALIDATE_URL))
+                        <img id="qris-image" src="{{ $qrImageUrl }}" alt="QRIS Code Pembayaran" class="w-full h-full object-contain rounded-lg" onerror="handleQrImageError(this)">
+                        <div id="qrcode-canvas" class="w-full h-full flex items-center justify-center hidden"></div>
                     @else
                         <div id="qrcode-canvas" class="w-full h-full flex items-center justify-center"></div>
                     @endif
@@ -227,14 +228,16 @@
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-    // QR Code Generator Fallback
     const qrString = @json($vote->qr_string ?? '');
-    const qrCanvas = document.getElementById('qrcode-canvas');
     
-    if (qrCanvas) {
+    function renderQrCode(container) {
+        if (!container || container.dataset.rendered === 'true') return;
+        container.dataset.rendered = 'true';
+        container.innerHTML = '';
+        
         const payload = qrString || ('00020101021226580014ID.LINKAJA.WWW01189360091100223030380208102030400303UMI51440014ID.CO.QRIS.WWW0215ID10200532438040303UMI5204581253033605404{{ $vote->amount }}5802ID5910eVoters.id6005Bogor61051696062180714{{ $vote->payment_ref }}6304A1B2');
         
-        new QRCode(qrCanvas, {
+        new QRCode(container, {
             text: payload,
             width: 220,
             height: 220,
@@ -242,6 +245,21 @@
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.M
         });
+    }
+
+    function handleQrImageError(imgEl) {
+        imgEl.style.display = 'none';
+        const canvasEl = document.getElementById('qrcode-canvas');
+        if (canvasEl) {
+            canvasEl.classList.remove('hidden');
+            renderQrCode(canvasEl);
+        }
+    }
+
+    const qrImg = document.getElementById('qris-image');
+    const qrCanvas = document.getElementById('qrcode-canvas');
+    if (!qrImg && qrCanvas) {
+        renderQrCode(qrCanvas);
     }
 
     // 15 Minutes Countdown Timer
