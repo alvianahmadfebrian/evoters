@@ -145,45 +145,52 @@
 </div>
 
 <!-- Modal Dialog Box (Voting Form validation) -->
-<div id="voting-modal" class="fixed inset-0 z-50 overflow-y-auto hidden items-center justify-center p-4" style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
-    <div class="w-full relative bg-white text-slate-800 my-auto" style="max-width: 430px; border-radius: 28px; padding: 24px 26px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.8);">
+<div id="voting-modal" class="fixed inset-0 z-50 overflow-y-auto hidden items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+    <div class="w-full relative bg-white text-slate-800 my-auto max-w-md rounded-[2.25rem] p-6 md:p-7 shadow-2xl border border-slate-100 overflow-hidden space-y-5">
         
-        <!-- Header Modal with Close Button in flex row -->
-        <div class="flex items-start justify-between gap-3 mb-4">
+        <!-- Ambient decorative lights -->
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-[#ba7c21]/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-[#9b5f1a]/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Header Modal with Close Button -->
+        <div class="flex items-start justify-between gap-3 relative z-10">
             <div>
-                <h3 style="font-size: 19px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.25; letter-spacing: -0.02em;">Konfirmasi Pilihan Anda</h3>
-                <p style="font-size: 12px; color: #64748b; margin-top: 3px; margin-bottom: 0;">Pastikan kandidat dan jumlah suara sudah sesuai.</p>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200/80">
+                    <i class="fa-solid fa-square-check text-[#ba7c21]"></i>
+                    <span>Konfirmasi Pilihan</span>
+                </span>
+                <h3 class="text-xl font-black text-slate-900 tracking-tight mt-1.5">Tentukan Dukungan Suara</h3>
             </div>
             <!-- Close button -->
-            <button type="button" onclick="closeVotingModal()" class="cursor-pointer transition-all flex items-center justify-center flex-shrink-0" style="width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b;" onmouseover="this.style.background='#e2e8f0';this.style.color='#0f172a'" onmouseout="this.style.background='#f1f5f9';this.style.color='#64748b'">
+            <button type="button" onclick="closeVotingModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer flex-shrink-0">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
         </div>
 
         <!-- Selected Candidate Card with Photo -->
-        <div class="flex items-center gap-3.5 mb-4" style="background: linear-gradient(135deg, #fffdf8 0%, #fbf5e6 100%); border: 1px solid #f1ddb0; border-radius: 20px; padding: 12px 14px;">
-            <!-- Candidate Photo / Avatar Container -->
-            <div class="flex-shrink-0 flex items-center justify-center overflow-hidden" style="width: 56px; height: 56px; border-radius: 14px; border: 1.5px solid #d4a359; background: #ffffff; box-shadow: 0 3px 8px rgba(186,124,33,0.15);">
-                <img id="modal-candidate-img" src="" alt="Foto Kandidat" style="width: 100%; height: 100%; object-fit: cover; display: none;">
-                <div id="modal-candidate-placeholder" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #fef3c7; color: #b45309;">
+        <div class="flex items-center gap-3.5 p-3.5 rounded-2xl bg-gradient-to-br from-[#fefcf6] to-[#fcf5e2] border border-[#f7e6bb] shadow-xs relative z-10">
+            <!-- Candidate Photo -->
+            <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-[#ba7c21]/30 bg-white shadow-sm flex-shrink-0 flex items-center justify-center">
+                <img id="modal-candidate-img" src="" alt="Foto Kandidat" class="w-full h-full object-cover hidden">
+                <div id="modal-candidate-placeholder" class="w-full h-full flex items-center justify-center bg-amber-100 text-[#ba7c21]">
                     <i class="fa-solid fa-user text-xl"></i>
                 </div>
             </div>
 
             <!-- Candidate Details -->
-            <div class="min-w-0 flex-grow">
+            <div class="min-w-0 flex-grow text-left">
                 <div class="flex items-center gap-1.5 mb-0.5">
-                    <span style="background: linear-gradient(135deg, #ba7c21, #9b5f1a); color: #ffffff; font-size: 10px; font-weight: 900; padding: 2px 7px; border-radius: 6px; letter-spacing: 0.5px; line-height: normal;">
+                    <span class="text-[9px] font-black text-white px-2 py-0.5 rounded-md tracking-wider uppercase" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
                         NO. <span id="modal-candidate-num">01</span>
                     </span>
-                    <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #9b5f1a; letter-spacing: 0.5px;">Kandidat Pilihan</span>
+                    <span class="text-[9px] font-extrabold uppercase text-[#9b5f1a] tracking-wider">Kandidat Pilihan</span>
                 </div>
-                <h4 id="modal-candidate-name" style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 3px 0 2px 0; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nama Kandidat</h4>
-                <p style="font-size: 11px; color: #64748b; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $event->title }}</p>
+                <h4 id="modal-candidate-name" class="text-sm md:text-base font-black text-slate-900 truncate leading-snug">Nama Kandidat</h4>
+                <p class="text-[11px] text-slate-500 truncate mt-0.5">{{ $event->title }}</p>
             </div>
         </div>
 
-        <form action="{{ route('event.vote', $event->slug) }}" method="POST" id="main-vote-form" class="space-y-3.5">
+        <form action="{{ route('event.vote', $event->slug) }}" method="POST" id="main-vote-form" class="space-y-4 relative z-10">
             @csrf
             
             <!-- Hidden inputs -->
@@ -192,32 +199,30 @@
 
             @if($event->price > 0)
                 <!-- Name Input -->
-                <div class="text-left">
-                    <label for="voter-name" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block; margin-bottom: 5px;">Nama Lengkap</label>
-                    <div style="position: relative;">
-                        <i class="fa-solid fa-user" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
+                <div class="text-left space-y-1.5">
+                    <label for="voter-name" class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">Nama Lengkap Pemilih</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
                         <input 
                             type="text" 
                             name="name" 
                             id="voter-name" 
                             required
                             value="{{ auth()->check() ? auth()->user()->name : old('name') }}"
-                            placeholder="Masukkan nama lengkap Anda" 
-                            style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; font-size: 13px; font-weight: 600; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none; transition: all 0.2s;"
-                            onfocus="this.style.borderColor='#ba7c21';this.style.background='#ffffff';this.style.boxShadow='0 0 0 3px rgba(186,124,33,0.12)'"
-                            onblur="this.style.borderColor='#cbd5e1';this.style.background='#f8fafc';this.style.boxShadow='none'"
+                            placeholder="Ketik nama Anda di sini..." 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-xs md:text-sm font-bold text-slate-800 placeholder-slate-400 outline-none focus:bg-white focus:border-[#ba7c21] focus:ring-4 focus:ring-[#ba7c21]/10 transition-all"
                         >
                     </div>
                 </div>
 
-                <!-- Price + Quantity -->
+                <!-- Price + Quantity Counter -->
                 <div class="flex items-center gap-2.5">
-                    <div style="min-width: 90px; padding: 7px 10px; border-radius: 14px; text-align: center; border: 1px solid #f1ddb0; background: #fbf5e6; box-sizing: border-box; flex-shrink: 0;">
-                        <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; color: #8c601d; letter-spacing: 0.5px;">Per Vote</div>
-                        <div style="font-size: 13px; font-weight: 900; color: #ba7c21; margin-top: 1px;">Rp {{ number_format($event->price, 0, ',', '.') }}</div>
+                    <div class="min-w-[95px] p-2.5 rounded-2xl text-center border border-[#f7e6bb] bg-gradient-to-br from-[#fefcf6] to-[#fcf5e2] flex-shrink-0">
+                        <div class="text-[8px] font-black uppercase text-[#9b5f1a] tracking-wider">Per Suara</div>
+                        <div class="text-xs md:text-sm font-black text-[#ba7c21] mt-0.5">Rp {{ number_format($event->price, 0, ',', '.') }}</div>
                     </div>
-                    <div style="flex-grow: 1; display: flex; align-items: center; justify-content: space-between; padding: 3px 5px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; box-sizing: border-box;">
-                        <button type="button" onclick="decrementVotes()" style="width: 34px; height: 34px; border-radius: 10px; border: none; background: #ffffff; color: #334155; font-size: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#ffffff'">
+                    <div class="flex-grow flex items-center justify-between p-1.5 rounded-2xl border border-slate-200 bg-slate-50">
+                        <button type="button" onclick="decrementVotes()" class="w-9 h-9 rounded-xl bg-white border border-slate-200/80 shadow-xs hover:bg-slate-100 active:scale-95 text-slate-700 text-xs font-black cursor-pointer flex items-center justify-center transition-all">
                             <i class="fa-solid fa-minus"></i>
                         </button>
                         <input 
@@ -227,52 +232,52 @@
                             required 
                             min="1"
                             value="1" 
-                            style="width: 50px; text-align: center; font-size: 16px; font-weight: 900; color: #0f172a; border: none; background: transparent; outline: none;"
+                            class="w-16 text-center text-lg font-black text-slate-900 border-none bg-transparent outline-none"
+                            onchange="updateTotalPayment()"
                         >
-                        <button type="button" onclick="incrementVotes()" style="width: 34px; height: 34px; border-radius: 10px; border: none; background: #ffffff; color: #334155; font-size: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#ffffff'">
+                        <button type="button" onclick="incrementVotes()" class="w-9 h-9 rounded-xl bg-white border border-slate-200/80 shadow-xs hover:bg-slate-100 active:scale-95 text-slate-700 text-xs font-black cursor-pointer flex items-center justify-center transition-all">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Quick Selection (3-col clean grid, no scrolling) -->
+                <!-- Quick Selection (Pilih Cepat Nominal) -->
                 @php
                     $multipliers = [1, 2, 5, 10, 20, 50];
                 @endphp
-                <div class="text-left">
-                    <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block; margin-bottom: 5px;">Pilih Cepat Nominal</label>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                <div class="text-left space-y-1.5">
+                    <label class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">Pilih Cepat Nominal</label>
+                    <div class="grid grid-cols-3 gap-2">
                         @foreach($multipliers as $mult)
                             <button 
                                 type="button" 
                                 onclick="setVotes({{ $mult }})" 
                                 data-qty="{{ $mult }}"
-                                class="quick-vote-btn"
-                                style="padding: 7px 4px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; color: #1e293b; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; transition: all 0.15s ease;"
+                                class="quick-vote-btn py-2 px-2 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-slate-100 text-slate-800 cursor-pointer text-center flex flex-col items-center justify-center transition-all duration-150"
                             >
-                                <span style="font-size: 12px; font-weight: 800; line-height: 1.1;">Rp {{ number_format($event->price * $mult / 1000, 0, ',', '.') }}k</span>
-                                <span class="quick-qty-tag" style="font-size: 9px; font-weight: 700; color: #94a3b8;">({{ $mult }}x)</span>
+                                <span class="text-xs font-black leading-tight">Rp {{ number_format($event->price * $mult / 1000, 0, ',', '.') }}k</span>
+                                <span class="quick-qty-tag text-[9px] font-extrabold text-slate-400 mt-0.5">({{ $mult }}x)</span>
                             </button>
                         @endforeach
                     </div>
                 </div>
 
-                <!-- Total Payment -->
-                <div style="background: linear-gradient(135deg, #fffdf8 0%, #fbf5e6 100%); border: 1px solid #f1ddb0; border-radius: 16px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
-                    <div>
-                        <span style="font-size: 9px; font-weight: 800; text-transform: uppercase; color: #8c601d; letter-spacing: 0.5px; display: block;">Total Pembayaran</span>
-                        <span id="summary-qty-text" style="font-size: 11px; font-weight: 700; color: #64748b; display: block; margin-top: 1px;">1 Suara Terpilih</span>
+                <!-- Total Payment Summary Box -->
+                <div class="p-3.5 rounded-2xl bg-gradient-to-r from-[#fefcf6] to-[#fcf5e2] border border-[#f7e6bb] flex items-center justify-between shadow-xs">
+                    <div class="text-left">
+                        <span class="text-[9px] font-black uppercase text-[#9b5f1a] tracking-wider block">Total Pembayaran</span>
+                        <span id="summary-qty-text" class="text-[11px] font-bold text-slate-600 block mt-0.5">1 Suara Terpilih</span>
                     </div>
-                    <span id="total-payment-display" style="font-size: 19px; font-weight: 900; color: #ba7c21; letter-spacing: -0.5px;">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                    <span id="total-payment-display" class="text-xl md:text-2xl font-black text-[#ba7c21] tracking-tight">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
                 </div>
             @elseif($event->voting_type === 'public_email')
                 
                 <!-- Email Input -->
                 <div class="space-y-1.5 text-left">
-                    <label for="voter-email" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block;">Alamat Email</label>
+                    <label for="voter-email" class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">Alamat Email</label>
                     <div class="flex gap-2">
-                        <div style="position: relative; flex-grow: 1;">
-                            <i class="fa-solid fa-envelope" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
+                        <div class="relative flex-grow">
+                            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
                             <input 
                                 type="email" 
                                 name="email" 
@@ -280,14 +285,15 @@
                                 required
                                 value="{{ auth()->check() ? auth()->user()->email : old('email') }}"
                                 placeholder="nama@email.com" 
-                                style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; font-size: 13px; font-weight: 600; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none;"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-xs md:text-sm font-bold text-slate-800 outline-none focus:bg-white focus:border-[#ba7c21] transition-all"
                             >
                         </div>
                         <button 
                             type="button" 
                             id="otp-btn"
                             onclick="requestOTP()" 
-                            style="font-size: 12px; font-weight: 800; padding: 0 14px; border-radius: 14px; border: none; background: linear-gradient(135deg, #ba7c21, #9b5f1a); color: #ffffff; cursor: pointer; flex-shrink: 0;"
+                            class="text-xs font-black px-4 rounded-2xl text-white cursor-pointer flex-shrink-0 shadow-md transition-all hover:opacity-95"
+                            style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
                         >
                             Kirim OTP
                         </button>
@@ -296,46 +302,38 @@
 
                 <!-- OTP Input -->
                 <div class="space-y-1.5 text-left">
-                    <label for="voter-otp" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block;">Kode Verifikasi OTP</label>
-                    <div style="position: relative;">
-                        <i class="fa-solid fa-key" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
+                    <label for="voter-otp" class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">Kode Verifikasi OTP</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
                         <input 
                             type="text" 
                             name="otp" 
                             id="voter-otp" 
                             required 
                             maxlength="6"
-                            placeholder="Masukkan 6 digit kode OTP" 
-                            style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; text-align: center; font-weight: 800; letter-spacing: 4px; font-size: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none;"
+                            placeholder="6 digit OTP" 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-center font-black tracking-widest text-sm text-slate-900 outline-none focus:bg-white focus:border-[#ba7c21] transition-all"
                         >
                     </div>
                 </div>
-
-                <!-- Local Developer Mode OTP Notice Alert -->
-                @if(config('app.env') === 'local')
-                    <div id="debug-otp-toast" style="display: none; padding: 8px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; background: #fbf5e6; border: 1px solid #f1ddb0; color: #9b5f1a;">
-                        <i class="fa-solid fa-bug mr-1"></i> Developer Mode OTP: 
-                        <span id="debug-otp-code" class="font-bold select-all underline" style="color:#ba7c21;">######</span>
-                    </div>
-                @endif
 
             @else
                 
                 <!-- Token Input -->
                 <div class="space-y-1.5 text-left">
-                    <label for="voter-token" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; display: block;">Masukkan Kode Token Anda</label>
-                    <div style="position: relative;">
-                        <i class="fa-solid fa-ticket" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; pointer-events: none;"></i>
+                    <label for="voter-token" class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">Masukkan Kode Token Anda</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-ticket absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
                         <input 
                             type="text" 
                             name="token" 
                             id="voter-token" 
                             required
-                            placeholder="Contoh: VT-XXXXXX" 
-                            style="width: 100%; box-sizing: border-box; padding: 10px 14px 10px 38px; border-radius: 14px; text-align: center; font-family: monospace; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; outline: none;"
+                            placeholder="VT-XXXXXX" 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-center font-mono font-black uppercase tracking-widest text-sm text-slate-900 outline-none focus:bg-white focus:border-[#ba7c21] transition-all"
                         >
                     </div>
-                    <p style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Minta kode token unik kepada panitia penyelenggara event voting ini.</p>
+                    <p class="text-[10px] text-slate-400">Minta kode token unik kepada panitia penyelenggara event ini.</p>
                 </div>
 
             @endif
@@ -343,23 +341,30 @@
             <!-- Submit Button (Checkout) -->
             <button 
                 type="submit" 
-                style="width: 100%; box-sizing: border-box; padding: 13px 20px; border-radius: 14px; border: none; background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%); color: #ffffff; font-size: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; box-shadow: 0 8px 20px -4px rgba(186,124,33,0.4); transition: opacity 0.15s;"
-                onmouseover="this.style.opacity='0.95'"
-                onmouseout="this.style.opacity='1'"
+                class="w-full py-3.5 px-6 rounded-2xl text-white font-black text-sm shadow-lg shadow-[#ba7c21]/30 hover:shadow-[#ba7c21]/45 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 cursor-pointer flex items-center justify-center space-x-2 border-none"
+                style="background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%);"
             >
                 @if($event->price > 0)
-                    <i class="fa-solid fa-cart-shopping text-xs"></i>
-                    <span>Checkout</span>
-                    <i class="fa-solid fa-arrow-right text-xs" style="margin-left: 2px;"></i>
+                    <i class="fa-solid fa-credit-card text-xs"></i>
+                    <span>Lanjut ke Pembayaran QRIS</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
                 @else
                     <i class="fa-solid fa-check-to-slot text-xs"></i>
-                    <span>Kirim Suara Saya</span>
-                    <i class="fa-solid fa-arrow-right text-xs" style="margin-left: 2px;"></i>
+                    <span>Kirim Suara Sekarang</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
                 @endif
             </button>
+
+            <!-- Trust seal -->
+            <div class="text-center pt-0.5">
+                <span class="inline-flex items-center text-[10px] font-semibold text-slate-400 gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-600 text-[9px]"></i>
+                    <span>Pembayaran Aman Resmi QRIS Bank Indonesia</span>
+                </span>
+            </div>
         </form>
 
-        <div id="modal-error" style="display: none; font-size: 12px; margin-top: 10px; text-align: center; font-weight: 600; color: #dc2626;"></div>
+        <div id="modal-error" class="hidden text-xs text-center font-bold text-red-600 mt-2"></div>
     </div>
 </div>
 @endsection
@@ -442,16 +447,20 @@
             const pillQty = parseInt(pill.getAttribute('data-qty'));
             const tag = pill.querySelector('.quick-qty-tag');
             if (pillQty === qty) {
-                pill.style.background = '#fef3c7';
+                pill.style.background = 'linear-gradient(135deg, #fefcf6 0%, #fcf5e2 100%)';
                 pill.style.borderColor = '#ba7c21';
-                pill.style.color = '#92400e';
-                pill.style.boxShadow = '0 2px 6px rgba(186,124,33,0.15)';
-                if (tag) tag.style.color = '#b45309';
+                pill.style.borderWidth = '1.5px';
+                pill.style.color = '#9b5f1a';
+                pill.style.boxShadow = '0 4px 12px rgba(186,124,33,0.18)';
+                pill.style.transform = 'translateY(-1px)';
+                if (tag) tag.style.color = '#ba7c21';
             } else {
                 pill.style.background = '#f8fafc';
                 pill.style.borderColor = '#e2e8f0';
+                pill.style.borderWidth = '1px';
                 pill.style.color = '#1e293b';
                 pill.style.boxShadow = 'none';
+                pill.style.transform = 'none';
                 if (tag) tag.style.color = '#94a3b8';
             }
         });
