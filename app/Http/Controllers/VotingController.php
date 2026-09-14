@@ -26,7 +26,10 @@ class VotingController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Event::where('status', 'active')->withCount(['candidates', 'votes'])->with('candidates');
+        $query = Event::where('status', 'active')
+            ->withCount(['candidates', 'votes'])
+            ->withSum('votes', 'quantity')
+            ->with('candidates');
 
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -91,7 +94,9 @@ class VotingController extends Controller
      */
     public function listEvents(Request $request)
     {
-        $query = Event::withCount(['candidates', 'votes'])->with('candidates');
+        $query = Event::withCount(['candidates', 'votes'])
+            ->withSum('votes', 'quantity')
+            ->with('candidates');
 
         if ($request->filled('status') && in_array($request->input('status'), ['active', 'completed', 'inactive'])) {
             $query->where('status', $request->input('status'));

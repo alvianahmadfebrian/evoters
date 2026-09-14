@@ -261,7 +261,7 @@
                                     <div class="w-7 h-7 rounded-full bg-emerald-100/80 text-emerald-700 flex items-center justify-center text-xs">
                                         <i class="fa-solid fa-box-archive"></i>
                                     </div>
-                                    <span>{{ number_format($event->votes_count ?? $event->votes()->count(), 0, ',', '.') }} Suara Masuk</span>
+                                    <span>{{ number_format($event->votes_sum_quantity ?? $event->total_votes_sum, 0, ',', '.') }} Suara Masuk</span>
                                 </div>
                             </div>
 

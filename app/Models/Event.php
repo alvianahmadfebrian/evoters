@@ -50,6 +50,17 @@ class Event extends Model
     }
 
     /**
+     * Get total quantity of completed votes.
+     */
+    public function getTotalVotesSumAttribute(): int
+    {
+        if (array_key_exists('votes_sum_quantity', $this->attributes)) {
+            return (int) ($this->attributes['votes_sum_quantity'] ?? 0);
+        }
+        return (int) $this->votes()->sum('quantity');
+    }
+
+    /**
      * Check if the event is active and open for voting.
      */
     public function isOpen(): bool
