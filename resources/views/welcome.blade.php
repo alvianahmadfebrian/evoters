@@ -284,16 +284,16 @@
     <!-- ==================== BERITA & INFORMASI TERKINI SECTION ==================== -->
     <section class="space-y-6 max-w-7xl mx-auto pt-4 border-t border-slate-100">
         <!-- Header bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
             <div>
                 <div class="flex items-center space-x-2">
                     <span class="inline-flex w-2.5 h-2.5 rounded-full animate-pulse" style="background: #ba7c21;"></span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Berita & Informasi Terkini</h2>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Berita & Informasi Terkini</h2>
                 </div>
-                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kabar terbaru seputar penyelenggaraan event voting digital, edukasi, dan pengumuman resmi.</p>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">Kabar terbaru seputar penyelenggaraan event voting digital, edukasi, dan pengumuman resmi.</p>
             </div>
             <div class="flex items-center space-x-3 text-xs text-slate-500 font-medium">
-                <a href="{{ route('news.index') }}" class="font-bold transition-colors flex items-center gap-1.5" style="color: #ba7c21;">
+                <a href="{{ route('news.index') }}" class="font-bold transition-all flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100/80 border border-amber-200/60 shadow-2xs" style="color: #9b5f1a;">
                     <span>Lihat Semua Berita</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
@@ -305,36 +305,48 @@
                 @foreach($latestArticles as $article)
                     <article class="rounded-3xl overflow-hidden border border-slate-200/80 bg-white transition-all duration-300 flex flex-col group hover:-translate-y-1.5 hover:shadow-xl shadow-sm">
                         <!-- Thumbnail Image -->
-                        <a href="{{ route('news.show', $article->slug) }}" class="h-48 w-full relative overflow-hidden bg-slate-100 flex-shrink-0 block">
+                        <a href="{{ route('news.show', $article->slug) }}" class="h-52 w-full relative overflow-hidden bg-slate-100 flex-shrink-0 block">
                             @if($article->image)
-                                <img src="{{ asset($article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="{{ asset($article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-amber-50 via-slate-50 to-amber-100/40 flex items-center justify-center relative">
                                     <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ba7c21_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                                    <i class="fa-solid fa-newspaper text-3xl text-slate-300"></i>
+                                    <i class="fa-solid fa-newspaper text-4xl text-[#ba7c21]/30"></i>
                                 </div>
                             @endif
 
+                            <!-- Gradient Bottom Overlay -->
+                            <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+
                             <!-- Category Badge -->
                             <div class="absolute top-3.5 left-3.5">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-white/95 backdrop-blur-md shadow-sm border border-slate-200/60" style="color: #9b5f1a;">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-white/95 backdrop-blur-md shadow-md border border-slate-200/60" style="color: #9b5f1a;">
+                                    <i class="fa-solid fa-tag text-[9px] mr-1.5 opacity-70"></i>
                                     {{ $article->category }}
                                 </span>
                             </div>
 
                             <!-- Date Badge -->
-                            <div class="absolute bottom-3.5 right-3.5">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white/95 backdrop-blur-md text-slate-800 border border-slate-200/80 shadow-xs">
-                                    <i class="fa-regular fa-calendar text-[#ba7c21] mr-1.5 text-xs"></i>
+                            <div class="absolute bottom-3 left-3.5">
+                                <span class="inline-flex items-center text-[11px] font-bold text-white drop-shadow-md">
+                                    <i class="fa-regular fa-calendar text-amber-300 mr-1.5 text-xs"></i>
                                     {{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}
+                                </span>
+                            </div>
+
+                            <!-- Read Time Badge -->
+                            <div class="absolute bottom-3 right-3.5">
+                                <span class="inline-flex items-center text-[11px] font-semibold text-white/90 drop-shadow-md">
+                                    <i class="fa-regular fa-clock mr-1 text-[10px]"></i>
+                                    3 min baca
                                 </span>
                             </div>
                         </a>
 
                         <!-- Content Info -->
                         <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <h3 class="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 group-hover:text-[#ba7c21] transition-colors leading-snug">
+                            <div class="space-y-2.5">
+                                <h3 class="text-base sm:text-lg font-extrabold text-slate-900 line-clamp-2 group-hover:text-[#ba7c21] transition-colors leading-snug">
                                     <a href="{{ route('news.show', $article->slug) }}">
                                         {{ $article->title }}
                                     </a>
@@ -345,12 +357,14 @@
                             </div>
 
                             <!-- Author & Read Action -->
-                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                                <div class="flex items-center gap-1.5 font-medium">
-                                    <i class="fa-solid fa-user-pen text-[#ba7c21]"></i>
+                            <div class="pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                                <div class="flex items-center gap-2 font-semibold text-slate-700">
+                                    <div class="w-6 h-6 rounded-full bg-amber-100 text-[#ba7c21] flex items-center justify-center text-[10px]">
+                                        <i class="fa-solid fa-pen-nib"></i>
+                                    </div>
                                     <span class="truncate max-w-[120px]">{{ $article->author_name }}</span>
                                 </div>
-                                <a href="{{ route('news.show', $article->slug) }}" class="font-bold flex items-center gap-1 transition-colors" style="color: #ba7c21;">
+                                <a href="{{ route('news.show', $article->slug) }}" class="font-extrabold flex items-center gap-1.5 transition-transform group-hover:translate-x-0.5" style="color: #ba7c21;">
                                     <span>Baca Berita</span>
                                     <i class="fa-solid fa-arrow-right text-[10px]"></i>
                                 </a>
@@ -360,12 +374,17 @@
                 @endforeach
             </div>
         @else
-            <div class="rounded-3xl p-10 text-center border border-slate-200/80 bg-white space-y-3 max-w-md mx-auto shadow-sm">
-                <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mx-auto text-[#ba7c21]">
-                    <i class="fa-solid fa-newspaper text-xl"></i>
+            <!-- Elegant Empty State -->
+            <div class="rounded-3xl p-10 text-center border-2 border-dashed border-amber-200/80 bg-gradient-to-b from-amber-50/40 via-white to-amber-50/20 space-y-4 max-w-lg mx-auto shadow-sm">
+                <div class="w-14 h-14 bg-gradient-to-tr from-amber-100 to-amber-50 rounded-2xl flex items-center justify-center mx-auto text-[#ba7c21] shadow-inner border border-amber-200/60">
+                    <i class="fa-solid fa-newspaper text-2xl"></i>
                 </div>
-                <h4 class="text-base font-bold text-slate-800">Belum Ada Berita Terbaru</h4>
-                <p class="text-xs text-slate-500">Informasi dan artikel terkini akan ditampilkan di sini setelah dipublikasikan melalui panel admin.</p>
+                <div class="space-y-1">
+                    <h4 class="text-base font-extrabold text-slate-900">Belum Ada Berita Terbaru</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
+                        Informasi dan artikel terkini seputar panduan, pengumuman hasil, dan liputan kompetisi akan segera hadir di sini.
+                    </p>
+                </div>
             </div>
         @endif
     </section>

@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Candidate;
 use App\Models\Token;
 use App\Models\Vote;
+use App\Models\Article;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -166,5 +167,51 @@ class DatabaseSeeder extends Seeder
                 'voted_at' => now()->subHours(rand(1, 40)),
             ]);
         }
+
+        // 3. Seed Articles / News
+        Article::updateOrCreate(
+            ['slug' => 'panduan-lengkap-cara-memilih-pembayaran-qris'],
+            [
+                'title' => 'Panduan Lengkap Cara Memilih & Pembayaran QRIS di eVoters',
+                'excerpt' => 'Pelajari langkah mudah memberikan dukungan suara secara transparan dan aman menggunakan integrasi pembayaran instan QRIS Nasional di platform eVoters.',
+                'content' => "<p>Memberikan dukungan kepada kandidat favorit di platform eVoters kini semakin mudah dan cepat dengan hadirnya integrasi QRIS Nasional terstandarisasi Bank Indonesia.</p><h3>Langkah-langkah Memilih:</h3><ol><li>Kunjungi halaman event voting yang sedang aktif dan pilih kandidat favorit Anda.</li><li>Tentukan jumlah suara yang ingin diberikan.</li><li>Pindai (Scan) QRIS yang muncul menggunakan aplikasi perbankan (BCA, Mandiri, BRI, BNI) atau dompet digital (GoPay, OVO, Dana, ShopeePay).</li><li>Setelah pembayaran terverifikasi otomatis oleh sistem, suara Anda langsung tercatat di klasemen real-time.</li></ol><p>Sistem kami menjamin setiap transaksi aman dengan enkripsi SSL 256-bit dan bebas dari manipulasi data.</p>",
+                'image' => 'images/news_voting_guide.jpg',
+                'category' => 'Panduan',
+                'author_name' => 'Tim Redaksi eVoters',
+                'status' => 'published',
+                'views_count' => 142,
+                'published_at' => now()->subDays(3),
+            ]
+        );
+
+        Article::updateOrCreate(
+            ['slug' => 'keseruan-persaingan-marching-band-bomc-2026'],
+            [
+                'title' => 'Keseruan Persaingan Marching Band Terbaik di Ajang BOMC 2026',
+                'excerpt' => 'Ratusan peserta dari berbagai unit marching band sekolah bersaing ketat memperebutkan gelar terfavorit melalui voting digital real-time.',
+                'content' => "<p>Ajang Bogor Open Marching Band Championship (BOMC) 2026 sukses menyedot perhatian ribuan penonton dan pecinta seni musik di seluruh Indonesia. Kolaborasi aransemen musik kolosal dan formasi visual modern dari setiap unit marching band menyuguhkan pengalaman spektakuler.</p><p>Melalui platform voting digital eVoters, para pendukung dan suporter dari berbagai daerah dapat memberikan apresiasi secara langsung kepada tim kebanggaan mereka secara transparan.</p>",
+                'image' => 'images/news_marching_band.jpg',
+                'category' => 'Event & Liputan',
+                'author_name' => 'Admin Redaksi',
+                'status' => 'published',
+                'views_count' => 285,
+                'published_at' => now()->subDays(2),
+            ]
+        );
+
+        Article::updateOrCreate(
+            ['slug' => 'keamanan-dan-transparansi-sistem-voting-digital'],
+            [
+                'title' => 'Mengenal Keamanan & Transparansi Sistem Voting Digital eVoters',
+                'excerpt' => 'Bagaimana teknologi enkripsi mutakhir, validasi OTP, dan switching perbankan menjamin setiap suara yang masuk tercatat akurat dan bebas manipulasi.',
+                'content' => "<p>Kepercayaan adalah pilar utama dalam setiap penyelenggaraan pemungutan suara. eVoters dibangun dengan standar arsitektur keamanan modern guna menjamin integritas data perolehan suara.</p><h3>Fitur Keamanan Utama:</h3><ul><li><strong>Verifikasi Real-time:</strong> Setiap suara langsung diverifikasi melalui webhook switching payment gateway resmi.</li><li><strong>Validasi Anti-Bot:</strong> Sistem proteksi traffic mencegah adanya voting otomatis atau duplikasi data anomali.</li><li><strong>Live Leaderboard:</strong> Seluruh pengunjung dapat memantau pergerakan suara secara terbuka tanpa penundaan.</li></ul>",
+                'image' => 'images/news_voting_security.jpg',
+                'category' => 'Teknologi',
+                'author_name' => 'Tech Team eVoters',
+                'status' => 'published',
+                'views_count' => 198,
+                'published_at' => now()->subDay(),
+            ]
+        );
     }
 }
