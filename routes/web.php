@@ -29,7 +29,7 @@ Route::get('/kontak', [VotingController::class, 'contact'])->name('contact');
 Route::get('/event/{slug}', [VotingController::class, 'showEvent'])->name('event.show');
 Route::post('/event/{slug}/otp', [VotingController::class, 'requestOtp'])->name('event.otp');
 Route::post('/event/{slug}/vote', [VotingController::class, 'submitVote'])->name('event.vote');
-Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->name('event.results')->middleware('auth');
+Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->name('event.results');
 Route::get('/vote/{vote}/pay', [VotingController::class, 'showPayment'])->name('vote.pay');
 Route::get('/vote/{vote}/status', [VotingController::class, 'checkStatus'])->name('vote.status');
 Route::get('/vote/{vote}/download-qr', [VotingController::class, 'downloadQr'])->name('vote.download.qr');
