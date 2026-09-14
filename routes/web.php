@@ -7,6 +7,7 @@ use App\Http\Controllers\Cms\DashboardController;
 use App\Http\Controllers\Cms\CmsEventController;
 use App\Http\Controllers\Cms\CandidateController;
 use App\Http\Controllers\Cms\TokenController;
+use App\Http\Controllers\Cms\CmsArticleController;
 use App\Http\Controllers\AiChatController;
 
 /*
@@ -18,6 +19,8 @@ use App\Http\Controllers\AiChatController;
 // Public Voter Routes
 Route::get('/', [VotingController::class, 'index'])->name('home');
 Route::get('/events', [VotingController::class, 'listEvents'])->name('events.list');
+Route::get('/berita', [VotingController::class, 'listArticles'])->name('news.index');
+Route::get('/berita/{slug}', [VotingController::class, 'showArticle'])->name('news.show');
 Route::get('/about', [VotingController::class, 'about'])->name('about');
 Route::get('/faq', [VotingController::class, 'faq'])->name('faq');
 Route::get('/syarat-ketentuan', [VotingController::class, 'terms'])->name('terms');
@@ -28,6 +31,7 @@ Route::post('/event/{slug}/otp', [VotingController::class, 'requestOtp'])->name(
 Route::post('/event/{slug}/vote', [VotingController::class, 'submitVote'])->name('event.vote');
 Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->name('event.results')->middleware('auth');
 Route::get('/vote/{vote}/pay', [VotingController::class, 'showPayment'])->name('vote.pay');
+Route::get('/vote/{vote}/status', [VotingController::class, 'checkStatus'])->name('vote.status');
 Route::post('/vote/{vote}/pay/confirm', [VotingController::class, 'confirmPayment'])->name('vote.pay.confirm');
 Route::post('/payment/notification', [VotingController::class, 'handleNotification'])->name('payment.notification');
 Route::post('/ai/chat', [AiChatController::class, 'chat'])->name('ai.chat');
@@ -66,4 +70,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/events/{event}/tokens/generate', [TokenController::class, 'generate'])->name('cms.tokens.generate');
     Route::post('/events/{event}/tokens/clear', [TokenController::class, 'clear'])->name('cms.tokens.clear');
     Route::get('/events/{event}/tokens/export', [TokenController::class, 'export'])->name('cms.tokens.export');
+
+    // Articles / News CRUD
+    Route::get('/articles', [CmsArticleController::class, 'index'])->name('cms.articles.index');
+    Route::get('/articles/create', [CmsArticleController::class, 'create'])->name('cms.articles.create');
+    Route::post('/articles', [CmsArticleController::class, 'store'])->name('cms.articles.store');
+    Route::get('/articles/{article}/edit', [CmsArticleController::class, 'edit'])->name('cms.articles.edit');
+    Route::match(['put', 'post'], '/articles/{article}', [CmsArticleController::class, 'update'])->name('cms.articles.update');
+    Route::delete('/articles/{article}', [CmsArticleController::class, 'destroy'])->name('cms.articles.destroy');
 });

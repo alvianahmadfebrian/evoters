@@ -219,14 +219,17 @@
                             </div>
 
                             <!-- Pricing Badge -->
-                            <div class="absolute bottom-3.5 left-3.5">
+                            <div class="absolute bottom-3.5 left-3.5 z-10">
                                 @if($event->price > 0)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-slate-900/85 backdrop-blur-md text-white shadow-sm">
-                                        <i class="fa-solid fa-coins mr-1 text-[#ba7c21]"></i> Rp {{ number_format($event->price, 0, ',', '.') }} / vote
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black shadow-md border border-slate-200/90 backdrop-blur-md" style="background: rgba(255, 255, 255, 0.98); color: #0f172a;">
+                                        <i class="fa-solid fa-coins mr-1.5 text-[#ba7c21] text-xs"></i>
+                                        <span style="color: #9b5f1a; font-weight: 800;">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                                        <span class="text-[10px] text-slate-500 font-semibold ml-1">/ vote</span>
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-700/90 backdrop-blur-md text-white shadow-sm">
-                                        <i class="fa-solid fa-ticket mr-1"></i> Gratis / Token
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black shadow-md border border-emerald-600/30 backdrop-blur-md" style="background: #047857; color: #ffffff;">
+                                        <i class="fa-solid fa-ticket mr-1.5 text-emerald-200 text-xs"></i>
+                                        <span>Gratis / Token</span>
                                     </span>
                                 @endif
                             </div>
@@ -235,39 +238,134 @@
                         <!-- Content Info -->
                         <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
                             <div class="space-y-2">
-                                <h3 class="text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-[#ba7c21] transition-colors">
-                                    {{ $event->title }}
+                                <h3 class="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 group-hover:text-[#ba7c21] transition-colors leading-snug">
+                                    <a href="{{ route('event.show', $event->slug) }}">
+                                        {{ $event->title }}
+                                    </a>
                                 </h3>
                                 <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                                     {{ $event->description ?: 'Pilih kandidat terbaik Anda dalam pelaksanaan event pemungutan suara ini.' }}
                                 </p>
                             </div>
 
-                            <!-- Stats Row -->
-                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-                                <div class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-users text-[#ba7c21]"></i>
+                            <!-- Stats Info Row (Clean & Minimalist) -->
+                            <div class="flex items-center justify-between text-xs py-1">
+                                <div class="flex items-center gap-2 font-semibold text-slate-700">
+                                    <div class="w-7 h-7 rounded-full bg-amber-100/80 text-[#ba7c21] flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-users"></i>
+                                    </div>
                                     <span>{{ $event->candidates_count ?? $event->candidates->count() }} Kandidat</span>
                                 </div>
-                                <div class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-box-archive text-[#ba7c21]"></i>
-                                    <span>{{ $event->votes_count ?? $event->votes()->count() }} Suara Masuk</span>
+
+                                <div class="flex items-center gap-2 font-semibold text-slate-700">
+                                    <div class="w-7 h-7 rounded-full bg-emerald-100/80 text-emerald-700 flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-box-archive"></i>
+                                    </div>
+                                    <span>{{ number_format($event->votes_count ?? $event->votes()->count(), 0, ',', '.') }} Suara Masuk</span>
                                 </div>
                             </div>
 
                             <!-- Vote Actions -->
-                            <div class="flex gap-2 pt-1">
-                                <a href="{{ route('event.show', $event->slug) }}" class="flex-grow text-white font-bold text-xs py-3 px-4 rounded-xl text-center transition-all cursor-pointer hover:opacity-90 shadow-md shadow-[#ba7c21]/20 flex items-center justify-center gap-1.5" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
-                                    <i class="fa-solid fa-check-to-slot"></i>
-                                    <span>Vote Sekarang</span>
+                            <div class="flex items-center gap-2.5 pt-1">
+                                <a href="{{ route('event.show', $event->slug) }}" class="flex-grow py-3 px-5 rounded-2xl text-center transition-all duration-200 hover:opacity-95 active:scale-[0.99] shadow-md flex items-center justify-center cursor-pointer" style="background: linear-gradient(135deg, #c2781a 0%, #9e5d10 100%); color: #ffffff !important;">
+                                    <span style="color: #ffffff !important; font-weight: 700; font-size: 0.875rem;">Vote Sekarang</span>
                                 </a>
-                                <a href="{{ route('event.results', $event->slug) }}" title="Lihat Hasil Realtime" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-semibold text-xs p-3 rounded-xl text-center transition-all flex items-center justify-center">
-                                    <i class="fa-solid fa-chart-simple"></i>
+                                <a href="{{ route('event.results', $event->slug) }}" title="Lihat Hasil Realtime" class="rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all flex items-center justify-center flex-shrink-0" style="height: 46px; width: 46px;">
+                                    <i class="fa-solid fa-chart-simple text-sm"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 @endforeach
+            </div>
+        @endif
+    </section>
+
+    <!-- ==================== BERITA & INFORMASI TERKINI SECTION ==================== -->
+    <section class="space-y-6 max-w-7xl mx-auto pt-4 border-t border-slate-100">
+        <!-- Header bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="inline-flex w-2.5 h-2.5 rounded-full animate-pulse" style="background: #ba7c21;"></span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Berita & Informasi Terkini</h2>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kabar terbaru seputar penyelenggaraan event voting digital, edukasi, dan pengumuman resmi.</p>
+            </div>
+            <div class="flex items-center space-x-3 text-xs text-slate-500 font-medium">
+                <a href="{{ route('news.index') }}" class="font-bold transition-colors flex items-center gap-1.5" style="color: #ba7c21;">
+                    <span>Lihat Semua Berita</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        @if(isset($latestArticles) && $latestArticles->isNotEmpty())
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($latestArticles as $article)
+                    <article class="rounded-3xl overflow-hidden border border-slate-200/80 bg-white transition-all duration-300 flex flex-col group hover:-translate-y-1.5 hover:shadow-xl shadow-sm">
+                        <!-- Thumbnail Image -->
+                        <a href="{{ route('news.show', $article->slug) }}" class="h-48 w-full relative overflow-hidden bg-slate-100 flex-shrink-0 block">
+                            @if($article->image)
+                                <img src="{{ asset($article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-amber-50 via-slate-50 to-amber-100/40 flex items-center justify-center relative">
+                                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ba7c21_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                                    <i class="fa-solid fa-newspaper text-3xl text-slate-300"></i>
+                                </div>
+                            @endif
+
+                            <!-- Category Badge -->
+                            <div class="absolute top-3.5 left-3.5">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-white/95 backdrop-blur-md shadow-sm border border-slate-200/60" style="color: #9b5f1a;">
+                                    {{ $article->category }}
+                                </span>
+                            </div>
+
+                            <!-- Date Badge -->
+                            <div class="absolute bottom-3.5 right-3.5">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white/95 backdrop-blur-md text-slate-800 border border-slate-200/80 shadow-xs">
+                                    <i class="fa-regular fa-calendar text-[#ba7c21] mr-1.5 text-xs"></i>
+                                    {{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}
+                                </span>
+                            </div>
+                        </a>
+
+                        <!-- Content Info -->
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <h3 class="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 group-hover:text-[#ba7c21] transition-colors leading-snug">
+                                    <a href="{{ route('news.show', $article->slug) }}">
+                                        {{ $article->title }}
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                                    {{ $article->excerpt }}
+                                </p>
+                            </div>
+
+                            <!-- Author & Read Action -->
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                                <div class="flex items-center gap-1.5 font-medium">
+                                    <i class="fa-solid fa-user-pen text-[#ba7c21]"></i>
+                                    <span class="truncate max-w-[120px]">{{ $article->author_name }}</span>
+                                </div>
+                                <a href="{{ route('news.show', $article->slug) }}" class="font-bold flex items-center gap-1 transition-colors" style="color: #ba7c21;">
+                                    <span>Baca Berita</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-3xl p-10 text-center border border-slate-200/80 bg-white space-y-3 max-w-md mx-auto shadow-sm">
+                <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mx-auto text-[#ba7c21]">
+                    <i class="fa-solid fa-newspaper text-xl"></i>
+                </div>
+                <h4 class="text-base font-bold text-slate-800">Belum Ada Berita Terbaru</h4>
+                <p class="text-xs text-slate-500">Informasi dan artikel terkini akan ditampilkan di sini setelah dipublikasikan melalui panel admin.</p>
             </div>
         @endif
     </section>

@@ -126,16 +126,8 @@
                         Event
                     </a>
 
-                    <a href="{{ route('about') }}" class="text-sm font-semibold {{ Route::is('about') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
-                        Tentang
-                    </a>
-
-                    <a href="{{ route('faq') }}" class="text-sm font-semibold {{ Route::is('faq') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
-                        FAQ
-                    </a>
-
-                    <a href="{{ route('contact') }}" class="text-sm font-semibold {{ Route::is('contact') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
-                        Kontak
+                    <a href="{{ route('news.index') }}" class="text-sm font-semibold {{ Route::is('news.*') ? 'text-white bg-white/5' : 'text-gray-300 hover:text-white hover:bg-white/5' }} transition-colors py-2 px-3 rounded-lg">
+                        Berita
                     </a>
                     
                     @auth
@@ -189,16 +181,8 @@
                 Event
             </a>
 
-            <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active-link' : '' }}">
-                Tentang
-            </a>
-
-            <a href="{{ route('faq') }}" class="{{ Route::is('faq') ? 'active-link' : '' }}">
-                FAQ
-            </a>
-
-            <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active-link' : '' }}">
-                Kontak
+            <a href="{{ route('news.index') }}" class="{{ Route::is('news.*') ? 'active-link' : '' }}">
+                Berita
             </a>
             
             @auth
@@ -308,6 +292,9 @@
                         </li>
                         <li>
                             <a href="{{ route('events.list') }}" class="hover:text-[#ba7c21] transition-colors">Event Voting</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('news.index') }}" class="hover:text-[#ba7c21] transition-colors">Berita & Artikel</a>
                         </li>
                         <li>
                             <a href="{{ route('about') }}" class="hover:text-[#ba7c21] transition-colors">Tentang Kami</a>

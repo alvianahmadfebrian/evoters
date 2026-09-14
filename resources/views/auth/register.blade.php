@@ -3,29 +3,32 @@
 @section('title', 'Daftar Akun Voter - eVoters')
 
 @section('content')
-<div class="max-w-md mx-auto py-8 md:py-16 animate-fade-in">
-    <!-- Header Notice -->
-    <div class="text-center space-y-2 mb-6">
-        <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 text-xl mb-1 shadow-sm">
-            <i class="fa-solid fa-user-plus"></i>
-        </div>
-        <h2 class="text-2xl font-extrabold text-slate-900">Daftar Akun Voter</h2>
-        <p class="text-xs text-slate-500 max-w-sm mx-auto">
-            Buat akun untuk memantau perolehan hasil voting secara real-time dan transparan.
+<div class="max-w-md mx-auto py-6 sm:py-12 relative animate-fade-in">
+    <!-- Glow Background Decorators -->
+    <div class="absolute -top-16 -left-20 w-72 h-72 bg-[#ba7c21]/[0.06] rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-16 -right-20 w-72 h-72 bg-[#9b5f1a]/[0.05] rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header Section -->
+    <div class="text-center space-y-2 mb-6 relative z-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Register
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
+            Buat akun untuk memantau perolehan hasil voting secara real-time, transparan, dan akurat.
         </p>
     </div>
 
     <!-- Card -->
-    <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xl bg-white/80 backdrop-blur-md relative overflow-hidden">
+    <div class="rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xl bg-white relative z-10 overflow-hidden">
         
         <!-- Error Alert -->
         @if ($errors->any())
-            <div class="mb-5 p-3.5 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-700 text-xs space-y-1">
-                <div class="flex items-center space-x-2 font-semibold">
-                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+            <div class="mb-5 p-4 rounded-2xl border border-rose-200 bg-rose-50 text-rose-800 text-xs space-y-1.5">
+                <div class="flex items-center space-x-2 font-bold text-rose-700">
+                    <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
                     <span>Pendaftaran belum berhasil:</span>
                 </div>
-                <ul class="list-disc list-inside pl-1 text-[11px] text-rose-600 space-y-0.5">
+                <ul class="list-disc list-inside pl-1 text-[11px] text-rose-700 space-y-0.5">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -51,7 +54,7 @@
                         autofocus
                         value="{{ old('name') }}"
                         placeholder="Contoh: Ahmad Febrian"
-                        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-xs focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        class="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/60 text-slate-900 text-xs sm:text-sm focus:outline-none focus:border-[#ba7c21] focus:bg-white focus:ring-4 focus:ring-[#ba7c21]/15 transition-all shadow-xs placeholder:text-slate-400"
                     >
                 </div>
             </div>
@@ -70,7 +73,7 @@
                         required 
                         value="{{ old('email') }}"
                         placeholder="nama@email.com"
-                        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-xs focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        class="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/60 text-slate-900 text-xs sm:text-sm focus:outline-none focus:border-[#ba7c21] focus:bg-white focus:ring-4 focus:ring-[#ba7c21]/15 transition-all shadow-xs placeholder:text-slate-400"
                     >
                 </div>
             </div>
@@ -88,9 +91,9 @@
                         id="password" 
                         required 
                         placeholder="••••••••"
-                        class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-xs focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        class="w-full pl-10 pr-11 py-3 rounded-2xl border border-slate-200 bg-slate-50/60 text-slate-900 text-xs sm:text-sm focus:outline-none focus:border-[#ba7c21] focus:bg-white focus:ring-4 focus:ring-[#ba7c21]/15 transition-all shadow-xs placeholder:text-slate-400"
                     >
-                    <button type="button" onclick="togglePasswordVisibility('password', 'toggle-pass-icon')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
+                    <button type="button" onclick="togglePasswordVisibility('password', 'toggle-pass-icon')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer" aria-label="Lihat Password">
                         <i id="toggle-pass-icon" class="fa-solid fa-eye text-xs"></i>
                     </button>
                 </div>
@@ -109,9 +112,9 @@
                         id="password_confirmation" 
                         required 
                         placeholder="••••••••"
-                        class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-xs focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        class="w-full pl-10 pr-11 py-3 rounded-2xl border border-slate-200 bg-slate-50/60 text-slate-900 text-xs sm:text-sm focus:outline-none focus:border-[#ba7c21] focus:bg-white focus:ring-4 focus:ring-[#ba7c21]/15 transition-all shadow-xs placeholder:text-slate-400"
                     >
-                    <button type="button" onclick="togglePasswordVisibility('password_confirmation', 'toggle-pass-conf-icon')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
+                    <button type="button" onclick="togglePasswordVisibility('password_confirmation', 'toggle-pass-conf-icon')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer" aria-label="Lihat Konfirmasi Password">
                         <i id="toggle-pass-conf-icon" class="fa-solid fa-eye text-xs"></i>
                     </button>
                 </div>
@@ -120,8 +123,8 @@
             <!-- Submit Button -->
             <button 
                 type="submit" 
-                class="w-full py-3 px-4 rounded-xl text-white font-bold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer mt-2 hover:opacity-90"
-                style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);"
+                class="w-full py-3.5 px-6 rounded-2xl text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer hover:opacity-95 mt-2"
+                style="background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%);"
             >
                 <span>Daftar Akun Sekarang</span>
                 <i class="fa-solid fa-check text-xs"></i>
@@ -134,17 +137,17 @@
                 <div class="w-full border-t border-slate-200"></div>
             </div>
             <div class="relative flex justify-center text-xs">
-                <span class="px-3 bg-white text-slate-400 text-[11px] uppercase tracking-wider">Sudah punya akun?</span>
+                <span class="px-3 bg-white text-slate-400 text-xs font-semibold">Sudah punya akun?</span>
             </div>
         </div>
 
-        <!-- Login Link -->
+        <!-- Login Link Button -->
         <div class="text-center">
             <a 
                 href="{{ route('login') }}" 
-                class="w-full inline-flex items-center justify-center py-2.5 px-4 rounded-xl text-slate-700 font-semibold text-xs border border-slate-200 hover:bg-slate-50 transition-colors"
+                class="w-full inline-flex items-center justify-center py-3 px-4 rounded-2xl text-slate-700 font-bold text-xs sm:text-sm bg-slate-50 hover:bg-slate-100 border border-slate-200/90 transition-all shadow-xs"
             >
-                <i class="fa-solid fa-arrow-right-to-bracket mr-1.5 text-slate-500"></i> Masuk ke Akun
+                <i class="fa-solid fa-arrow-right-to-bracket mr-2 text-[#ba7c21]"></i> Masuk ke Akun
             </a>
         </div>
     </div>
@@ -166,3 +169,4 @@ function togglePasswordVisibility(inputId, iconId) {
 }
 </script>
 @endsection
+

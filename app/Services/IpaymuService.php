@@ -91,6 +91,79 @@ class IpaymuService
     }
 
     /**
+     * Create Direct QRIS transaction through iPaymu API v2
+     */
+    public function createDirectQris(Vote $vote, Candidate $candidate, Event $event, string $name, int $quantity, ?string $phone = null, ?string $email = null): ?array
+    {
+        $url = $this->baseUrl . '/api/v2/payment/direct';
+        $method = 'POST';
+
+        $totalAmount = (int)($event->price * $quantity);
+        $buyerName = !empty($name) ? substr($name, 0, 50) : 'Voter';
+        $buyerPhone = !empty($phone) ? $phone : ('0812' . rand(10000000, 99999999));
+        $buyerEmail = !empty($email) ? $email : ('voter.' . substr(md5($vote->id . time()), 0, 8) . '@evoters.id');
+
+        $body = [
+            'name' => $buyerName,
+            'phone' => $buyerPhone,
+            'email' => $buyerEmail,
+            'amount' => $totalAmount,
+            'notifyUrl' => route('payment.notification'),
+            'referenceId' => $vote->payment_ref,
+            'paymentMethod' => 'qris',
+            'paymentChannel' => 'mpm',
+            'description' => 'Vote: ' . substr($candidate->name, 0, 45) . ' (' . $quantity . ' vote)',
+        ];
+
+        try {
+            $jsonBody = json_encode($body, JSON_UNESCAPED_SLASHES);
+            $requestBody = strtolower(hash('sha256', $jsonBody));
+            $stringToSign = strtoupper($method) . ':' . $this->va . ':' . $requestBody . ':' . $this->apiKey;
+            $signature = hash_hmac('sha256', $stringToSign, $this->apiKey);
+            $timestamp = date('YmdHis');
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'va' => $this->va,
+                'signature' => $signature,
+                'timestamp' => $timestamp,
+            ])->withBody($jsonBody, 'application/json')
+              ->post($url);
+
+            Log::info('iPaymu Direct QRIS Response: ' . $response->body());
+
+            if ($response->successful()) {
+                $data = $response->json();
+                if (isset($data['Status']) && $data['Status'] == 200 && isset($data['Data'])) {
+                    $qrData = $data['Data'];
+                    $qrImage = $qrData['QrImage'] ?? $qrData['QrTemplate'] ?? null;
+                    if ($qrImage && !filter_var($qrImage, FILTER_VALIDATE_URL)) {
+                        $qrImage = $this->baseUrl . '/' . ltrim($qrImage, '/');
+                    }
+                    return [
+                        'qr_image' => $qrImage,
+                        'qr_string' => $qrData['QrString'] ?? null,
+                        'qr_template' => $qrData['QrTemplate'] ?? null,
+                        'transaction_id' => $qrData['TransactionId'] ?? null,
+                        'session_id' => $qrData['SessionId'] ?? null,
+                        'expired' => $qrData['Expired'] ?? null,
+                        'total' => $qrData['Total'] ?? $totalAmount,
+                        'fee' => $qrData['Fee'] ?? 0,
+                    ];
+                }
+                Log::error('iPaymu Direct QRIS non-200 Status: ' . json_encode($data));
+            } else {
+                Log::error('iPaymu Direct QRIS HTTP Error: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            Log::error('iPaymu Direct QRIS Exception: ' . $e->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Verify iPaymu notification callback
      */
     public function verifyCallback(Request $request): bool

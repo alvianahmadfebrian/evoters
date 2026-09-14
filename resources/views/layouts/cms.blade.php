@@ -79,7 +79,21 @@
                     Buat Event Baru
                 </a>
 
-                <div class="pt-6 border-t border-white/5 mt-6">
+                <div class="pt-4 border-t border-white/5 mt-4">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-3 mb-2">BERITA & ARTIKEL</p>
+                    
+                    <a href="{{ route('cms.articles.index') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('cms.articles.*') && !request()->routeIs('cms.articles.create') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        <i class="fa-solid fa-newspaper w-5 text-center mr-3 text-lg"></i>
+                        Semua Berita
+                    </a>
+
+                    <a href="{{ route('cms.articles.create') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('cms.articles.create') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        <i class="fa-solid fa-pen-nib w-5 text-center mr-3 text-lg"></i>
+                        Tulis Berita
+                    </a>
+                </div>
+
+                <div class="pt-4 border-t border-white/5 mt-4">
                     <p class="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-3 mb-2">AKSES CEPAT</p>
                     <a href="{{ route('home') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
                         <i class="fa-solid fa-globe w-5 text-center mr-3"></i>

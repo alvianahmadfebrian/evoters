@@ -1,15 +1,19 @@
 {{--
     ==================================================
-    VERA AI CHAT WIDGET
+    VERA AI CHAT WIDGET (PURE ROBUST CSS)
     ==================================================
 --}}
 
 <style>
     #vera-widget {
         font-family: 'Instrument Sans', sans-serif;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
     }
 
-    /* Robust CSS-driven button styling to bypass Tailwind JIT compilation lag */
+    /* Floating Action Button */
     #vera-btn {
         width: 56px;
         height: 56px;
@@ -21,11 +25,12 @@
         color: #ffffff;
         box-shadow: 0 10px 25px -5px rgba(186, 124, 33, 0.5), 0 0 15px rgba(212, 152, 48, 0.4);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(247, 230, 187, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.85);
         cursor: pointer;
         position: relative;
         z-index: 20;
         outline: none;
+        padding: 0;
     }
     
     #vera-btn:hover {
@@ -39,7 +44,7 @@
     }
     #vera-btn i {
         color: #ffffff !important;
-        font-size: 1.25rem;
+        font-size: 1.35rem;
         position: relative;
         z-index: 10;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -52,38 +57,311 @@
 
     .pulse-span {
         position: absolute;
-        inset: -2px;
+        inset: -4px;
         border-radius: 9999px;
         background: radial-gradient(circle, rgba(212, 152, 48, 0.45) 0%, rgba(186, 124, 33, 0.2) 70%, transparent 100%);
         z-index: 0;
         pointer-events: none;
     }
 
-    /* Robust CSS-driven positioning & transitions for the Chat Window */
+    /* Chat Window Container */
     #vera-chat-window {
         position: fixed;
         bottom: 96px;
         right: 24px;
-        width: 384px;
-        max-width: calc(100vw - 2rem);
-        height: 500px;
-        max-height: 70vh;
+        width: 375px;
+        max-width: calc(100vw - 32px);
+        height: 520px;
+        max-height: calc(100vh - 120px);
         z-index: 9998;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        border-radius: 2rem;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-radius: 24px;
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.04);
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         transform: scale(0) translateY(32px);
         opacity: 0;
         pointer-events: none;
         transform-origin: bottom right;
+        box-sizing: border-box;
     }
     
     #vera-chat-window.active {
         transform: scale(1) translateY(0);
         opacity: 1;
         pointer-events: auto;
+    }
+
+    /* Header */
+    .vera-hdr {
+        background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(186, 124, 33, 0.2);
+        flex-shrink: 0;
+    }
+    .vera-hdr-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .vera-hdr-avatar-wrap {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        max-width: 38px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        overflow: visible;
+        background: #ffffff;
+    }
+    .vera-hdr-avatar-wrap img {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50% !important;
+        display: block !important;
+    }
+    .vera-hdr-dot {
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 10px;
+        height: 10px;
+        background-color: #10b981;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+    }
+    .vera-hdr-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.2;
+        margin: 0;
+    }
+    .vera-hdr-sub {
+        font-size: 11px;
+        font-weight: 500;
+        color: #fef3c7;
+        margin: 2px 0 0 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .vera-close-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.18);
+        border: none;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        padding: 0;
+    }
+    .vera-close-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Feed */
+    .vera-feed {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 12px 14px;
+        background-color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .vera-feed::-webkit-scrollbar {
+        width: 4px;
+    }
+    .vera-feed::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+    }
+
+    /* Message Rows */
+    .vera-msg-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        max-width: 90%;
+        width: fit-content;
+    }
+    .vera-msg-row.user {
+        margin-left: auto;
+        flex-direction: row-reverse;
+    }
+    .vera-msg-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+        border-radius: 50% !important;
+        overflow: hidden !important;
+        border: 1.5px solid #fbd38d !important;
+        background: #ffffff !important;
+        flex-shrink: 0 !important;
+        margin-top: 1px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .vera-msg-avatar img {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+
+    /* Bubbles */
+    .vera-bubble-bot {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        color: #1e293b;
+        font-size: 13px;
+        line-height: 1.45;
+        padding: 9px 13px;
+        border-radius: 16px;
+        border-top-left-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        text-align: left;
+        white-space: pre-line;
+    }
+    .vera-bubble-user {
+        background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%);
+        color: #ffffff;
+        font-size: 13px;
+        line-height: 1.45;
+        padding: 9px 13px;
+        border-radius: 16px;
+        border-top-right-radius: 4px;
+        box-shadow: 0 2px 8px rgba(186, 124, 33, 0.25);
+        text-align: left;
+        white-space: pre-line;
+    }
+
+    /* Timestamp */
+    .vera-msg-time {
+        font-size: 10px;
+        margin-top: 4px;
+        display: block;
+        line-height: 1;
+        user-select: none;
+    }
+    .vera-bubble-bot .vera-msg-time {
+        color: #94a3b8;
+        text-align: right;
+    }
+    .vera-bubble-user .vera-msg-time {
+        color: rgba(255, 255, 255, 0.8);
+        text-align: right;
+    }
+
+    /* Footer / Input */
+    .vera-footer {
+        padding: 10px 12px;
+        background-color: #ffffff;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+    .vera-input {
+        flex-grow: 1;
+        background-color: #f1f5f9;
+        border: 1.5px solid #e2e8f0;
+        color: #0f172a;
+        font-size: 13px;
+        padding: 9px 13px;
+        border-radius: 12px;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    .vera-input:focus {
+        background-color: #ffffff;
+        border-color: #ba7c21;
+        box-shadow: 0 0 0 3px rgba(186, 124, 33, 0.15);
+    }
+    .vera-input::placeholder {
+        color: #94a3b8;
+    }
+    .vera-send-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        background: linear-gradient(135deg, #ba7c21 0%, #9b5f1a 100%);
+        border: none;
+        border-radius: 12px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 8px rgba(186, 124, 33, 0.25);
+        flex-shrink: 0;
+        padding: 0;
+    }
+    .vera-send-btn:hover {
+        opacity: 0.95;
+        transform: scale(1.03);
+    }
+    .vera-send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* WhatsApp Button */
+    .vera-wa-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 6px;
+        padding: 7px 12px;
+        background-color: #25D366;
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 11px;
+        border-radius: 8px;
+        text-decoration: none !important;
+        border: none;
+        box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+        transition: background-color 0.2s ease;
+    }
+    .vera-wa-btn:hover {
+        background-color: #128C7E;
+    }
+
+    /* Typing Animation */
+    @keyframes typing-bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+    }
+    .typing-dot {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        background-color: #ba7c21;
+        border-radius: 50%;
+        animation: typing-bounce 1.2s infinite ease-in-out;
     }
 
     @keyframes pulse-gold {
@@ -94,103 +372,77 @@
         animation: pulse-gold 2s infinite;
     }
 
-    @keyframes typing-bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
-    }
-    .typing-dot {
-        animation: typing-bounce 1.2s infinite ease-in-out;
-    }
-
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    /* Prevent selection of elements inside widget except the input */
     #vera-widget, #vera-chat-window {
         user-select: none;
         -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
     }
     #vera-input {
         user-select: text;
         -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
     }
 </style>
 
-<!-- ==================== VERA AI CHAT WIDGET ==================== -->
-<!-- Floating Action Button (Green Circle with white CS icon) -->
-<div id="vera-widget" class="fixed bottom-6 right-6 z-[9999]">
+<!-- Floating Launcher Button -->
+<div id="vera-widget">
     <button id="vera-btn" type="button" aria-label="Buka chat dengan Vera">
         <span class="pulse-span pulse-dot"></span>
         <i class="fa-solid fa-headset"></i>
     </button>
 </div>
 
-<!-- Chat Overlay Window (Sibling of widget container, positioned relative to viewport via raw CSS) -->
-<div id="vera-chat-window" class="glass-card border border-white/10 shadow-2xl">
+<!-- Chat Window -->
+<div id="vera-chat-window">
     <!-- Header -->
-    <div class="bg-slate-950/70 backdrop-blur-md px-5 py-4 border-b border-white/5 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <div class="w-9 h-9 rounded-full relative flex-shrink-0">
-                <div class="w-full h-full rounded-full overflow-hidden border border-[#2b3a8c]/30">
-                    <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera" class="w-full h-full object-cover">
-                </div>
-                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-slate-950"></span>
+    <div class="vera-hdr">
+        <div class="vera-hdr-left">
+            <div class="vera-hdr-avatar-wrap">
+                <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera">
+                <span class="vera-hdr-dot"></span>
             </div>
-            <div class="text-left">
-                <h4 class="text-sm font-bold text-white leading-none">Vera</h4>
-                <span class="text-[10px] text-amber-400 font-bold tracking-wide flex items-center mt-1">Online</span>
+            <div>
+                <h4 class="vera-hdr-title">Vera</h4>
+                <p class="vera-hdr-sub">
+                    <span>Asisten AI eVoters</span>
+                </p>
             </div>
         </div>
-        <button id="close-vera-chat" type="button" aria-label="Tutup chat"
-                class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors flex items-center justify-center cursor-pointer">
-            <i class="fa-solid fa-xmark text-sm"></i>
+        <button id="close-vera-chat" class="vera-close-btn" type="button" aria-label="Tutup chat">
+            <i class="fa-solid fa-xmark" style="font-size: 13px;"></i>
         </button>
     </div>
 
-    <!-- Chat Messages Feed -->
-    <div id="vera-chat-feed" class="flex-grow overflow-y-auto p-5 space-y-4 no-scrollbar bg-slate-950/20">
-        <div class="flex items-start space-x-2.5 max-w-[85%]">
-            <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-[#2b3a8c]/30">
-                <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera" class="w-full h-full object-cover">
+    <!-- Feed -->
+    <div id="vera-chat-feed" class="vera-feed">
+        <div class="vera-msg-row">
+            <div class="vera-msg-avatar">
+                <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera">
             </div>
-            <div class="bg-white/5 border border-white/5 rounded-2xl rounded-tl-none px-4 py-3 text-xs md:text-sm text-gray-300 text-left leading-relaxed">
-                Halo! Saya Vera, asisten AI resmi E-Voters.id. Ada yang bisa saya bantu terkait platform voting online kami?
-            </div>
-        </div>
-    </div>
-
-    <!-- Typing Indicator (Template Hidden) -->
-    <div id="vera-typing-template" class="hidden">
-        <div class="flex items-start space-x-2.5 max-w-[85%] animate-pulse">
-            <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-[#2b3a8c]/30">
-                <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera" class="w-full h-full object-cover">
-            </div>
-            <div class="bg-white/5 border border-white/5 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-gray-300">
-                <div class="flex items-center space-x-1.5 py-1">
-                    <span class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot" style="animation-delay: 0s"></span>
-                    <span class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot" style="animation-delay: 0.2s"></span>
-                    <span class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot" style="animation-delay: 0.4s"></span>
-                </div>
+            <div class="vera-bubble-bot">
+                <div>Halo! Saya <strong>Vera</strong>, asisten AI resmi <strong>eVoters.id</strong>. Ada yang bisa saya bantu terkait voting online, aktivasi token, atau pembuatan event?</div>
+                <span class="vera-msg-time">{{ date('H:i') }}</span>
             </div>
         </div>
     </div>
 
-    <!-- Chat Input -->
-    <div class="p-4 border-t border-white/5 bg-slate-950/40 backdrop-blur-md flex items-center space-x-2">
-        <input type="text" id="vera-input" placeholder="Tanyakan pada Vera..." aria-label="Ketik pesan untuk Vera"
-               class="flex-grow bg-white/5 text-xs md:text-sm text-white placeholder-gray-400 rounded-xl px-4 py-3 border border-white/5 focus:outline-none focus:border-[#2b3a8c]/50 focus:ring-1 focus:ring-[#2b3a8c]/30 transition-all">
-        <button id="vera-send-btn" type="button" aria-label="Kirim pesan"
-                class="w-10 h-10 rounded-xl bg-[#2b3a8c] hover:bg-[#202c70] text-white flex items-center justify-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-            <i class="fa-solid fa-paper-plane text-xs md:text-sm"></i>
+    <!-- Hidden Typing Indicator Template -->
+    <div id="vera-typing-template" style="display: none;">
+        <div class="vera-msg-row">
+            <div class="vera-msg-avatar">
+                <img src="{{ asset('images/vera_avatar.png') }}" alt="Vera">
+            </div>
+            <div class="vera-bubble-bot" style="display: flex; align-items: center; gap: 4px; padding: 8px 12px;">
+                <span class="typing-dot" style="animation-delay: 0s;"></span>
+                <span class="typing-dot" style="animation-delay: 0.2s;"></span>
+                <span class="typing-dot" style="animation-delay: 0.4s;"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Input -->
+    <div class="vera-footer">
+        <input type="text" id="vera-input" class="vera-input" placeholder="Tanyakan pada Vera..." aria-label="Ketik pesan">
+        <button id="vera-send-btn" class="vera-send-btn" type="button" aria-label="Kirim pesan">
+            <i class="fa-solid fa-paper-plane" style="font-size: 12px;"></i>
         </button>
     </div>
 </div>
@@ -209,6 +461,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSending = false;
     const REQUEST_TIMEOUT_MS = 15000;
 
+    function getCurrentTime() {
+        const now = new Date();
+        return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':');
+    }
+
     function toggleChat() {
         const isOpen = veraWindow.classList.toggle('active');
         if (isOpen) {
@@ -221,38 +478,35 @@ document.addEventListener('DOMContentLoaded', function () {
         feed.scrollTop = feed.scrollHeight;
     }
 
-    // Pakai textContent (bukan innerHTML) untuk isi pesan supaya aman dari XSS
     function appendMessage(sender, text) {
         const isUser = sender === 'user';
+        const timeStr = getCurrentTime();
 
-        const container = document.createElement('div');
-        container.className = `flex items-start space-x-2.5 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse space-x-reverse' : ''}`;
+        const row = document.createElement('div');
+        row.className = `vera-msg-row ${isUser ? 'user' : ''}`;
 
         if (!isUser) {
             const avatar = document.createElement('div');
-            avatar.className = 'w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-[#2b3a8c]/30';
-            avatar.innerHTML = `<img src="{{ asset('images/vera_avatar.png') }}" alt="Vera" class="w-full h-full object-cover">`;
-            container.appendChild(avatar);
+            avatar.className = 'vera-msg-avatar';
+            avatar.innerHTML = `<img src="{{ asset('images/vera_avatar.png') }}" alt="Vera">`;
+            row.appendChild(avatar);
         }
 
         const bubble = document.createElement('div');
-        bubble.className = isUser
-            ? 'bg-[#2b3a8c] text-white rounded-tr-none rounded-2xl px-4 py-3 text-xs md:text-sm text-left leading-relaxed whitespace-pre-line'
-            : 'bg-white/5 border border-white/5 text-gray-300 rounded-tl-none rounded-2xl px-4 py-3 text-xs md:text-sm text-left leading-relaxed whitespace-pre-line flex flex-col space-y-2';
+        bubble.className = isUser ? 'vera-bubble-user' : 'vera-bubble-bot';
 
-        // Detect if text contains a WhatsApp link
+        const contentDiv = document.createElement('div');
+
         const waRegex = /https:\/\/wa\.me\/[0-9]+/i;
         const match = text.match(waRegex);
 
         if (!isUser && match) {
-            const waUrl = match[0];
             const cleanText = text.replace(waRegex, '').trim();
 
-            const textSpan = document.createElement('span');
+            const textSpan = document.createElement('div');
             textSpan.textContent = cleanText;
-            bubble.appendChild(textSpan);
+            contentDiv.appendChild(textSpan);
 
-            // Create beautiful green WhatsApp CS button with pre-filled support text template
             const templateText = encodeURIComponent("Halo Admin E-Voters.id, saya membutuhkan bantuan/informasi terkait platform e-voting. Mohon bantuannya.");
             const waUrlWithTemplate = `https://wa.me/6281290174510?text=${templateText}`;
 
@@ -260,24 +514,29 @@ document.addEventListener('DOMContentLoaded', function () {
             waBtn.href = waUrlWithTemplate;
             waBtn.target = '_blank';
             waBtn.rel = 'noopener noreferrer';
-            waBtn.className = 'mt-2 inline-flex items-center justify-center px-4 py-2.5 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xs rounded-xl transition-all shadow-md text-center border-none';
-            waBtn.style.textDecoration = 'none';
-            waBtn.style.color = '#ffffff';
-            waBtn.innerHTML = `<i class="fa-brands fa-whatsapp text-sm mr-1.5"></i> Hubungi WhatsApp`;
-            bubble.appendChild(waBtn);
+            waBtn.className = 'vera-wa-btn';
+            waBtn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Hubungi WhatsApp`;
+            contentDiv.appendChild(waBtn);
         } else {
-            bubble.textContent = text;
+            contentDiv.textContent = text;
         }
 
-        container.appendChild(bubble);
-        feed.appendChild(container);
+        bubble.appendChild(contentDiv);
+
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'vera-msg-time';
+        timeSpan.textContent = timeStr;
+        bubble.appendChild(timeSpan);
+
+        row.appendChild(bubble);
+        feed.appendChild(row);
         scrollFeed();
     }
 
     function showTypingIndicator() {
         const node = typingTemplate.cloneNode(true);
         node.id = 'vera-current-typing';
-        node.classList.remove('hidden');
+        node.style.display = 'block';
         feed.appendChild(node);
         scrollFeed();
         return node;
@@ -341,14 +600,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Prevent right-click / context menu (Inspect Element) on the chat widget elements
+    // Context menu / devtools protections
     const widgetContainer = document.getElementById('vera-widget');
     if (widgetContainer) {
         widgetContainer.addEventListener('contextmenu', e => e.preventDefault());
     }
     veraWindow.addEventListener('contextmenu', e => e.preventDefault());
 
-    // Block keyboard DevTools shortcuts when interacting with the chatbot
     window.addEventListener('keydown', function (e) {
         if (
             e.key === 'F12' || 

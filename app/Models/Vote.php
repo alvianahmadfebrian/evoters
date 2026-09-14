@@ -16,12 +16,16 @@ class Vote extends Model
         'amount',
         'payment_ref',
         'payment_url',
+        'qr_image',
+        'qr_string',
+        'payment_expired_at',
         'quantity',
         'voted_at',
     ];
 
     protected $casts = [
         'voted_at' => 'datetime',
+        'payment_expired_at' => 'datetime',
     ];
 
     /**

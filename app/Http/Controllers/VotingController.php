@@ -7,6 +7,7 @@ use App\Models\Candidate;
 use App\Models\Token;
 use App\Models\Vote;
 use App\Models\Otp;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -33,8 +34,56 @@ class VotingController extends Controller
         }
 
         $activeEvents = $query->orderBy('created_at', 'desc')->get();
+        $latestArticles = Article::published()->orderBy('published_at', 'desc')->take(3)->get();
 
-        return view('welcome', compact('activeEvents'));
+        return view('welcome', compact('activeEvents', 'latestArticles'));
+    }
+
+    /**
+     * Show the dedicated public news/articles listing page.
+     */
+    public function listArticles(Request $request)
+    {
+        $query = Article::published();
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->input('category'));
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('excerpt', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $articles = $query->orderBy('published_at', 'desc')->paginate(9);
+        $categories = Article::published()->select('category')->distinct()->pluck('category');
+        $featuredArticle = Article::published()->orderBy('views_count', 'desc')->first();
+
+        return view('voting.articles', compact('articles', 'categories', 'featuredArticle'));
+    }
+
+    /**
+     * Show a single article detail page.
+     */
+    public function showArticle($slug)
+    {
+        $article = Article::published()->where('slug', $slug)->firstOrFail();
+
+        // Increment views count safely
+        $article->increment('views_count');
+
+        // Recent / Related articles
+        $recentArticles = Article::published()
+            ->where('id', '!=', $article->id)
+            ->orderBy('published_at', 'desc')
+            ->take(4)
+            ->get();
+
+        return view('voting.article-detail', compact('article', 'recentArticles'));
     }
 
     /**
@@ -224,9 +273,21 @@ class VotingController extends Controller
                 'voted_at' => now(),
             ]);
 
-            $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, $name, $quantity);
-            if ($paymentUrl) {
-                $vote->update(['payment_url' => $paymentUrl]);
+            // Request Direct QRIS from iPaymu
+            $qrisData = $this->ipaymuService->createDirectQris($vote, $candidate, $event, $name, $quantity);
+            if ($qrisData) {
+                $vote->update([
+                    'qr_image' => $qrisData['qr_image'] ?? null,
+                    'qr_string' => $qrisData['qr_string'] ?? null,
+                    'payment_url' => $qrisData['qr_image'] ?? null,
+                    'payment_expired_at' => !empty($qrisData['expired']) ? date('Y-m-d H:i:s', strtotime($qrisData['expired'])) : now()->addHours(24),
+                ]);
+            } else {
+                // Fallback to standard checkout URL if direct QRIS is not available
+                $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, $name, $quantity);
+                if ($paymentUrl) {
+                    $vote->update(['payment_url' => $paymentUrl]);
+                }
             }
 
             return redirect()->route('vote.pay', $vote->id);
@@ -409,15 +470,39 @@ class VotingController extends Controller
         $event = $vote->event;
         $candidate = $vote->candidate;
 
-        // If payment URL is missing for some reason, try to generate it now
-        if (!$vote->payment_url) {
-            $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, 'Voter', $vote->quantity);
-            if ($paymentUrl) {
-                $vote->update(['payment_url' => $paymentUrl]);
+        // If QR image / payment URL is missing for some reason, try to generate direct QRIS now
+        if (!$vote->qr_image && !$vote->payment_url) {
+            $qrisData = $this->ipaymuService->createDirectQris($vote, $candidate, $event, $vote->voter_name ?? 'Voter', $vote->quantity);
+            if ($qrisData) {
+                $vote->update([
+                    'qr_image' => $qrisData['qr_image'] ?? null,
+                    'qr_string' => $qrisData['qr_string'] ?? null,
+                    'payment_url' => $qrisData['qr_image'] ?? null,
+                    'payment_expired_at' => !empty($qrisData['expired']) ? date('Y-m-d H:i:s', strtotime($qrisData['expired'])) : now()->addHours(24),
+                ]);
+            } else {
+                $paymentUrl = $this->ipaymuService->createCheckoutUrl($vote, $candidate, $event, $vote->voter_name ?? 'Voter', $vote->quantity);
+                if ($paymentUrl) {
+                    $vote->update(['payment_url' => $paymentUrl]);
+                }
             }
         }
 
         return view('voting.payment', compact('vote', 'event', 'candidate'));
+    }
+
+    /**
+     * Check vote payment status asynchronously (for AJAX polling).
+     */
+    public function checkStatus($id)
+    {
+        $vote = Vote::findOrFail($id);
+
+        return response()->json([
+            'status' => $vote->payment_status,
+            'is_completed' => ($vote->payment_status === 'completed'),
+            'redirect_url' => route('event.results', $vote->event->slug),
+        ]);
     }
 
     /**
