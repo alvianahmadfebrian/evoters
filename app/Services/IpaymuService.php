@@ -164,6 +164,57 @@ class IpaymuService
     }
 
     /**
+     * Check current iPaymu merchant balance
+     */
+    public function getBalance(): ?array
+    {
+        if (empty($this->va) || empty($this->apiKey)) {
+            return null;
+        }
+
+        $url = $this->baseUrl . '/api/v2/balance';
+        $method = 'POST';
+        $body = [
+            'account' => $this->va,
+        ];
+
+        try {
+            $jsonBody = json_encode($body, JSON_UNESCAPED_SLASHES);
+            $requestBody = strtolower(hash('sha256', $jsonBody));
+            $stringToSign = strtoupper($method) . ':' . $this->va . ':' . $requestBody . ':' . $this->apiKey;
+            $signature = hash_hmac('sha256', $stringToSign, $this->apiKey);
+            $timestamp = date('YmdHis');
+
+            $response = Http::withoutVerifying()
+                ->timeout(8)
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'va' => $this->va,
+                    'signature' => $signature,
+                    'timestamp' => $timestamp,
+                ])
+                ->withBody($jsonBody, 'application/json')
+                ->post($url);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                if (isset($data['Status']) && $data['Status'] == 200 && isset($data['Data'])) {
+                    return [
+                        'merchant_balance' => (float)($data['Data']['MerchantBalance'] ?? 0),
+                        'member_balance' => (float)($data['Data']['MemberBalance'] ?? 0),
+                        'va' => $data['Data']['Va'] ?? $this->va,
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            Log::warning('iPaymu getBalance exception: ' . $e->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Verify iPaymu notification callback
      */
     public function verifyCallback(Request $request): bool

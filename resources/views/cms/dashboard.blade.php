@@ -62,37 +62,81 @@
             </div>
         </div>
 
-        <!-- Card 5: Total Revenue -->
+        <!-- Card 5: Total Revenue & Live iPaymu Balance -->
         <div class="glass-card p-4 rounded-2xl border border-white/5 relative overflow-hidden flex items-center justify-between shadow-lg">
             <div class="space-y-1">
-                <p class="text-xs font-semibold text-gray-400">Total Pendapatan</p>
+                <div class="flex items-center space-x-1.5">
+                    <p class="text-xs font-semibold text-gray-400">Total Pendapatan</p>
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">iPaymu Live</span>
+                </div>
                 <h3 class="text-xl font-extrabold text-emerald-600">
                     Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}
                 </h3>
-                <p class="text-[9px] text-gray-500 font-medium">Dari QRIS Sukses</p>
+                @if(isset($stats['ipaymu_balance']) && $stats['ipaymu_balance'] !== null)
+                    <p class="text-[9px] text-gray-400 font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Saldo Real: <strong class="text-emerald-300 font-bold">Rp {{ number_format($stats['ipaymu_balance'], 0, ',', '.') }}</strong>
+                    </p>
+                @else
+                    <p class="text-[9px] text-gray-500 font-medium">Dari QRIS Sukses</p>
+                @endif
             </div>
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 flex items-center justify-center">
+            <a href="https://my.ipaymu.com" target="_blank" title="Buka iPaymu" class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 flex items-center justify-center hover:scale-105 transition-transform">
                 <i class="fa-solid fa-money-bill-wave text-lg"></i>
-            </div>
+            </a>
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="glass-card rounded-2xl p-6 border border-white/5">
-        <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-bolt mr-2 text-indigo-400"></i>Aksi Cepat CMS</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <a href="{{ route('cms.events.create') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
-                <i class="fa-solid fa-circle-plus text-indigo-400 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs font-semibold text-gray-200">Buat Event</span>
-            </a>
-            <a href="{{ route('cms.events.index') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
-                <i class="fa-solid fa-calendar-days text-indigo-400 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs font-semibold text-gray-200">Kelola Event</span>
-            </a>
-            <a href="{{ route('home') }}" target="_blank" class="flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
-                <i class="fa-solid fa-eye text-indigo-400 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs font-semibold text-gray-200">Preview Web</span>
-            </a>
+    <!-- iPaymu Gateway & Quick Actions -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- iPaymu Live Balance & Settlement Card -->
+        <div class="glass-card rounded-2xl p-5 border border-white/5 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-white">Payment Gateway iPaymu</h4>
+                        <p class="text-[10px] text-gray-400 font-mono">VA: {{ $stats['ipaymu_va'] ?: '1179005324380409' }}</p>
+                    </div>
+                </div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> Terkoneksi
+                </span>
+            </div>
+
+            <div class="p-3 bg-white/5 rounded-xl border border-white/5 flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] text-gray-400 font-medium block">Saldo Siap Tarik (Net):</span>
+                    <span class="text-base font-black text-emerald-400">
+                        Rp {{ number_format($stats['ipaymu_balance'] ?? 0, 0, ',', '.') }}
+                    </span>
+                </div>
+                <a href="https://my.ipaymu.com" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-all flex items-center space-x-1">
+                    <span>Tarik Saldo</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Quick Actions (2 cols) -->
+        <div class="lg:col-span-2 glass-card rounded-2xl p-5 border border-white/5 flex flex-col justify-between">
+            <h3 class="text-xs font-bold text-white mb-3"><i class="fa-solid fa-bolt mr-2 text-indigo-400"></i>Aksi Cepat CMS</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <a href="{{ route('cms.events.create') }}" class="flex flex-col items-center justify-center p-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
+                    <i class="fa-solid fa-circle-plus text-indigo-400 text-lg mb-1.5 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-semibold text-gray-200">Buat Event</span>
+                </a>
+                <a href="{{ route('cms.events.index') }}" class="flex flex-col items-center justify-center p-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
+                    <i class="fa-solid fa-calendar-days text-indigo-400 text-lg mb-1.5 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-semibold text-gray-200">Kelola Event</span>
+                </a>
+                <a href="{{ route('home') }}" target="_blank" class="flex flex-col items-center justify-center p-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all text-center group cursor-pointer">
+                    <i class="fa-solid fa-eye text-indigo-400 text-lg mb-1.5 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-semibold text-gray-200">Preview Web</span>
+                </a>
+            </div>
         </div>
     </div>
 

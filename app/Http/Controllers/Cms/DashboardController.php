@@ -6,13 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Candidate;
 use App\Models\Vote;
-use App\Models\Token;
+use App\Services\IpaymuService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(IpaymuService $ipaymuService)
     {
+        $ipaymuData = null;
+        try {
+            $ipaymuData = Cache::remember('ipaymu_cms_balance', 30, function () use ($ipaymuService) {
+                return $ipaymuService->getBalance();
+            });
+        } catch (\Exception $e) {
+            $ipaymuData = null;
+        }
+
         $stats = [
             'total_events' => Event::count(),
             'active_events' => Event::where('status', 'active')->count(),
@@ -20,7 +30,9 @@ class DashboardController extends Controller
             'total_votes' => (int)Vote::where('payment_status', 'completed')->sum('quantity'),
             'total_tokens' => Token::count(),
             'used_tokens' => Token::where('is_used', true)->count(),
-            'total_revenue' => Vote::where('payment_status', 'completed')->sum('amount'),
+            'total_revenue' => (float)Vote::where('payment_status', 'completed')->sum('amount'),
+            'ipaymu_balance' => $ipaymuData['merchant_balance'] ?? null,
+            'ipaymu_va' => $ipaymuData['va'] ?? config('services.ipaymu.va', env('IPAYMU_VA', '')),
         ];
 
         // Recent events
