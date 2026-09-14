@@ -32,6 +32,7 @@ Route::post('/event/{slug}/vote', [VotingController::class, 'submitVote'])->name
 Route::get('/event/{slug}/results', [VotingController::class, 'showResults'])->name('event.results')->middleware('auth');
 Route::get('/vote/{vote}/pay', [VotingController::class, 'showPayment'])->name('vote.pay');
 Route::get('/vote/{vote}/status', [VotingController::class, 'checkStatus'])->name('vote.status');
+Route::get('/vote/{vote}/download-qr', [VotingController::class, 'downloadQr'])->name('vote.download.qr');
 Route::post('/vote/{vote}/pay/confirm', [VotingController::class, 'confirmPayment'])->name('vote.pay.confirm');
 Route::post('/payment/notification', [VotingController::class, 'handleNotification'])->name('payment.notification');
 Route::post('/ai/chat', [AiChatController::class, 'chat'])->name('ai.chat');

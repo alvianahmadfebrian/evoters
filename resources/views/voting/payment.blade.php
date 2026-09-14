@@ -154,10 +154,10 @@
 
             <!-- Action Buttons -->
             <div class="flex items-center justify-center gap-2.5 pt-1">
-                <button type="button" onclick="downloadQRIS()" class="flex-1 max-w-[180px] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center space-x-1.5 hover:opacity-95" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
+                <a href="{{ route('vote.download.qr', $vote->id) }}" id="btn-download-qr" onclick="return handleDownloadClick(event)" class="flex-1 max-w-[180px] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center space-x-1.5 hover:opacity-95 text-center" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
                     <i class="fa-solid fa-download text-xs"></i>
                     <span>Download QR</span>
-                </button>
+                </a>
                 <button type="button" onclick="checkStatusManual()" id="btn-check-status" class="flex-1 max-w-[180px] bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl border border-slate-300 transition-all cursor-pointer flex items-center justify-center space-x-1.5">
                     <i class="fa-solid fa-arrows-rotate text-xs text-slate-500"></i>
                     <span>Cek Status</span>
@@ -368,17 +368,11 @@
         });
     }
 
-    function downloadQRIS() {
+    function handleDownloadClick(e) {
+        // If image failed or QR was rendered dynamically via JS canvas
         const img = document.getElementById('qris-image');
-        if (img && img.src) {
-            const link = document.createElement('a');
-            link.href = img.src;
-            link.download = 'QRIS-eVoters-{{ $vote->payment_ref }}.png';
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
+        if (!img || img.classList.contains('hidden') || !img.src) {
+            e.preventDefault();
             const canvas = document.querySelector('#qrcode-canvas canvas');
             const qrCanvasImg = document.querySelector('#qrcode-canvas img');
             if (canvas) {
@@ -395,9 +389,17 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            } else {
-                alert('Gambar QRIS sedang dimuat.');
             }
+            return false;
+        }
+        // Let the default link navigation go to /vote/{id}/download-qr which triggers direct attachment download
+        return true;
+    }
+
+    function downloadQRIS() {
+        const btn = document.getElementById('btn-download-qr');
+        if (btn) {
+            btn.click();
         }
     }
 </script>

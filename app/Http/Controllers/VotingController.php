@@ -501,6 +501,31 @@ class VotingController extends Controller
     }
 
     /**
+     * Stream and force download of the QRIS image.
+     */
+    public function downloadQr($id)
+    {
+        $vote = Vote::findOrFail($id);
+        $qrUrl = $vote->qr_image ?? (filter_var($vote->payment_url, FILTER_VALIDATE_URL) ? $vote->payment_url : null);
+
+        if ($qrUrl) {
+            try {
+                $response = Http::timeout(10)->get($qrUrl);
+                if ($response->successful()) {
+                    $contentType = $response->header('Content-Type') ?: 'image/png';
+                    return response($response->body())
+                        ->header('Content-Type', $contentType)
+                        ->header('Content-Disposition', 'attachment; filename="QRIS-eVoters-' . $vote->payment_ref . '.png"');
+                }
+            } catch (\Exception $e) {
+                Log::error('Download QRIS error: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('vote.pay', $vote->id);
+    }
+
+    /**
      * Confirm mock QRIS payment.
      */
     public function confirmPayment($id)
