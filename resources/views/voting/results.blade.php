@@ -88,8 +88,9 @@
                 <!-- CTA Action -->
                 <div class="flex-shrink-0 flex flex-col sm:flex-row md:flex-col gap-2.5">
                     @if($event->isOpen())
-                        <a href="{{ route('event.show', $event->slug) }}" class="inline-flex items-center justify-center px-6 py-3.5 rounded-2xl text-white font-bold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer text-center" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
-                            <i class="fa-solid fa-check-to-slot mr-2 text-sm"></i> Berikan Suara Sekarang
+                        <a href="{{ route('event.show', $event->slug) }}" class="inline-flex items-center justify-center px-6 py-3.5 rounded-2xl font-bold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer text-center" style="background: linear-gradient(135deg, #c2781a 0%, #9e5d10 100%); color: #ffffff !important; text-decoration: none;">
+                            <i class="fa-solid fa-check-to-slot mr-2 text-sm" style="color: #ffffff !important;"></i>
+                            <span style="color: #ffffff !important; font-weight: 700;">Berikan Suara Sekarang</span>
                         </a>
                     @else
                         <span class="inline-flex items-center justify-center px-6 py-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-500 font-bold text-xs text-center">
@@ -217,34 +218,27 @@
                             @endif
 
                             <!-- Rank Badge (Top Left) -->
-                            <div class="absolute top-3.5 left-3.5 flex items-center space-x-2">
+                            <div class="absolute top-3.5 left-3.5 flex items-center space-x-2 z-10">
                                 @if($rank === 1)
-                                    <div class="px-3 py-1 rounded-xl text-white font-extrabold text-xs shadow-md flex items-center space-x-1" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
-                                        <i class="fa-solid fa-crown text-[10px]"></i>
-                                        <span>PERINGKAT #1</span>
+                                    <div class="px-3 py-1.5 rounded-xl font-extrabold text-xs shadow-lg flex items-center space-x-1.5 border border-amber-300/40" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff !important;">
+                                        <i class="fa-solid fa-crown text-xs" style="color: #ffffff !important;"></i>
+                                        <span style="color: #ffffff !important; font-weight: 800; letter-spacing: 0.5px;">PERINGKAT #1</span>
                                     </div>
                                 @elseif($rank === 2)
-                                    <div class="px-3 py-1 rounded-xl bg-slate-800/90 backdrop-blur-md text-white font-extrabold text-xs shadow-md flex items-center space-x-1">
-                                        <i class="fa-solid fa-medal text-[10px] text-slate-300"></i>
-                                        <span>PERINGKAT #2</span>
+                                    <div class="px-3 py-1.5 rounded-xl font-extrabold text-xs shadow-lg flex items-center space-x-1.5 border border-slate-400/30" style="background: linear-gradient(135deg, #64748b, #475569); color: #ffffff !important;">
+                                        <i class="fa-solid fa-medal text-xs" style="color: #ffffff !important;"></i>
+                                        <span style="color: #ffffff !important; font-weight: 800; letter-spacing: 0.5px;">PERINGKAT #2</span>
                                     </div>
                                 @elseif($rank === 3)
-                                    <div class="px-3 py-1 rounded-xl bg-amber-900/90 backdrop-blur-md text-amber-200 font-extrabold text-xs shadow-md flex items-center space-x-1">
-                                        <i class="fa-solid fa-award text-[10px]"></i>
-                                        <span>PERINGKAT #3</span>
+                                    <div class="px-3 py-1.5 rounded-xl font-extrabold text-xs shadow-lg flex items-center space-x-1.5 border border-amber-600/30" style="background: linear-gradient(135deg, #b45309, #78350f); color: #ffffff !important;">
+                                        <i class="fa-solid fa-award text-xs" style="color: #ffffff !important;"></i>
+                                        <span style="color: #ffffff !important; font-weight: 800; letter-spacing: 0.5px;">PERINGKAT #3</span>
                                     </div>
                                 @else
-                                    <div class="px-2.5 py-1 rounded-xl bg-slate-900/80 backdrop-blur-md text-white font-bold text-xs">
-                                        <span>POSISI #{{ $rank }}</span>
+                                    <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md text-white font-bold text-xs shadow-md border border-slate-700/50">
+                                        <span style="color: #ffffff !important; font-weight: 700;">POSISI #{{ $rank }}</span>
                                     </div>
                                 @endif
-                            </div>
-
-                            <!-- Ballot Number Badge (Top Right) -->
-                            <div class="absolute top-3.5 right-3.5">
-                                <div class="w-9 h-9 rounded-xl font-black text-white text-sm flex items-center justify-center shadow-lg" style="background: #0f172a;">
-                                    {{ sprintf("%02d", $candidate->candidate_number) }}
-                                </div>
                             </div>
                         </div>
 
@@ -293,9 +287,9 @@
 
                             <!-- Card Action Button -->
                             @if($event->isOpen())
-                                <a href="{{ route('event.show', $event->slug) }}" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-center transition-all flex items-center justify-center space-x-2 text-white shadow-sm hover:opacity-90" style="background: linear-gradient(135deg, #ba7c21, #9b5f1a);">
-                                    <i class="fa-solid fa-check-to-slot text-xs"></i>
-                                    <span>Vote No. {{ sprintf("%02d", $candidate->candidate_number) }}</span>
+                                <a href="{{ route('event.show', $event->slug) }}" class="w-full py-3 px-4 rounded-2xl text-center transition-all duration-200 hover:opacity-95 active:scale-[0.99] shadow-md flex items-center justify-center space-x-2 cursor-pointer" style="background: linear-gradient(135deg, #c2781a 0%, #9e5d10 100%); color: #ffffff !important; text-decoration: none;">
+                                    <i class="fa-solid fa-check-to-slot text-xs" style="color: #ffffff !important;"></i>
+                                    <span style="color: #ffffff !important; font-weight: 700; font-size: 0.875rem;">Vote No. {{ sprintf("%02d", $candidate->candidate_number) }}</span>
                                 </a>
                             @endif
                         </div>
